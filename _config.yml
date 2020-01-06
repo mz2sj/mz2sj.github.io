@@ -45,7 +45,7 @@ post_asset_folder: false
 relative_link: false
 future: true
 highlight:
-  enable: true
+  enable: false
   line_number: true
   auto_detect: false
   tab_replace: ''
@@ -93,7 +93,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: material-x
+theme: fluid
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -102,3 +102,8 @@ deploy:
   repository: git@github.com:mz2sj/mz2sj.github.io.git
   branch: master
   
+# 网站图标
+favicon: https://avatars1.githubusercontent.com/u/26783514?s=400&u=35bad3e2530fd53175db6601b6b9cd0dc15ec796&v=4
+
+# 作者头像，会出现在文章标题下方，不同于侧边栏的大头像
+avatar: https://avatars1.githubusercontent.com/u/26783514?s=400&u=35bad3e2530fd53175db6601b6b9cd0dc15ec796&v=4
