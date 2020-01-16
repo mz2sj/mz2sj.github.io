@@ -50,7 +50,11 @@ color:  # 主体颜色配置，可以从这里寻找启发： https://www.webdes
 
 web_analytics:  # 网页访问统计
   enable: true
+<<<<<<< HEAD
   baidu:  374873fda36dffcb97e1528716cd3e9a 
+=======
+  baidu:  374873fda36dffcb97e1528716cd3e9a # 百度统计的Key，参见 https://tongji.baidu.com/sc-web/10000033910/home/site/getjs?siteId=13751376 代码获取中 hm.js? 后边的字符串
+>>>>>>> b4c54369ef5fdcc020aa92a4445013ec6fb33f8b
   google:  # Google统计的Tracking ID，参见 https://analytics.google.com/analytics/web/
   tencent:  # 腾讯统计的H5 App id，参见 https://mta.qq.com/h5/manage/ctr_app_manage
   woyaola:  # 51.la站点统计ID，参见 https://www.51.la/user/site/index
@@ -121,11 +125,19 @@ scroll_top_arrow:  # 向顶部滚动的箭头
 # Index Page
 #---------------------------
 index:
+<<<<<<< HEAD
   banner_img: /img/timg.jpg  # 首页 Banner 头图，以下相同
   banner_img_height: 100  # 头图高度，屏幕百分比，available: 0 - 100
   slogan:  # 首页副标题的独立设置
     enable: true  
     text: 你渴望我嘛~hmm hmm
+=======
+  banner_img: /img/shouye.jpg  # 首页 Banner 头图，以下相同
+  banner_img_height: 100  # 头图高度，屏幕百分比，available: 0 - 100
+  slogan:  # 首页副标题的独立设置
+    enable: false  # 为 false 则不显示任何内容
+    text: 啦啦啦 # 为空则按 hexo config.subtitle 显示
+>>>>>>> b4c54369ef5fdcc020aa92a4445013ec6fb33f8b
   auto_excerpt:
     enable: true
   post_url_target: _self  # available: _blank | _self
@@ -254,7 +266,11 @@ livere:
 # Archive Page
 #---------------------------
 archive:
+<<<<<<< HEAD
   banner_img: /img/timg (3).jpg
+=======
+  banner_img: /img/guidang.jpg
+>>>>>>> b4c54369ef5fdcc020aa92a4445013ec6fb33f8b
   banner_img_height: 80  # available: 0 - 100
 
 
@@ -263,7 +279,11 @@ archive:
 # Categories Page
 #---------------------------
 category:
+<<<<<<< HEAD
   banner_img: /img/b_19_large.jpg
+=======
+  banner_img: /img/fenlei.jpg
+>>>>>>> b4c54369ef5fdcc020aa92a4445013ec6fb33f8b
   banner_img_height: 80  # available: 0 - 100
 
 
@@ -272,7 +292,11 @@ category:
 # Tags Page
 #---------------------------
 tag:
+<<<<<<< HEAD
   banner_img: /img/j_2_e.jpg
+=======
+  banner_img: /img/biaoqian.jpg
+>>>>>>> b4c54369ef5fdcc020aa92a4445013ec6fb33f8b
   banner_img_height: 80  # available: 0 - 100
   tagcloud: # 标签云
     min_font: 15
@@ -288,6 +312,7 @@ tag:
 #---------------------------
 about:  # 以下仅为页面顶部的基本信息，更多内容请在 ./pages/about.md 中编辑，支持 markdown 和 HTML
   md_path: ./pages/about.md  # 关于页文档的相对路径，可以按相对文档设置主题之外的路径，从而避免更新冲突
+<<<<<<< HEAD
   banner_img: /img/timg (2).jpg
   banner_img_height: 80  # available: 0 - 100
   avatar: /img/0JOFhyF5bT.jpeg # 头像
@@ -298,6 +323,17 @@ about:  # 以下仅为页面顶部的基本信息，更多内容请在 ./pages/a
     "fab fa-zhihu":  https://www.zhihu.com/people/meng-zhen-97-65/activities
     "fa fa-envelope-o": zmeng.nju@gmail.com
     "fab fa-weixin":   # 微信图标，这个是特殊图标，点击不会跳转而是悬浮二维码，所以链接需要对应二维码图片地址
+=======
+  banner_img: /img/guanyu.jpg
+  banner_img_height: 80  # available: 0 - 100
+  avatar: /img/0JOFhyF5bT.jpeg # 头像
+  name: meng
+  introduce: 我一直是个好人呀！ # 支持 HTML
+  icons: # 更多图标可从 https://fontawesome.com/v4.7.0/icons/ 查找，并以 "图标名: url" 的格式添加在下方
+    "fab fa-github":  https://github.com/mz2sj
+    "fab fa-zhihu":  https://www.zhihu.com/people/meng-zhen-97-65/activities
+    "fab fa-weixin":  # 微信图标，这个是特殊图标，点击不会跳转而是悬浮二维码，所以链接需要对应二维码图片地址
+>>>>>>> b4c54369ef5fdcc020aa92a4445013ec6fb33f8b
 
 
 #---------------------------
@@ -305,6 +341,6 @@ about:  # 以下仅为页面顶部的基本信息，更多内容请在 ./pages/a
 # 404 Page
 #---------------------------
 page404:
-  banner_img: /img/default.png
+  banner_img: /img/404.jpg
   banner_img_height: 80  # available: 0 - 100
   subtitle: 'Page not found'
