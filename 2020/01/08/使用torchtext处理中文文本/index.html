@@ -16,7 +16,7 @@
   <meta name="description" content="">
   <meta name="author" content="mz2sj">
   <meta name="keywords" content="">
-  <title>Hello World ~ 微风和暖</title>
+  <title>使用torchtext处理中文文本 ~ 微风和暖</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -122,7 +122,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  星期一, 一月 6日 2020, 1:07 下午
+                  星期三, 一月 8日 2020, 7:45 晚上
                 </p>
               
 
@@ -131,7 +131,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    74 字
+                    1.6k 字
                   </span>&nbsp;
                 
 
@@ -139,7 +139,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      1 分钟
+                      6 分钟
                   </span>&nbsp;
                 
 
@@ -172,24 +172,109 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
-<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
-<pre class="highlight"><code class="bash">$ hexo new <span class="hljs-string">"My New Post"</span>
+            <p>torchtext是pytorch中专门用来处理文本的包，使用torchtext可以灵活的帮我们生成batch和词向量。网上介绍的大多是基于英文的版本，自己在中文文本上进行了尝试，将之前的英文文本分类改成中文文本分类。下面开始介绍。</p>
+<h2 id="数据格式"><a class="markdownIt-Anchor" href="#数据格式"></a> 数据格式</h2>
+<table>
+<thead>
+<tr>
+<th>text</th>
+<th>label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>又要写博客了，好开心啊</td>
+<td>0</td>
+</tr>
+<tr>
+<td>程序出bug了，唉</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>数据格式可以是csv、tsv、json文件，自己比较喜欢处理csv、tsv文件两者是一样的，json文件还没怎么接触。数据的内容如上所示，包括文本列和标签列，一般会分为train、dev、test三个集合。本文用到train.tsv、dev.tsv、test.tsv。</p>
+<h2 id="field"><a class="markdownIt-Anchor" href="#field"></a> Field</h2>
+<p>我也不知道这个该叫啥，针对我们要处理的不同数据分别创建Field对象。</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> torchtext.data <span class="hljs-keyword">as</span> data
+<span class="hljs-keyword">import</span> jieba
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tokenizer</span><span class="hljs-params">(x)</span>:</span>
+    <span class="hljs-keyword">return</span> list(jieba.cut(x))
+
+text_field=data.Field(tokenize=tokenizer,fix_length=<span class="hljs-number">60</span>)
+label_field=data.LabelField(dtype=torch.long)
 </code></pre>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
-<pre class="highlight"><code class="bash">$ hexo server
+<p>针对我们需要处理的text列和label列，我们创建了两个Field对象，分别用来处理对应列。因为我们需要对text进行分词，所以需要指定分词器，我这里用的结巴。分词器的返回结果需要是关于词语的列表，可以根据自己的需求指定。fix_length指定单个序列的长度，torchtext会自动帮我们进行padding和裁剪操作。label列是分类的类别列，torchtext相应提供了LabelField，需要指定数据类型。看别人的代码，使用Field也能用，自己还没实验过。</p>
+<p>Field中还有其他参数</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_bigrams</span><span class="hljs-params">(x)</span>:</span>
+    n_grams = set(zip(*[x[i:] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">2</span>)]))
+    <span class="hljs-keyword">for</span> n_gram <span class="hljs-keyword">in</span> n_grams:
+        x.append(<span class="hljs-string">' '</span>.join(n_gram))
+    <span class="hljs-keyword">return</span> x
+
+text_field=data.Field(tokenize=tokenizer,fix_length=<span class="hljs-number">60</span>,include_lengths=<span class="hljs-literal">True</span>,
+                     preprocessing=generate_bigrams)
 </code></pre>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
-<pre class="highlight"><code class="bash">$ hexo generate
+<p>include_lengths,返回的minibatch中包含padded后的text和序列长度，序列长度对于我们处理变长序列有用。这样操作后，在后面的每个batch中，batch.text返回的就是一个（text，text_length）的元组。</p>
+<p>preprocessing,添加预处理函数，tokenize后的结果返回的是列表类型数据，将这个列表数据再通过preprocessing指定的函数进行处理。</p>
+<h2 id="tabulardataset"><a class="markdownIt-Anchor" href="#tabulardataset"></a> TabularDataset</h2>
+<p>针对我们需要处理的表格数据，torch提供了TabularDataset帮助我们按行进行划分，按照表格对应列的顺序指定Field对象构成元组<code>fields=[('text', text_field)，('label', label_field), ]</code> ,label和text是别名，可以任意，我们后面可以通过这个别名获取batch的数据。除此之外还要指定数据的路径，格式，以及是否跳过表头等超参数。</p>
+<pre class="highlight"><code class="">train,dev,test=data.TabularDataset.splits(path,train='trian.tsv',validation='dev.tsv',test='test.tsv',skip_header=True,fields=[('label',label_field),('text',text_field)],format='tsv')
 </code></pre>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
-<pre class="highlight"><code class="bash">$ hexo deploy
+<p>生成的数据格式如下</p>
+<p><a href="https://imgchr.com/i/l2IfgO" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2020/01/08/l2IfgO.md.png" srcset="/img/loading.gif" alt="l2IfgO.md.png" /></a></p>
+<h2 id="构建映射和导入词向量"><a class="markdownIt-Anchor" href="#构建映射和导入词向量"></a> 构建映射和导入词向量</h2>
+<p>前面将数据按行进行划分了，但是并没有建立词和索引的对应关系，也没有建立索引和词向量的对应关系，下一步就是建立词和索引和向量的关系</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> torchtext.vocab <span class="hljs-keyword">as</span> vocab
+
+vectors=vocab.Vectors(<span class="hljs-string">'embedding_path'</span>,<span class="hljs-string">'cachepath'</span>)
+text_field.build_vocab(train,dev,test,vectors,unk_init=torch.Tensor.normal_)
+label_field.build_vocab(train,dev,test)
 </code></pre>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<p>torchtext.vocab提供了一个缓存词向量的方法，在第一次读取词向量时将词向量缓存到指定目录，下次再读取词向量时直接从缓存目录中读取，这样就不用每次加载词向量了，加快了读取速度。未知词和padding词词语和索引对应关系为：{<unk>:0,<pad>:1}。其索引可以通过如下 方式获取：</p>
+<pre class="highlight"><code class="python">PAD_IDX=text_field.vocab.stoi[text_field.pad_token]
+UNK_IDX=text_field.vocab.stoi[text_field.unk_token]
+</code></pre>
+<p>未知词和padding词通常对我们的任务没有帮助，但<code>unk_init=torch.Tensor.normal_</code>却正太分布初始化了，获取了这两个词的索引可以帮助我们在后面的embedding层将其词向量重置为0</p>
+<p>建立text中词和索引、词向量的映射关系时，需要输入要处理的数据、词向量，指定未识别词的初始化方式。</p>
+<p>建立label中类别和索引的关系就比较简单了，输入之前生成的数据就好了。看一眼生成的词表和词向量</p>
+<p><a href="https://imgchr.com/i/l2TJf0" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2020/01/08/l2TJf0.md.png" srcset="/img/loading.gif" alt="l2TJf0.md.png" /></a></p>
+<h2 id="生成batch"><a class="markdownIt-Anchor" href="#生成batch"></a> 生成batch</h2>
+<p>前面我们已经将每行数据进行了分词，建立了词表、索引等对应关系，接下来就是生成batch啦</p>
+<pre class="highlight"><code class="python">train_iter,dev_iter,test_iter=data.BucketIterator.splits(
+	(train,dev,test),batch_sizes=(<span class="hljs-number">64</span>,len(dev),len(test)),
+    sort_key=<span class="hljs-keyword">lambda</span> x:len(x.text),sort_within_batch,repeat=<span class="hljs-literal">False</span>,
+    shuffle=<span class="hljs-literal">True</span>,device=device
+)
+</code></pre>
+<p>首先指定要处理的数据（train，dev，test），接着指定各个数据对应要生成 的batch的batch_size大小，注意这里是多个数据集的batch_size,参数是batch_sizes=（64，len（dev),len(test)）,可以看到这里对dev和test我们的batchsize大小就是他们所有数据，所以这些数据只会生成一个batch。通常对训练集和验证集的数据要按数据长度进行排序，我们要指定排序的键sort_key，这里使用了匿名函数，text就是我们之前指定的别名。还包括其他一些参数，不一一介绍。至此我们就生成了text和label的batch集合，两者是合在一起的，我们可以通过batch的别名获得各自值。sort_within_batch,在一个batch内对数据进行排序。</p>
+<h2 id="embedding"><a class="markdownIt-Anchor" href="#embedding"></a> embedding</h2>
+<p>如何获得词表对应的embedding呢？</p>
+<pre class="highlight"><code class="python">pretrained_embeddings=text_field.vocab.vectors
+</code></pre>
+<p>可以和torch的embedding模块结合使用</p>
+<pre class="highlight"><code class="python">embedding = nn.Embedding.from_pretrained(pretrained_embeddings, freeze=<span class="hljs-literal">False</span>)
+embedded=embedding(batch.text)
+</code></pre>
+<p>embedding的输入需要是之前处理过的batch数据，torchtext会自动帮我们处理好对应关系。</p>
+<p>那么我们如何处理边长序列呢？通常为了数据的通用性，我们对较短的数据会进行padding，让所有序列具有相同的长度。当使用RNN等网络时，经过padding的数据产生的hidden state、outputs对于我们并无帮助，我们主需要真是序列长产生的hidden state和outputs即可。torchtext提供了pack_padded_sequence和pad_packed_sequence两个方法，对embedded的结果进行处理加入序列长度。</p>
+<pre class="highlight"><code class="python">embedded=self.embedding(text) <span class="hljs-comment">#添加了padding的embedding结果</span>
+packed_embedded=nn.utils.pack_padded_embedding(embedded,text_lengths)
+packed_output,(hidden,cell)=self.rnn(packed_output) <span class="hljs-comment">#没有padding的输出</span>
+output,output_lengths=nn.utils.rnn.pad_packed_sequence(packed_output) <span class="hljs-comment">#返回输出，和没有padding的句子长度</span>
+</code></pre>
+<p>对于unk和pad词我们可以将其词向量初始化为0向量</p>
+<pre class="highlight"><code class="python">model.embedding.weight.data[UNK_IDX]=torch.zeros(EMBEDDING_DIM)
+model.embedding.weight.data[PAD_IDX]=torch.zeros(EMBEDDING_DIM)
+</code></pre>
+<p>其实在调用field.build_coab时会自动将pad和unk初始化为0</p>
+<p>还可以换种方式指定embedding</p>
+<pre class="highlight"><code class="python">embedding=nn.Embedding(vocab_size,embedding_dim,pad_idx=pad_idx)
+</code></pre>
+<p>先指定好embedding的形状，再在模型搭建好后指定embedding</p>
+<pre class="highlight"><code class="">embedding=model.embedding.weight.data.copy_(pretrained_embeddings)
+</code></pre>
+<p>收工~</p>
 
             <hr>
           </div>
@@ -197,6 +282,13 @@
           <div>
             <p>
             
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/torchtext">torchtext</a>
+                
+              </span>
             
             </p>
             
@@ -231,8 +323,8 @@
     <div id="disqus_thread"></div>
     <script>
       var disqus_config = function () {
-        this.page.url = 'https://www.mz2sj.cn/2020/01/06/hello-world/';
-        this.page.identifier = '/2020/01/06/hello-world/';
+        this.page.url = 'https://www.mz2sj.cn/2020/01/08/使用torchtext处理中文文本/';
+        this.page.identifier = '/2020/01/08/使用torchtext处理中文文本/';
       };
       var oldLoad = window.onload;
       window.onload = function () {
@@ -386,7 +478,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Hello World&nbsp;",
+        "使用torchtext处理中文文本&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
