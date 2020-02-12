@@ -537,25 +537,31 @@
       <br><br>
       
       
-  <div class="disqus" style="width:100%">
-    <div id="disqus_thread"></div>
-    <script>
-      var disqus_config = function () {
-        this.page.url = 'https://www.mz2sj.cn/2020/01/07/TextCNN/';
-        this.page.identifier = '/2020/01/07/TextCNN/';
-      };
-      var oldLoad = window.onload;
-      window.onload = function () {
-        var d = document, s = d.createElement('script');
-        s.type = 'text/javascript';
-        s.src = '//' + 'Fluid-dev' + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-      };
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" target="_blank" rel="nofollow noopener noopener">comments
-        powered by Disqus.</a></noscript>
-  </div>
+  <div id="vcomments" style="width: 90%; margin: 0 auto;"></div>
+  <script defer src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script defer src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+  <script>
+    var notify = 'false' === true;
+    var verify = 'false' === true;
+    var oldLoad = window.onload;
+    window.onload = function () {
+      new Valine({
+        el: '#vcomments',
+        notify: notify,
+        verify: verify,
+        app_id: "Pvuxc0sFY7K67tmSzS9hkWdI-gzGzoHsz",
+        app_key: "GsfN8ED4qT4Kplv5ooTLcYVm",
+        placeholder: "说点什么",
+        avatar: "retro",
+        meta: ['nick', 'mail', 'link'],
+        pageSize: "10",
+      });
+      oldLoad && oldLoad();
+    };
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
 
 
     
