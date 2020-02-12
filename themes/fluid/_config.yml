@@ -49,7 +49,7 @@ color:  # 主体颜色配置，可以从这里寻找启发： https://www.webdes
   board_color: "#fff"
 
 web_analytics:  # 网页访问统计
-  enable: true
+  enable: false
   baidu:  374873fda36dffcb97e1528716cd3e9a 
   google:  # Google统计的Tracking ID，参见 https://analytics.google.com/analytics/web/
   tencent:  # 腾讯统计的H5 App id，参见 https://mta.qq.com/h5/manage/ctr_app_manage
