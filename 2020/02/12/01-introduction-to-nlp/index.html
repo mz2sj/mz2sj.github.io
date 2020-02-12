@@ -16,7 +16,7 @@
   <meta name="description" content="">
   <meta name="author" content="mz2sj">
   <meta name="keywords" content="">
-  <title>分类 ~ 微风和暖</title>
+  <title>01 introduction to nlp ~ 微风和暖</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -39,7 +39,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -107,7 +107,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/fenlei.jpg')no-repeat center center;
+         style="background: url('/img/default.png')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -117,6 +117,41 @@
               
             </span>
 
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 二月 12日 2020, 4:10 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    509 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      1 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
             
           </div>
 
@@ -128,22 +163,128 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h2 id="写在前面"><a class="markdownIt-Anchor" href="#写在前面"></a> 写在前面</h2>
+<p>研究生读了半年了，越来越迷茫了，没有认认真真做好一件事。今天，立帖为证，我一定要将这门课认真修完，勤做笔记，完成作业。话不多说，开始吧！附上<a href="https://www.bilibili.com/video/av35805262" target="_blank" rel="noopener">课程链接</a>。</p>
+<h2 id="nlp的应用领域"><a class="markdownIt-Anchor" href="#nlp的应用领域"></a> nlp的应用领域</h2>
+<ol>
+<li>
+<p>Question Answering 问答</p>
+</li>
+<li>
+<p>Information Extraction 信息抽取</p>
+</li>
+<li>
+<p>Sentiment Analysis 情感分析</p>
+</li>
+<li>
+<p>机器翻译</p>
+</li>
+</ol>
+<p>自然语言在垃圾邮件侦测、词性标注、命名实体识别上已经取得了较好的表现，在情感分类、指代消解、句法分析、机器翻译、信息抽取也有所进步，尤其是现在的神经机器翻译，比之前的统计机器翻译取得了长足的进步，不过这门课开设时间已经比较早了，那时候深度学习还没有大规模应用到nlp中。但在问答、摘要、对话系统、改述（Paraphrase）等方面表现还有待提高。</p>
+<h2 id="歧义让nlp变得更加困难"><a class="markdownIt-Anchor" href="#歧义让nlp变得更加困难"></a> 歧义让nlp变得更加困难</h2>
+<p>举个例子，这是纽约时报的一条新闻头条</p>
+<p>Fed raises interest rates</p>
+<p>既可以理解为Fed这个人将利率interest rates 提高了，也可以理解为Fed这个人对rates这个东西起了兴趣raise interest。</p>
+<p>当给出更多信息时，可以帮助我们消除这种模糊性。</p>
+<p>Fed raises interest rates 0.5%</p>
+<p>这时候我们就知道了新闻真实想表达的意思是利率提高了%0.5，而不是Fed来了兴趣.</p>
+<h2 id="其他的困难"><a class="markdownIt-Anchor" href="#其他的困难"></a> 其他的困难</h2>
+<ol>
+<li>非标准英语 比如推特上的用语可能就很不规范</li>
+<li>切分问题 一个词不同的切分会带来不同的问题</li>
+<li>俚语 类似于我们的成语,不能通过字面意思来判断他的意思</li>
+<li>新词 类似于给力这种新词汇</li>
+<li>外部知识 知识的不确定性</li>
+<li>实体名 有些词可能是专有名词,不能按字面意思理解</li>
+</ol>
+<h2 id="写在后面"><a class="markdownIt-Anchor" href="#写在后面"></a> 写在后面</h2>
+<p>第一篇差不多就到这儿了,完事开头难,加油写下去哦!</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
                 
-
-<ul class="category-tree-list"><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/nlp/">nlp</a><span class="category-tree-list-count">1</span></li></ul>
-
-
-              </div>
-            </div>
+                  <a class="hover-with-bg" href="/categories/nlp">nlp</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/nlp">nlp</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    <script>
+      var disqus_config = function () {
+        this.page.url = 'https://www.mz2sj.cn/2020/02/12/01-introduction-to-nlp/';
+        this.page.identifier = '/2020/02/12/01-introduction-to-nlp/';
+      };
+      var oldLoad = window.onload;
+      window.onload = function () {
+        var d = document, s = d.createElement('script');
+        s.type = 'text/javascript';
+        s.src = '//' + 'Fluid-dev' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" target="_blank" rel="nofollow noopener noopener">comments
+        powered by Disqus.</a></noscript>
+  </div>
+
+
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -222,6 +363,11 @@
 
 
 
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
 
   <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
@@ -273,7 +419,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "分类&nbsp;",
+        "01 introduction to nlp&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
