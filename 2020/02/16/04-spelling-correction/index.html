@@ -243,86 +243,48 @@
 <p><img src="https://s2.ax1x.com/2020/02/16/3pmh5D.png" srcset="/img/loading.gif" alt="3pmh5D.png" /></p>
 <p>很明显，two of the应该是计算后概率最大的路径。</p>
 <p>也可以简化计算，每次只替换路径中的一个词，一般来说拼写错误只会拼错一个吧。</p>
-<p>和non-word error相比,real-word error多了一个概率计算，no error $$<br />
-\mathrm{P}(\mathrm{w} | \mathrm{w})</p>
-
-那么这个词本身就是正确的概率是多少呢？需要根据具体应用而定。假设你要做的应用，十个词就有一个是错误的，那么就是0.90，20个词里面有1个是错误的就是0.95.
-
-看一下，现面的例子
-
-![3puNkT.png](https://s2.ax1x.com/2020/02/16/3puNkT.png)
-
-在unigram模型中，thew很有可能就是the拼错的，如果假设语料的拼写错误概率是0.9的情况下
-
-## State-of-the-art Systems
-
-不再简单的把先验概率乘上channel model产生的错误概率，将独立性假设转为概率不相同
-
-<p>\hat{w}=\underset{w \in V}{\operatorname{argmax}} P(x | w) P(w)^{\lambda}</p>
-针对non-word error，产生了上面的公式，$\lambda$可以通过development  test set 中学习出来。
-
-### Phonetic error mdoel
-
-简单的来说就是加上发音来修正拼写错误，原来的拼写错误都是基于字母的拼写错误，现在把发音因素也考虑到拼写错误。比如下面的规则：
-
-•“Drop duplicate adjacent letters, except for C.”
-
-•“If the word begins with 'KN', 'GN', 'PN', 'AE', 'WR', drop the first letter.”
-
-“Drop 'B' if after 'M' and if it is at the end of the 
-
-去掉这些字母后，根据发音来进行spelling correction？？？
-
-接着找到和拼写错误词发音相差1-2的最小编辑错误候选词
-
-计算概率时对不同的编辑错误候选给与不同的权重。
-
-### Improvement to channel model
-
-更丰富的编辑距离，不仅仅是删除插入替换等
-
-•ent-->ant
-
-•ph-->f
-
-•le-->al
-
-将发音错误考虑到channel里面
-
-### channel model
-
-除了基于语料统计出插入删除替换产生的channel model，还可以考虑其他因素
-
-•The source letter
-
-•The target letter
-
-•Surrounding letters
-
-•The position in the word
-
-•Nearby keys on the keyboard
-
-•Homology on the keyboard
-
-•Pronunciations
-
-•Likely morpheme transformations
-
-### classifier-based methods for real-word spelling correction
-
-除了基于language model 、channel model的生成式模型，我们还可以利用特征输入分类器来进行拼写错误检查。
-
-比如下面的例子
-
-whether/weather
-
-判断这个拼写错误到底是哪一个，我们考虑下面这些特征：
-附近10个词内是否有cloudy，有的话那么很可能就是weather天气
-
-后面 是不是接的 to VERB，是的话那么很有可能就是whether 是否
-
-后面接的是不是 or not，是的话很有可能就是or not 是否
+<p>和non-word error相比,real-word error多了一个概率计算，no error $$\mathrm{P}(\mathrm{w} | \mathrm{w})$$<br />
+那么这个词本身就是正确的概率是多少呢？需要根据具体应用而定。假设你要做的应用，十个词就有一个是错误的，那么就是0.90，20个词里面有1个是错误的就是0.95.</p>
+<p>看一下，现面的例子</p>
+<p><img src="https://s2.ax1x.com/2020/02/16/3puNkT.png" srcset="/img/loading.gif" alt="3puNkT.png" /></p>
+<p>在unigram模型中，thew很有可能就是the拼错的，如果假设语料的拼写错误概率是0.9的情况下</p>
+<h2 id="state-of-the-art-systems"><a class="markdownIt-Anchor" href="#state-of-the-art-systems"></a> State-of-the-art Systems</h2>
+<p>不再简单的把先验概率乘上channel model产生的错误概率，将独立性假设转为概率不相同</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover accent="true"><mi>w</mi><mo>^</mo></mover><mo>=</mo><munder><mo><mi mathvariant="normal">argmax</mi><mo>⁡</mo></mo><mrow><mi>w</mi><mo>∈</mo><mi>V</mi></mrow></munder><mi>P</mi><mo stretchy="false">(</mo><mi>x</mi><mi mathvariant="normal">∣</mi><mi>w</mi><mo stretchy="false">)</mo><mi>P</mi><mo stretchy="false">(</mo><mi>w</mi><msup><mo stretchy="false">)</mo><mi>λ</mi></msup></mrow><annotation encoding="application/x-tex">\hat{w}=\underset{w \in V}{\operatorname{argmax}} P(x | w) P(w)^{\lambda}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.16666em;">^</span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.865249em;vertical-align:-0.966141em;"></span><span class="mord"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.43055999999999994em;"><span style="top:-2.161229em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02691em;">w</span><span class="mrel mtight">∈</span><span class="mord mathdefault mtight" style="margin-right:0.22222em;">V</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop"><span class="mop"><span class="mord mathrm">a</span><span class="mord mathrm">r</span><span class="mord mathrm" style="margin-right:0.01389em;">g</span><span class="mord mathrm">m</span><span class="mord mathrm">a</span><span class="mord mathrm">x</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.966141em;"><span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mord">∣</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mclose">)</span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">λ</span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>针对non-word error，产生了上面的公式，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">λ</span></span></span></span>可以通过development  test set 中学习出来。</p>
+<h3 id="phonetic-error-model"><a class="markdownIt-Anchor" href="#phonetic-error-model"></a> Phonetic error model</h3>
+<p>简单的来说就是加上发音来修正拼写错误，原来的拼写错误都是基于字母的拼写错误，现在把发音因素也考虑到拼写错误。比如下面的规则：</p>
+<p>•“Drop duplicate adjacent letters, except for C.”</p>
+<p>•“If the word begins with ‘KN’, ‘GN’, ‘PN’, ‘AE’, ‘WR’, drop the first letter.”</p>
+<p>“Drop ‘B’ if after ‘M’ and if it is at the end of the</p>
+<p>去掉这些字母后，根据发音来进行spelling correction？？？</p>
+<p>接着找到和拼写错误词发音相差1-2的最小编辑错误候选词</p>
+<p>计算概率时对不同的编辑错误候选给与不同的权重。</p>
+<h3 id="improvement-to-channel-model"><a class="markdownIt-Anchor" href="#improvement-to-channel-model"></a> Improvement to channel model</h3>
+<p>更丰富的编辑距离，不仅仅是删除插入替换等</p>
+<p>•ent–&gt;ant</p>
+<p>•ph–&gt;f</p>
+<p>•le–&gt;al</p>
+<p>将发音错误考虑到channel里面</p>
+<h3 id="channel-model"><a class="markdownIt-Anchor" href="#channel-model"></a> channel model</h3>
+<p>除了基于语料统计出插入删除替换产生的channel model，还可以考虑其他因素</p>
+<p>•The source letter</p>
+<p>•The target letter</p>
+<p>•Surrounding letters</p>
+<p>•The position in the word</p>
+<p>•Nearby keys on the keyboard</p>
+<p>•Homology on the keyboard</p>
+<p>•Pronunciations</p>
+<p>•Likely morpheme transformations</p>
+<h3 id="classifier-based-methods-for-real-word-spelling-correction"><a class="markdownIt-Anchor" href="#classifier-based-methods-for-real-word-spelling-correction"></a> classifier-based methods for real-word spelling correction</h3>
+<p>除了基于language model 、channel model的生成式模型，我们还可以利用特征输入分类器来进行拼写错误检查。</p>
+<p>比如下面的例子</p>
+<p>whether/weather</p>
+<p>判断这个拼写错误到底是哪一个，我们考虑下面这些特征：<br />
+附近10个词内是否有cloudy，有的话那么很可能就是weather天气</p>
+<p>后面 是不是接的 to VERB，是的话那么很有可能就是whether 是否</p>
+<p>后面接的是不是 or not，是的话很有可能就是or not 是否</p>
 
             <hr>
           </div>
