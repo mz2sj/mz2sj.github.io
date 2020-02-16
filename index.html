@@ -145,6 +145,48 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/02/16/04-spelling-correction/">
+        <p class="h4 index-header">04-spelling-correction</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">今天要介绍的是拼写检查，主要基于语言模型。
+ Spelling Tasks
+拼写检查任务主要包括两个方面，一方面是拼写错误侦测，另一方面是拼写错误修正。
+拼写错误分为两种：
+1.Non-word Errors：比如漏写导致的错误，graffe-&gt;giraffe。这类错误产生的词不存在。可以通过词典来进行侦测。找出与这些词相近的词，有两种方法，最小编辑路径法，信道法（Highest noisy channel probability）。
+2.Real-word Errors：一种是打印错误，如 three-&gt;there顺序颠倒。另一种是认知错误，如piece-&gt;peace,too-&gt;two，发音相同导致的错误。这类错误产生的词是真实存在的，要先找到与这些词发音拼写相近的词形成候选集，在通过信道模型和分类器选择最好的候选词。
+ The Nosiy Channel Model of Spelling
+The intuition of Noisy Model is that the words we see may be wrong words were produce</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-16&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/nlp">nlp</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/nlp">nlp</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/02/14/03-language-modeling/">
         <p class="h4 index-header">03-language-modeling</p>
         
