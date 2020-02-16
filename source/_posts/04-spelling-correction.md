@@ -136,10 +136,7 @@ $$
 
 也可以简化计算，每次只替换路径中的一个词，一般来说拼写错误只会拼错一个吧。
 
-和non-word error相比,real-word error多了一个概率计算，no error $$
-\mathrm{P}(\mathrm{w} | \mathrm{w})
-$$
-
+和non-word error相比,real-word error多了一个概率计算，no error $$\mathrm{P}(\mathrm{w} | \mathrm{w})$$
 那么这个词本身就是正确的概率是多少呢？需要根据具体应用而定。假设你要做的应用，十个词就有一个是错误的，那么就是0.90，20个词里面有1个是错误的就是0.95.
 
 看一下，现面的例子
@@ -156,7 +153,7 @@ $$
 $$
 针对non-word error，产生了上面的公式，$\lambda$可以通过development  test set 中学习出来。
 
-### Phonetic error mdoel
+### Phonetic error model
 
 简单的来说就是加上发音来修正拼写错误，原来的拼写错误都是基于字母的拼写错误，现在把发音因素也考虑到拼写错误。比如下面的规则：
 
