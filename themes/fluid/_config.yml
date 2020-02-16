@@ -216,7 +216,7 @@ gitalk:
 valine:
   appid: Pvuxc0sFY7K67tmSzS9hkWdI-gzGzoHsz 
   appkey: GsfN8ED4qT4Kplv5ooTLcYVm 
-  notify: false # mail notifier, See: https://github.com/xCss/Valine/wiki
+  notify: true # mail notifier, See: https://github.com/xCss/Valine/wiki
   verify: false # Verification code
   placeholder: 说点什么 # comment box placeholder
   avatar: retro # gravatar style https://valine.js.org/avatar.html
