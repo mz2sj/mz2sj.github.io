@@ -136,9 +136,9 @@ $$
 
 ## 模型的融合
 
-### Backoff
+### Backoff 回退
 
-试一试那种语言模型好，谁好用谁
+试一试那种语言模型好，谁好用谁。例如计算trigram时，预料中没有这个trigram，就用bigram来代替，bigram没有就用unigram代替。
 
 ### Interpolation 插值
 
