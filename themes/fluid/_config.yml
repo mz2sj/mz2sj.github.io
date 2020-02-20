@@ -124,8 +124,8 @@ index:
   banner_img: https://s2.ax1x.com/2020/02/12/1bDC4K.jpg  # 首页 Banner 头图，以下相同
   banner_img_height: 100  # 头图高度，屏幕百分比，available: 0 - 100
   slogan:  # 首页副标题的独立设置
-    enable: false  # 为 false 则不显示任何内容
-    text: 啦啦啦 # 为空则按 hexo config.subtitle 显示
+    enable: true  
+    text: 死亡如风，常伴吾身
   auto_excerpt:
     enable: true
   post_url_target: _self  # available: _blank | _self
@@ -164,8 +164,8 @@ post:
     enable: false
     content: '<img src="https://octodex.github.com/images/jetpacktocat.png" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">' # 自定义区域，支持 HTML，可自行插入赞赏码、公众号二维码等内容
   comments:  # 评论
-    enable: true  
-    type: valine  
+    enable: true 
+    type: utterances  
   image_zoom:  # 文章图片可点击放大
     enable: true
   math:  # 数学公式，开启之前需要更换 Markdown 渲染器，否则复杂公式会有兼容问题，具体请见 https://fluid-dev.github.io/hexo-fluid-docs/guide/#数学公式
@@ -214,10 +214,10 @@ gitalk:
 # You can get your appid and appkey from https://leancloud.cn
 # More info available at https://valine.js.org
 valine:
-  appid: #Pvuxc0sFY7K67tmSzS9hkWdI-gzGzoHsz 
-  appkey: #GsfN8ED4qT4Kplv5ooTLcYVm 
-  notify: #true # mail notifier, See: https://github.com/xCss/Valine/wiki
-  verify: #false # Verification code
+  appid: Pvuxc0sFY7K67tmSzS9hkWdI-gzGzoHsz 
+  appkey: GsfN8ED4qT4Kplv5ooTLcYVm 
+  notify: true # mail notifier, See: https://github.com/xCss/Valine/wiki
+  verify: false # Verification code
   placeholder: 说点什么 # comment box placeholder
   avatar: retro # gravatar style https://valine.js.org/avatar.html
   pageSize: 10 # pagination size
