@@ -183,8 +183,8 @@ post:
 # utterances
 # You can install utterances with https://utteranc.es/ and generate your configuration
 utterances:
-  repo:
-  issue_term:
+  repo: mz2sj/utterances
+  issue_term: pathname
   label: utterances
   theme: github-light
   crossorigin: anonymous
@@ -214,10 +214,10 @@ gitalk:
 # You can get your appid and appkey from https://leancloud.cn
 # More info available at https://valine.js.org
 valine:
-  appid: Pvuxc0sFY7K67tmSzS9hkWdI-gzGzoHsz 
-  appkey: GsfN8ED4qT4Kplv5ooTLcYVm 
-  notify: true # mail notifier, See: https://github.com/xCss/Valine/wiki
-  verify: false # Verification code
+  appid: #Pvuxc0sFY7K67tmSzS9hkWdI-gzGzoHsz 
+  appkey: #GsfN8ED4qT4Kplv5ooTLcYVm 
+  notify: #true # mail notifier, See: https://github.com/xCss/Valine/wiki
+  verify: #false # Verification code
   placeholder: 说点什么 # comment box placeholder
   avatar: retro # gravatar style https://valine.js.org/avatar.html
   pageSize: 10 # pagination size
