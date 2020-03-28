@@ -145,6 +145,56 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/03/28/02-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B%E4%B9%8B%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">
+        <p class="h4 index-header">02-二手车价格预测之特征工程</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">今天要做的笔记是特征工程，感觉这次官方给的代码不是特别全。最近在忙作业和kaggle的比赛，后面自己有时间会再完善一下。自己将按照特征工程的常见任务进行介绍。
+ 异常处理
+数据收集的过程中可能会产生脏数据，导致产生离群值，数据分布明显不合理，这时候我们要对数据进行异常处理。常见的异常处理方法有：
+ 通过箱型图删除异常值
+官方提供了相关代码
+def outliers_proc(data,col_name,scale=3):
+
+  def box_plot_outliers(data_ser,box_scale):
+    iqr=box_scale*(data_ser.quantile(0.75)-data_ser.quantile(0.25))
+    val_low=data_ser.quantile(0.25)-iqr
+    val_up=data_ser.quantile(0.75)+iqr
+    rule_low=(data_ser&lt;val_low)
+    rule_up=(data_ser&gt;val_up)
+    return (rule_low,rule_</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-03-28&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+            <a href="/categories/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B">特征工程</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/03/24/01-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BB%B7%E6%A0%BC%E9%94%80%E5%94%AE%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B%E4%B9%8BEDA/">
         <p class="h4 index-header">01-二手车价格销售价格预测之EDA</p>
         
@@ -173,13 +223,21 @@
         
           <i class="iconfont icon-inbox"></i>
           
-            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%20Regression">数据分析 Regression</a>&nbsp;
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+            <a href="/categories/Regression">Regression</a>&nbsp;
           &nbsp;
         
         
           <i class="iconfont icon-tag"></i>
           
-            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%20EDA%20%E5%9B%9E%E5%BD%92%20%E6%AF%94%E8%B5%9B">数据分析 EDA 回归 比赛</a>&nbsp;
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+            <a href="/tags/EDA">EDA</a>&nbsp;
+          
+            <a href="/tags/%E5%9B%9E%E5%BD%92">回归</a>&nbsp;
+          
+            <a href="/tags/%E6%AF%94%E8%B5%9B">比赛</a>&nbsp;
           
         
       </div>
