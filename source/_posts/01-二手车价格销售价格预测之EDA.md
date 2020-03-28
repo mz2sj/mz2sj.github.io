@@ -1,8 +1,8 @@
 ---
 title: 01-二手车价格销售价格预测之EDA
 date: 2020-03-24 16:59:22
-tags: 数据分析 EDA 回归 比赛
-categories: 数据分析 Regression
+tags: [数据分析,EDA,回归,比赛]
+categories: [数据分析,Regression]
 ---
 
 
