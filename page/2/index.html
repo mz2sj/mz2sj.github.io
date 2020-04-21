@@ -145,6 +145,49 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/07/TextCNN/">
+        <p class="h4 index-header">TextCNN</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">学了点pytorch，最近在知乎刷到了一个repo主要是介绍文本分类的，感觉还不错，打算用来入门，自己将会比较细致的实现代码，分析代码的结构。天下大事必做于易，天下大事必做于细。寒假来了，自己基础较差，只能多花点时间了。
+ 基础网络
+作者自己没有直接调用torch的api，而是在其基础上进行实现。一些模块继承自nn.Module层，并且实现了初始化和前向计算。嘿呀，等我熟练了，我也要自己做一个工具箱。不多说上代码
+ Conv1d
+import torch.nn.Functional as F
+
+class Conv1d(nn.Module):
+    def __init__(self,in_channels,out_channels,filter_sizes):
+        super(Conv1d,self).__init__()
+        self.convs=nn.ModuleList([
+            nn.Conv1d(in_channels,out_channels,kernel_size=fs)
+            for fs in filte</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-07&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CNN">CNN</a>&nbsp;
+          
+            <a href="/tags/%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB">文本分类</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/01/07/colab%E4%BD%BF%E7%94%A8/">
         <p class="h4 index-header">colab使用</p>
         
