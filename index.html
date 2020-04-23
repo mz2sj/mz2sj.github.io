@@ -145,6 +145,60 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/23/02-%E7%88%AC%E8%99%AB/">
+        <p class="h4 index-header">02-爬虫</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> 正则表达式
+ 正则表达式语法
+
+. 表示任何单个字符
+[ ] 字符集，对单个字符给出取值范围 ，如[abc]表示a、b、c，[a‐z]表示a到z单个字符
+[^ ] 非字符集，对单个字符给出排除范围 ，如[^abc]表示非a或b或c的单个字符
+* 前一个字符0次或无限次扩展，如abc* 表示 ab、abc、abcc、abccc等
++ 前一个字符1次或无限次扩展 ，如abc+ 表示 abc、abcc、abccc等
+? 前一个字符0次或1次扩展 ，如abc? 表示 ab、abc
+| 左右表达式任意一个 ，如abc|def 表示 abc、def
+{m} 扩展前一个字符m次 ，如ab{2}c表示abbc
+{m,n} 扩展前一个字符m至n次（含n） ，如ab{1,2}c表示abc、abbc
+^ 匹配字符串开头 ，如^abc表示abc且在一个字符串的开头
+$ 匹配字符串结尾 ，如abc$表示abc且在一个字符串的结尾
+( ) 分组标记，内部只能使用 | 操作符 ，如(abc)表示abc，(abc|def)表示abc、def，使用分组除了整体匹配的符号外，单独的分组也会匹配出来。
+\d 数字，等价于</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-23&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>&nbsp;
+          
+            <a href="/tags/bs4">bs4</a>&nbsp;
+          
+            <a href="/tags/Xpath">Xpath</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/04/21/01-%E7%88%AC%E8%99%AB/">
         <p class="h4 index-header">01-爬虫入门</p>
         
@@ -633,66 +687,6 @@ Fed raises interest rates
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/nlp">nlp</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/01/08/%E4%BD%BF%E7%94%A8torchtext%E5%A4%84%E7%90%86%E4%B8%AD%E6%96%87%E6%96%87%E6%9C%AC/">
-        <p class="h4 index-header">使用torchtext处理中文文本</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">torchtext是pytorch中专门用来处理文本的包，使用torchtext可以灵活的帮我们生成batch和词向量。网上介绍的大多是基于英文的版本，自己在中文文本上进行了尝试，将之前的英文文本分类改成中文文本分类。下面开始介绍。
- 数据格式
-
-
-
-text
-label
-
-
-
-
-又要写博客了，好开心啊
-0
-
-
-程序出bug了，唉
-1
-
-
-
-数据格式可以是csv、tsv、json文件，自己比较喜欢处理csv、tsv文件两者是一样的，json文件还没怎么接触。数据的内容如上所示，包括文本列和标签列，一般会分为train、dev、test三个集合。本文用到train.tsv、dev.tsv、test.tsv。
- Field
-我也不知道这个该叫啥，针对我们要处理的不同数据分别创建Field对象。
-import torchtext.data as data
-import jieba
-
-def tokenizer(x):
-    return list(jieba.cut(x))
-
-text_field=data.Field(tokenize=tokenizer,fix_length=60)
-l</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-08&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/torchtext">torchtext</a>&nbsp;
           
         
       </div>

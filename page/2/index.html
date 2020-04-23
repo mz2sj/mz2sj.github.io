@@ -145,6 +145,66 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/08/%E4%BD%BF%E7%94%A8torchtext%E5%A4%84%E7%90%86%E4%B8%AD%E6%96%87%E6%96%87%E6%9C%AC/">
+        <p class="h4 index-header">使用torchtext处理中文文本</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">torchtext是pytorch中专门用来处理文本的包，使用torchtext可以灵活的帮我们生成batch和词向量。网上介绍的大多是基于英文的版本，自己在中文文本上进行了尝试，将之前的英文文本分类改成中文文本分类。下面开始介绍。
+ 数据格式
+
+
+
+text
+label
+
+
+
+
+又要写博客了，好开心啊
+0
+
+
+程序出bug了，唉
+1
+
+
+
+数据格式可以是csv、tsv、json文件，自己比较喜欢处理csv、tsv文件两者是一样的，json文件还没怎么接触。数据的内容如上所示，包括文本列和标签列，一般会分为train、dev、test三个集合。本文用到train.tsv、dev.tsv、test.tsv。
+ Field
+我也不知道这个该叫啥，针对我们要处理的不同数据分别创建Field对象。
+import torchtext.data as data
+import jieba
+
+def tokenizer(x):
+    return list(jieba.cut(x))
+
+text_field=data.Field(tokenize=tokenizer,fix_length=60)
+l</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-08&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/torchtext">torchtext</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/01/07/TextCNN/">
         <p class="h4 index-header">TextCNN</p>
         
