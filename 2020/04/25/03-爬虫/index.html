@@ -131,7 +131,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    2.5k 字
+                    2.7k 字
                   </span>&nbsp;
                 
 
@@ -139,7 +139,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      9 分钟
+                      10 分钟
                   </span>&nbsp;
                 
 
@@ -387,6 +387,43 @@ print(driver.page_source)
 driver.quit()
 </code></pre>
 <p>这次的内容有点多，很多都是点了一下，并没有深入介绍，想要熟练掌握，还要多加练习，多啃文档。</p>
+<h3 id="丁香园自动化登陆"><a class="markdownIt-Anchor" href="#丁香园自动化登陆"></a> 丁香园自动化登陆</h3>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup
+<span class="hljs-keyword">from</span> selenium <span class="hljs-keyword">import</span> webdriver
+<span class="hljs-keyword">from</span> selenium.webdriver.common.by <span class="hljs-keyword">import</span> By
+<span class="hljs-keyword">from</span> lxml <span class="hljs-keyword">import</span> etree
+<span class="hljs-keyword">import</span> time
+</code></pre>
+<pre class="highlight"><code class="python">name=<span class="hljs-string">'1876180****'</span>
+passwd=<span class="hljs-string">'dxy123456'</span>
+
+driver=webdriver.Chrome(<span class="hljs-string">r'C:\Users\MZ\Downloads\chromedriver_win32\chromedriver.exe'</span>)
+driver.get(<span class="hljs-string">'http://www.dxy.cn/bbs/thread/626626#626626'</span>)
+driver.maximize_window()
+time.sleep(<span class="hljs-number">5</span>)
+current_window_1=driver.current_window_handle
+print(current_window_1)
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-comment">#点击登陆按钮</span>
+button=driver.find_element_by_xpath(<span class="hljs-string">'//*[@id="J-eventBanner"]/div/div/a[2]'</span>)
+button.click()
+
+<span class="hljs-comment">#点击账号密码登陆</span>
+button=driver.find_element_by_xpath(<span class="hljs-string">'/html/body/div[2]/div[2]/div[1]/a[2]'</span>)
+button.click()
+</code></pre>
+<pre class="highlight"><code class="python">email=driver.find_element_by_id(<span class="hljs-string">'username'</span>)
+email.send_keys(name)
+password=driver.find_element_by_name(<span class="hljs-string">'password'</span>)
+password.send_keys(passwd)
+submit=driver.find_element_by_xpath(<span class="hljs-string">'//*[@id="user"]/div[1]/div[3]/button'</span>)
+time.sleep(<span class="hljs-number">3</span>)
+submit.click()
+time.sleep(<span class="hljs-number">10</span>)
+print(driver.page_source)
+</code></pre>
+<p>至此即可获得登陆后的界面信息，抽取评论应该和上次所用方法一样，有时间再做补充。</p>
 
             <hr>
           </div>
