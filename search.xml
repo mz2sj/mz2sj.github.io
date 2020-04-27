@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>04-爬虫</title>
+      <link href="/2020/04/27/04-%E7%88%AC%E8%99%AB/"/>
+      <url>/2020/04/27/04-%E7%88%AC%E8%99%AB/</url>
+      
+        <content type="html"><![CDATA[<h3 id="chrome监控ajax请求"><a class="markdownIt-Anchor" href="#chrome监控ajax请求"></a> chrome监控ajax请求</h3><p>浏览器中输入腾讯新闻的网址，发现不断向下拉滚动条就可以新闻会不断出现，初步判断新出现的新闻是通过ajax加载的。打开chrome的开发者工具，进入network中的js界面，将js脚本按名称排序，继续向下拉动滚动条，可以发现新出现的请求有规律。</p><p><img src="https://s1.ax1x.com/2020/04/27/JfrVbR.png" srcset="/img/loading.gif" alt="JfrVbR.png" /></p><p><code>rcd?</code>这个请求随着滚动条的拖动不断增加，我们把前几条请求单独拿出来分析。</p><p><code>https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page=0&amp;expIds=&amp;callback=__jp1</code></p><p><code>https://pacaio.match.qq.com/irs/rcd?cid=4&amp;token=9513f1a78a663e1d25b46a826f248c3c&amp;ext=&amp;page=0&amp;expIds=&amp;callback=__jp2</code></p><p><code>https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page=1&amp;expIds=20200427A0I0UN|20200427002954|20200402012032|20200427A0CB27|20200427A0H4VM|20200427A0GJP8|20200427002536|20200426005210|20200427A0CW43|20200427A0H11D&amp;callback=__jp4</code></p><p><code>https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page=2&amp;expIds=20200427A0BLNR|20200427A08JMI|20200426005565|20200427A0BBTS|20200427A088DC|20200427A05064|20200427A04L6I|20200427A066PB|20200427V05K49&amp;callback=__jp5</code></p><p><code>https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page=3&amp;expIds=20200427V01DY9|20200427000076|20200426A0O227|20200427A00E00|20200427A02TN7|20200426A0PR2B|20200426A0PLML|20200426A0HWYG|20200426A0Q1GM|20200426A0PGG8&amp;callback=__jp6</code></p><p>出去开头的请求规律不规范外，可以发现请求的一些规律，第三条之后的请求：<code>cid=137</code>,<code>page=1 2 3...</code>,<code>callback=__jp4 5 6</code>,从第二条开始看的话，<code>page=0 1 2 3</code></p><p>又综合分析一下，经过自己的尝试我们可以构造出下面的请求</p><pre class="highlight"><code class="python">url=<span class="hljs-string">'https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page={}'</span>.format(i)</code></pre><p>只需要更改<code>i</code>就可以获取不同页面的内容，并且是直接返回json，省去解析的麻烦。</p><p>不用selenium就可以爬取新闻</p><p>下面放上自己的代码</p><h3 id="requests爬取腾讯新闻"><a class="markdownIt-Anchor" href="#requests爬取腾讯新闻"></a> requests爬取腾讯新闻</h3><pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> time<span class="hljs-keyword">import</span> requestsurl_fmt=<span class="hljs-string">'https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page={}'</span>title_list=[]tags_list=[]keywords_list=[]vurl_list=[]intro_list=[]category_list=[]source_list=[]bimg_list=[]<span class="hljs-keyword">for</span> page <span class="hljs-keyword">in</span> range(<span class="hljs-number">100</span>):    url=url_fmt.format(page)    res=requests.get(url)    data=res.json()[<span class="hljs-string">'data'</span>]        <span class="hljs-keyword">for</span> new <span class="hljs-keyword">in</span> data:        <span class="hljs-keyword">try</span>:            title=new[<span class="hljs-string">'title'</span>]            tags=new[<span class="hljs-string">'tags'</span>]            keywords=new[<span class="hljs-string">'keywords'</span>]            vurl=new[<span class="hljs-string">'vurl'</span>]            intro=new[<span class="hljs-string">'intro'</span>]            category=new[<span class="hljs-string">'category'</span>]            source=new[<span class="hljs-string">'source'</span>]            bimg=new[<span class="hljs-string">'bimg'</span>]        <span class="hljs-keyword">except</span>:            <span class="hljs-keyword">continue</span>        title_list.append(title)        tags_list.append(tags)        keywords_list.append(keywords)        vurl_list.append(vurl)        intro_list.append(intro)        category_list.append(category)        source_list.append(source)        bimg_list.append(bimg)    time.sleep(<span class="hljs-number">2</span>)</code></pre><pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pdnews=pd.DataFrame({<span class="hljs-string">'title'</span>:title_list,                   <span class="hljs-string">'tags'</span>:tags_list,                   <span class="hljs-string">'keywords'</span>:keywords_list,                   <span class="hljs-string">'vurl'</span>:vurl_list,                   <span class="hljs-string">'intro'</span>:intro_list,                   <span class="hljs-string">'category'</span>:category_list,                   <span class="hljs-string">'source'</span>:source_list,                   <span class="hljs-string">'bimg'</span>:bimg_list})news.to_csv(<span class="hljs-string">'news.csv'</span>)</code></pre><p><img src="https://s1.ax1x.com/2020/04/27/Jfx7gf.png" srcset="/img/loading.gif" alt="Jfx7gf.png" /></p><p>大功告成！！！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 爬虫 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 腾讯新闻爬虫 </tag>
+            
+            <tag> ajax </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>03-爬虫</title>
       <link href="/2020/04/25/03-%E7%88%AC%E8%99%AB/"/>
       <url>/2020/04/25/03-%E7%88%AC%E8%99%AB/</url>

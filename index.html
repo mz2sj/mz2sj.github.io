@@ -145,6 +145,49 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/27/04-%E7%88%AC%E8%99%AB/">
+        <p class="h4 index-header">04-爬虫</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> chrome监控ajax请求
+浏览器中输入腾讯新闻的网址，发现不断向下拉滚动条就可以新闻会不断出现，初步判断新出现的新闻是通过ajax加载的。打开chrome的开发者工具，进入network中的js界面，将js脚本按名称排序，继续向下拉动滚动条，可以发现新出现的请求有规律。
+
+rcd?这个请求随着滚动条的拖动不断增加，我们把前几条请求单独拿出来分析。
+https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page=0&amp;expIds=&amp;callback=__jp1
+https://pacaio.match.qq.com/irs/rcd?cid=4&amp;token=9513f1a78a663e1d25b46a826f248c3c&amp;ext=&amp;page=0&amp;expIds=&amp;callback=__jp2
+https://pacaio.match.qq.com/irs/rcd?c</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-27&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E8%85%BE%E8%AE%AF%E6%96%B0%E9%97%BB%E7%88%AC%E8%99%AB">腾讯新闻爬虫</a>&nbsp;
+          
+            <a href="/tags/ajax">ajax</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/04/25/03-%E7%88%AC%E8%99%AB/">
         <p class="h4 index-header">03-爬虫</p>
         
@@ -593,96 +636,6 @@ P(wn∣w1,W2…Wn−1)\mathrm{P}\left(\mathrm{w}_{\mathrm{n}} | \mathrm{w}_{1}, 
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/nlp">nlp</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/02/12/02-basic-text-processing/">
-        <p class="h4 index-header">02 basic text processing</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">今天学习正则表达式的使用，后面还有一个小作业要做，开始啦！
- 正则表达式
- Disjunctions 析取
-我也不知道中文该怎么说，暂定析取吧。disjunction用 [] 表示，表示选取括号中表示的一个字符。下面举个例子
-
-
-
-Pattern
-Matches
-
-
-
-
-[wW]oodchunk
-Woodchunk,woodchunk
-
-
-[123456789]
-any digit(由于匹配是贪心的，所以只要是数字都会匹配)
-
-
-
-像数字每次都要把十个阿拉伯数字都写出来太麻烦了，所以有了range用法
-
-
-
-Pattern
-Matches
-
-
-
-
-[A-Z]
-An uppeer case letter
-
-
-[a-z]
-A lowwer case letter
-
-
-[0-9]
-A single digit
-
-
-
- Negation in Disjunction 析取取反
-翻译忽略， ^ carat就是取反的意思，在disjunction中经常会用到
-^ 只有在析取 [] 中作为第一个字符才表示取反，也就是说**^** 与 [] 常常连用
-
-
-
-Pattern
-Matcher
-Exampl</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-12&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/nlp">nlp</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/nlp">nlp</a>&nbsp;
-          
-            <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>&nbsp;
           
         
       </div>
