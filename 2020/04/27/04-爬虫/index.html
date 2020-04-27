@@ -131,7 +131,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    586 字
+                    877 字
                   </span>&nbsp;
                 
 
@@ -139,7 +139,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      2 分钟
+                      4 分钟
                   </span>&nbsp;
                 
 
@@ -244,6 +244,63 @@ news.to_csv(<span class="hljs-string">'news.csv'</span>)
 </code></pre>
 <p><img src="https://s1.ax1x.com/2020/04/27/Jfx7gf.png" srcset="/img/loading.gif" alt="Jfx7gf.png" /></p>
 <p>大功告成！！！</p>
+<h3 id="selenium模拟拖动滚动条"><a class="markdownIt-Anchor" href="#selenium模拟拖动滚动条"></a> selenium模拟拖动滚动条</h3>
+<p>可以让selenium模拟拖动滚动条使新闻更新，在这里发现展示的新闻数量是有限的，拖动到一定程度将不能再拖动。</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">from</span>  selenium <span class="hljs-keyword">import</span> webdriver
+<span class="hljs-keyword">from</span> lxml <span class="hljs-keyword">import</span> etree
+
+
+<span class="hljs-comment">#模拟打开界面</span>
+driver=webdriver.Chrome(<span class="hljs-string">r'C:\Users\MZ\Downloads\chromedriver_win32\chromedriver.exe'</span>)
+driver.get(<span class="hljs-string">'https://news.qq.com/'</span>)
+driver.maximize_window()
+time.sleep(<span class="hljs-number">3</span>)
+current_window_1=driver.current_window_handle
+print(current_window_1)
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-comment">#无法拖动时退出拖动，使用chrome自带copy xpath 构造解析式</span>
+number_before=<span class="hljs-number">0</span>
+
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">50</span>):
+    driver.execute_script(<span class="hljs-string">"window.scrollTo(0,document.body.scrollHeight-100)"</span>)
+    html=driver.page_source
+    tree=etree.HTML(html)
+    number_after=len(tree.xpath(<span class="hljs-string">'/html/body/div/div[4]/div[2]/div/div/ul[2]/li'</span>))<span class="hljs-number">-1</span>
+    <span class="hljs-keyword">if</span> number_before==number_after:
+        <span class="hljs-keyword">break</span>
+    time.sleep(<span class="hljs-number">1</span>)
+    number_before=number_after
+html=driver.page_source
+print(number_after)
+</code></pre>
+<pre class="highlight"><code class="python">news_number=len(tree.xpath(<span class="hljs-string">'/html/body/div/div[4]/div[2]/div/div/ul[2]/li'</span>))<span class="hljs-number">-1</span>
+
+title_fmt=<span class="hljs-string">'/html/body/div/div[4]/div[2]/div/div/ul[2]/li[{}]/a/img/@alt'</span>
+img_fmt=<span class="hljs-string">'/html/body/div/div[4]/div[2]/div/div/ul[2]/li[{}]/a/img/@src'</span>
+news_src=<span class="hljs-string">'/html/body/div/div[4]/div[2]/div/div/ul[2]/li[{}]/a/@href'</span>
+
+title_list=[]
+img_list=[]
+src_list=[]
+
+<span class="hljs-keyword">for</span> number <span class="hljs-keyword">in</span> range(news_number):
+    <span class="hljs-keyword">try</span>:
+        title=tree.xpath(title_fmt.format(number))[<span class="hljs-number">0</span>]
+        img=tree.xpath(img_fmt.format(number))[<span class="hljs-number">0</span>]
+        src=tree.xpath(news_src.format(number))[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">except</span>:
+        <span class="hljs-keyword">continue</span>
+    
+    title_list.append(title)
+    img_list.append(img)
+    src_list.append(src) 
+</code></pre>
+<pre class="highlight"><code class="python">news=pd.DataFrame({<span class="hljs-string">'title'</span>:title_list,<span class="hljs-string">'url'</span>:src_list,<span class="hljs-string">'img'</span>:img_list})
+news.to_csv(<span class="hljs-string">'news.csv'</span>)
+news.head(<span class="hljs-number">10</span>)
+</code></pre>
+<p><img src="https://s1.ax1x.com/2020/04/27/JhQp79.png" srcset="/img/loading.gif" alt="JhQp79.png" /></p>
 
             <hr>
           </div>
