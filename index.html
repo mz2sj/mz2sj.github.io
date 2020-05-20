@@ -145,6 +145,73 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/20/01-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3/">
+        <p class="h4 index-header">01-CV入门之赛题理解</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> 目标
+识别图像中的字符串
+
+为了简化难度，主办方提供了字符在图片中的字符框位置，我们只需识别字符框中的字符即可。
+
+下面看读取数据的一个例子
+
+import numpy as np
+
+#读取图片的起始结尾位置及标签
+def parse_json(d):
+  arr=np.array([
+    d['top'],d['height'],d['left'],d['width'],d['label']
+  ])
+  arr=arr.astype(int)
+  return arr
+
+import cv2
+
+img=cv2.imread('./data/mchar_train/000008.png')
+arr=parse_json(train_json['000008.png'])
+
+import matplotlib.pyplot as plt
+
+#显示图片
+plt.figure(figsize=(10,10))
+plt.subplot(1,arr.shape[1]+1,1)
+plt.imshow(img)
+
+
+可以看到128三个数字，由于已经给我们分好了每个字符的范围，我们可以单独把每</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-20&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CV">CV</a>&nbsp;
+          
+            <a href="/categories/%E6%AF%94%E8%B5%9B">比赛</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CV">CV</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/04/27/04-%E7%88%AC%E8%99%AB/">
         <p class="h4 index-header">04-爬虫</p>
         
@@ -584,47 +651,6 @@ The intuition of Noisy Model is that the words we see may be wrong words were pr
       <div>
         
           <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-16&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/nlp">nlp</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/nlp">nlp</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/02/14/03-language-modeling/">
-        <p class="h4 index-header">03-language-modeling</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">今天要学习的是语言模型，好多东西呀！
- 概念
-老师介绍了一大堆，我的理解语言模型就是对语言的合理性进行建模。这种建模可以是一个完整的句子的可能性，也可以是一句话基于之前的词预测出下一个词的可能性。数学公式表达如下：
-P(W)=P(w1,W2,W3,W4,W5…Wn)\mathrm{P}(\mathrm{W})=\mathrm{P}\left(\mathrm{w}_{1}, \mathrm{W}_{2}, \mathrm{W}_{3}, \mathrm{W}_{4}, \mathrm{W}_{5} \dots \mathrm{W}_{\mathrm{n}}\right)P(W)=P(w1​,W2​,W3​,W4​,W5​…Wn​)  一个句子出现的概率
-P(wn∣w1,W2…Wn−1)\mathrm{P}\left(\mathrm{w}_{\mathrm{n}} | \mathrm{w}_{1}, \mathrm{W}_{2} \dots \mathrm{W}_{\mathrm{n}-1}\right)P(wn​∣w1​,W2​…Wn−1​)	基于之前词预测下一词
- 语言模型的计算
-那么</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-14&nbsp;&nbsp;
         
         
           <i class="iconfont icon-inbox"></i>
