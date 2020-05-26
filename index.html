@@ -145,6 +145,53 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/26/03-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA/">
+        <p class="h4 index-header">03-CV入门之模型构建</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> CNN介绍
+​	卷积神经网络（简称CNN）是一类特殊的人工神经网络，是深度学习中重要的一个分支。CNN在很多领域都表现优异，精度和速度比传统计算学习算法高很多。特别是在计算机视觉领域，CNN是解决图像分类、图像检索、物体检测和语义分割的主流模型。
+​	CNN是一种层次模型，输入的是原始的像素数据。CNN通过卷积（convolution）、池化（pooling）、非线性激活函数（non-linear activation function）和全连接层（fully connected layer）构成。 利用pytorch我们可以很方便实现。
+#顺序依次是卷积、激活函数、池化
+cnn=nn.Sequential(
+        nn.Conv2d(3,16,kernel_size=(3,3),stride=(2,2)),
+        nn.ReLU(),
+        nn.MaxPool2d(2),
+        nn.Conv2d(16,32,kernel_size=(3,3),stride=(2,2)),
+        nn.ReLU(),
+        nn.Max</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CV">CV</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CNN">CNN</a>&nbsp;
+          
+            <a href="/tags/CV">CV</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/05/23/02-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96%E4%B8%8E%E6%89%A9%E5%A2%9E/">
         <p class="h4 index-header">02-CV入门之数据读取与扩增</p>
         
@@ -637,59 +684,6 @@ def outliers_proc(data,col_name,scale=3):
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/03/24/01-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BB%B7%E6%A0%BC%E9%94%80%E5%94%AE%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B%E4%B9%8BEDA/">
-        <p class="h4 index-header">01-二手车价格销售价格预测之EDA</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1"> 写在前面
-这次参加了DataWhale组织的二手车销售价值预测组队学习，开始第一部分的学习——数据分析EDA。主要从数据分析流程和软件包工具两方面来介绍自己的收获。
- 数据分析流程
-总结了一下，EDA主要做的工作就是发现数据缺失值和查看数据分布情况以及预测目标与其他因变量的相关性分析。
- 缺失值分析
-对于表格数据，使用DataFrame的info()函数就可以直观的看到数据的缺失情况，但是这个只针对数值型（numeric）数据，缺失数据会以null值的形式呈现，直接调用DataFrame的isnull()函数配合sum()就可以对缺失值数据进行统计。比较坑的是object类型数据，有些缺失值数据并不会用null值表示，像下面这种：
-
-“-”明显代表缺失值数据，但被字符串代替了。如何发现这种缺失情况，需要我们对相应的数据调用value_counts()函数，或者更直观点观察看一部分数据看有无异常情况。比如类别数据中，有的类别只出现了一次，和其他类别压根不是一个数量级，那么很有可能是异常值，可以考虑将其删去。
-
- 数据分布
-首先是预测值的数据分布情况，其次是其他数据（或者说是自变量）的分</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-03-24&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
-          
-            <a href="/categories/Regression">Regression</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
-          
-            <a href="/tags/EDA">EDA</a>&nbsp;
-          
-            <a href="/tags/%E5%9B%9E%E5%BD%92">回归</a>&nbsp;
-          
-            <a href="/tags/%E6%AF%94%E8%B5%9B">比赛</a>&nbsp;
           
         
       </div>
