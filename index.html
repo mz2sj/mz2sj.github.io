@@ -145,6 +145,47 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/30/04-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E4%B8%8E%E9%AA%8C%E8%AF%81/">
+        <p class="h4 index-header">04-CV入门之模型训练与验证</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> 数据集划分
+在模型的训练过程中，模型只能利用训练数据来进行训练，模型并不能接触到测试集上的样本。因此模型如果将训练集学的过好，模型就会记住训练样本的细节，导致模型在测试集的泛化效果较差，这种现象称为过拟合（Overfitting）。与过拟合相对应的是欠拟合（Underfitting），即模型在训练集上的拟合效果较差。
+
+如图所示：随着模型复杂度和模型训练轮数的增加，CNN模型在训练集上的误差会降低，但在测试集上的误差会逐渐降低，然后逐渐升高，而我们为了追求的是模型在测试集上的精度越高越好 。 解决上述问题最好的解决方法：构建一个与测试集尽可能分布一致的样本集（可称为验证集），在训练过程中不断验证模型在验证集上的精度，并以此控制模型的训练。
+因为训练集和验证集是分开的，所以模型在验证集上面的精度在一定程度上可以反映模型的泛化能力。在划分验证集的时候，需要注意验证集的分布应该与测试集尽量保持一致，不然模型在验证集上的精度就失去了指导意义。
+ 留出法
+直接将训练集划分成两部分，新的训练集和验证集。这种划分方式的优点是最为直接简单；缺点是只得到了一份验证集，有可能导致模型在验证集上过拟合。留</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-30&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CV">CV</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CV">CV</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/05/26/03-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA/">
         <p class="h4 index-header">03-CV入门之模型构建</p>
         
@@ -634,56 +675,6 @@ def reduce_mem_usage(df):
             <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
           
             <a href="/tags/%E6%AF%94%E8%B5%9B">比赛</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/03/28/02-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B%E4%B9%8B%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">
-        <p class="h4 index-header">02-二手车价格预测之特征工程</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">今天要做的笔记是特征工程，感觉这次官方给的代码不是特别全。最近在忙作业和kaggle的比赛，后面自己有时间会再完善一下。自己将按照特征工程的常见任务进行介绍。
- 异常处理
-数据收集的过程中可能会产生脏数据，导致产生离群值，数据分布明显不合理，这时候我们要对数据进行异常处理。常见的异常处理方法有：
- 通过箱型图删除异常值
-官方提供了相关代码
-def outliers_proc(data,col_name,scale=3):
-
-  def box_plot_outliers(data_ser,box_scale):
-    iqr=box_scale*(data_ser.quantile(0.75)-data_ser.quantile(0.25))
-    val_low=data_ser.quantile(0.25)-iqr
-    val_up=data_ser.quantile(0.75)+iqr
-    rule_low=(data_ser&lt;val_low)
-    rule_up=(data_ser&gt;val_up)
-    return (rule_low,rule_</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-03-28&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
-          
-            <a href="/categories/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B">特征工程</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
           
         
       </div>
