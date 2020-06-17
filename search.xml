@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>01-java扫盲</title>
+      <link href="/2020/06/17/01-java%E6%89%AB%E7%9B%B2/"/>
+      <url>/2020/06/17/01-java%E6%89%AB%E7%9B%B2/</url>
+      
+        <content type="html"><![CDATA[<p>现在真的好迷茫呀，研究生的事让自己又烦又怕，学学java压压惊，老天保佑我吧。</p><h3 id="关键字"><a class="markdownIt-Anchor" href="#关键字"></a> 关键字</h3><p>被java语言赋予特定含义的字，组成关键字单词的字母全部小写，goto和const是保留字。</p><h3 id="标识符"><a class="markdownIt-Anchor" href="#标识符"></a> 标识符</h3><p>标识符就是给类、接口、方法、变量等起名字。不能以数字开头，不能是java中的关键字，标识符严格区分大小写。标识符的英文拼写中，常量每个字母都大写，用<code>_</code>隔开，例如<code>STUDENT_MAX_AGE</code>。</p><h3 id="main方法"><a class="markdownIt-Anchor" href="#main方法"></a> main方法</h3><p>main方法是程序的主方法，是程序的入口，被jvm调用。</p><h3 id="反码补码"><a class="markdownIt-Anchor" href="#反码补码"></a> 反码补码</h3><p>计算机在操作时，采用数据对应的二进制的补码来计算。正数的原码最高位是0，负数的原码最高位是1，其他都是数值为。</p><p>正数的反码与原码相同，负数的反码与原码符号位相同，数值位取反。</p><p>正数的补码与原码相同，负数的补码是在反码的基础上加上1.</p><h3 id="基本数据类型"><a class="markdownIt-Anchor" href="#基本数据类型"></a> 基本数据类型</h3><h4 id="整数"><a class="markdownIt-Anchor" href="#整数"></a> 整数</h4><table><thead><tr><th>关键字</th><th>占用字节数</th></tr></thead><tbody><tr><td>byte</td><td>1</td></tr><tr><td>short</td><td>2</td></tr><tr><td>int</td><td>4</td></tr><tr><td>long</td><td>8</td></tr></tbody></table><h4 id="浮点数"><a class="markdownIt-Anchor" href="#浮点数"></a> 浮点数</h4><table><thead><tr><th>关键字</th><th>占用字节数</th></tr></thead><tbody><tr><td>float</td><td>4</td></tr><tr><td>double</td><td>8</td></tr></tbody></table><h4 id="字符"><a class="markdownIt-Anchor" href="#字符"></a> 字符</h4><table><thead><tr><th>关键字</th><th>占用字节数</th></tr></thead><tbody><tr><td>char</td><td>2</td></tr></tbody></table><h4 id="布尔"><a class="markdownIt-Anchor" href="#布尔"></a> 布尔</h4><table><thead><tr><th>关键字</th><th>占用字节数</th></tr></thead><tbody><tr><td>boolean</td><td>1</td></tr></tbody></table><p>整数默认是int类型，浮点数默认是double类型。长整型后缀用L或者l标记，建议使用L。</p><p>单精度浮点数用F或者f标记，建议使用F。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>05-CV入门之模型集成</title>
       <link href="/2020/06/02/05-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E6%A8%A1%E5%9E%8B%E9%9B%86%E6%88%90/"/>
       <url>/2020/06/02/05-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E6%A8%A1%E5%9E%8B%E9%9B%86%E6%88%90/</url>

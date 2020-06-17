@@ -145,6 +145,69 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/04/04-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B%E4%B9%8B%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88/">
+        <p class="h4 index-header">04-二手车价格预测之模型融合</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">虽然这是最后一次打卡的内容，但是自己离掌握这些内容还差得很远，还要继续努力呀！温故而知新。
+ ensemble的方法
+ 简单加权融合
+
+
+回归（分类概率）：算术平均融合（Arithmetic mean），几何平均融合（Geometric mean）；
+
+
+分类：投票（Voting)
+
+
+综合：排序融合(Rank averaging)，log融合
+
+
+ stacking/blending
+
+构建多层模型，并利用预测结果再拟合预测
+
+ boosting/bagging
+
+在xgboost，Adaboost，GBDT中使用，多树的提升方法
+
+ Stacking 理论介绍
+
+先训练几个学习器，在这些学习器预测数据的基础上再训练新的学习器。
+将个体学习器结合在一起的时候使用的方法叫做结合策略。对于分类问题，我们可以使用投票法来选择输出最多的类。对于回归问题，我们可以将分类器输出的结果求平均值。
+在stacking方法中，我们把个体学习器叫做初级学习器，用于结合的学习器叫做次级学习器或元学习器（meta-learner），次级学习器用于训练的数据叫做次级训练集。次级训练集是在训练集上用初级学习器得</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+            <a href="/categories/%E6%AF%94%E8%B5%9B">比赛</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/04/01/03-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B%E4%B9%8B%E5%BB%BA%E6%A8%A1%E8%B0%83%E5%8F%82/">
         <p class="h4 index-header">03-二手车价格预测之建模调参</p>
         
@@ -621,46 +684,6 @@ class Conv1d(nn.Module):
             <a href="/tags/CNN">CNN</a>&nbsp;
           
             <a href="/tags/%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB">文本分类</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/01/07/colab%E4%BD%BF%E7%94%A8/">
-        <p class="h4 index-header">colab使用</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">最近学习pytorch的使用，自己的电脑没有显卡，一些实验做不了，想起之前本科老师安利的colab，感谢谷歌提供的免费资源。
- 访问谷歌
-colab基于谷歌云盘，既然是谷歌的服务，难免就要翻墙了。自己用的shadowsocks，一年100块左右，大部分时间都挺稳定的。开启小飞机，你就可以看到外面的世界啦！
- 云盘挂载
-关于colab的基础使用这里就不介绍了，可以自行百度。在使用colab的过程中，经常需要挂载云盘文件，参考了许多人的方法后，介绍一个无坑版。首先，在colab左侧的代码提示部分选择挂载colab会自动生成云盘挂载代码，如下所示：
-
-from google.colab import drive
-
-drive.mount('/gdrive')
-
-运行第一个单元格的代码，第二个是打开相关文件的代码忽略。运行后会给出一个超链接，点击进去验证得到验证码输入即可挂载成功，这时候我们挂载的位置是在/gdrive/gdrive/gdrive 目录下。那么如何切换到我们想要的目录呢？再次打开左侧的代码提示部分，进入文件栏，点击 ......... 进入上层目录，进入/gdrive/gdri</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-07&nbsp;&nbsp;
-        
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/colab%20Google%20Drive">colab Google Drive</a>&nbsp;
           
         
       </div>
