@@ -131,7 +131,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    382 字
+                    596 字
                   </span>&nbsp;
                 
 
@@ -139,7 +139,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      1 分钟
+                      2 分钟
                   </span>&nbsp;
                 
 
@@ -260,8 +260,21 @@
 </tr>
 </tbody>
 </table>
+<p>布尔类型不参与转换</p>
 <p>整数默认是int类型，浮点数默认是double类型。长整型后缀用L或者l标记，建议使用L。</p>
 <p>单精度浮点数用F或者f标记，建议使用F。</p>
+<h4 id="默认转换"><a class="markdownIt-Anchor" href="#默认转换"></a> 默认转换</h4>
+<p>byte,short,char-int-long-float-double</p>
+<p>byte,short,char相互之间不能转换，它们参与运算首先转换成int类型。</p>
+<h3 id="关于精度的一些问题"><a class="markdownIt-Anchor" href="#关于精度的一些问题"></a> 关于精度的一些问题</h3>
+<p>如要声明一个常量为 float 型，则需在数字后面加 f 或 F</p>
+<h3 id="变量-常量相加"><a class="markdownIt-Anchor" href="#变量-常量相加"></a> 变量、常量相加</h3>
+<p>byte b1=3,b2=4,b;</p>
+<p>b=b1+b2;	错误，b1和b2是变量，变量的值会变化，不确定具体的值，所以默认使用int。byte、short、char相加会转换为int类型做运算，转为byte会降低精度。</p>
+<p>b=3+4;     正确，常量相加，先做加法，然后看结果是否在赋值的数据类型范围内，在的话即正确</p>
+<h3 id="强制转换"><a class="markdownIt-Anchor" href="#强制转换"></a> 强制转换</h3>
+<p>从大的类型转换为小的类型</p>
+<p>目标数据类型 变量=(目标数据类型)(被转换的数据)</p>
 
             <hr>
           </div>
