@@ -145,6 +145,96 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/08/25/01-sql%E5%88%B7%E9%A2%98%E7%89%9B%E5%AE%A2/">
+        <p class="h4 index-header">01-sql刷题牛客</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">今天是刷题记录的第一天，加油啦，小孟冲冲冲！！！
+查找最晚入职员工的所有信息，为了减轻入门难度，目前所有的数据里员工入职的日期都不是同一天(sqlite里面的注释为--,mysql为comment)
+CREATE TABLE employees (
+emp_no int(11) NOT NULL, -- '员工编号'
+birth_date date NOT NULL,
+first_name varchar(14) NOT NULL,
+last_name varchar(16) NOT NULL,
+gender char(1) NOT NULL,
+hire_date date NOT NULLPRIMARY KEY (emp_no));,
+自己的写法，考虑的不是那么全面，只能查出一条数据
+SELECT * FROM employees
+ORDER BY hire_date DESC
+LIMIt 1;
+
+但是假如最后一天有多人入职，这种写法就hold不住了。
+SELECT * FROM employees
+WHERE hire_date=(SELECT MAX(hire_date) FRO</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-25&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+            <a href="/categories/sql">sql</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+            <a href="/tags/sql">sql</a>&nbsp;
+          
+            <a href="/tags/%E5%88%B7%E9%A2%98">刷题</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/06/22/%E6%80%A8%E5%BF%B5/">
+        <p class="h4 index-header">怨念</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">这是远离坏心情的帖子…
+啊,2020年的六月下旬.六月的雨你什么时候结束呀?明天和导师聊什么呢?说你自己什么也没干吗?呵呵.好好干吧.
+我爱生活,生活爱我.
+</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-06-22&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E5%86%8D%E8%A7%81%E5%9D%8F%E5%BF%83%E6%83%85">再见坏心情</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/06/17/01-java%E6%89%AB%E7%9B%B2/">
         <p class="h4 index-header">01-java扫盲</p>
         
@@ -618,112 +708,6 @@ def open_proxy_url(url):
             <a href="/tags/session">session</a>&nbsp;
           
             <a href="/tags/%E4%BB%A3%E7%90%86">代理</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/04/23/02-%E7%88%AC%E8%99%AB/">
-        <p class="h4 index-header">02-爬虫</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1"> 正则表达式
- 正则表达式语法
-
-. 表示任何单个字符
-[ ] 字符集，对单个字符给出取值范围 ，如[abc]表示a、b、c，[a‐z]表示a到z单个字符
-[^ ] 非字符集，对单个字符给出排除范围 ，如[^abc]表示非a或b或c的单个字符
-* 前一个字符0次或无限次扩展，如abc* 表示 ab、abc、abcc、abccc等
-+ 前一个字符1次或无限次扩展 ，如abc+ 表示 abc、abcc、abccc等
-? 前一个字符0次或1次扩展 ，如abc? 表示 ab、abc
-| 左右表达式任意一个 ，如abc|def 表示 abc、def
-{m} 扩展前一个字符m次 ，如ab{2}c表示abbc
-{m,n} 扩展前一个字符m至n次（含n） ，如ab{1,2}c表示abc、abbc
-^ 匹配字符串开头 ，如^abc表示abc且在一个字符串的开头
-$ 匹配字符串结尾 ，如abc$表示abc且在一个字符串的结尾
-( ) 分组标记，内部只能使用 | 操作符 ，如(abc)表示abc，(abc|def)表示abc、def，使用分组除了整体匹配的符号外，单独的分组也会匹配出来。
-\d 数字，等价于</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-23&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>&nbsp;
-          
-            <a href="/tags/bs4">bs4</a>&nbsp;
-          
-            <a href="/tags/Xpath">Xpath</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/04/21/01-%E7%88%AC%E8%99%AB/">
-        <p class="h4 index-header">01-爬虫入门</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1"> HTTP请求
-对于http请求，记录一下常用的几种：
-
-GET：向指定的资源发出“显示”请求。GET方法应该只用于读取数据 ，查询字符串（名称/值对）是在 GET 请求的 URL 中发送的 。
-POST：向指定资源提交数据，请求服务器进行处理（例如提交表单或者上传文件）。数据被包含在请求文本中。这个请求可能会创建新的资源或修改现有资源，或二者皆有。  查询字符串（名称/值对）是在 POST 请求的 HTTP 消息主体中发送的
-PUT：向指定资源位置上传输最新内容。
-DELETE：请求服务器删除Request-URL所标识的资源。
-
- requests.get
-实现基本的requests应用，爬取python之禅
-import requests
-url='https://www.python.org/dev/peps/pep-0020/'
-res=request.get(url)
-text=res.text
-
-此时返回的text是html原生文本，想要获取对应内容就需要进行匹配了。
-with open('zon_of_python.txt','w') as f:
-    f.write</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-21&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
           
         
       </div>

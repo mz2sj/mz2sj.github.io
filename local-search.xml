@@ -4,6 +4,56 @@
   
   
   <entry>
+    <title>01-sql刷题牛客</title>
+    <link href="/2020/08/25/01-sql%E5%88%B7%E9%A2%98%E7%89%9B%E5%AE%A2/"/>
+    <url>/2020/08/25/01-sql%E5%88%B7%E9%A2%98%E7%89%9B%E5%AE%A2/</url>
+    
+    <content type="html"><![CDATA[<p>今天是刷题记录的第一天，加油啦，小孟冲冲冲！！！</p><p><code>查找最晚入职员工的所有信息，为了减轻入门难度，目前所有的数据里员工入职的日期都不是同一天(sqlite里面的注释为--,mysql为comment)</code><br /><code>CREATE TABLE employees (</code></p><p><code>emp_no int(11) NOT NULL, -- '员工编号'</code></p><p><code>birth_date date NOT NULL,</code></p><p><code>first_name varchar(14) NOT NULL,</code></p><p><code>last_name varchar(16) NOT NULL,</code></p><p><code>gender char(1) NOT NULL,</code></p><p><code>hire_date date NOT NULLPRIMARY KEY (emp_no));</code>,<br />自己的写法，考虑的不是那么全面，只能查出一条数据</p><pre class="highlight"><code class="mysql">SELECT * FROM employeesORDER BY hire_date DESCLIMIt 1;</code></pre><p>但是假如最后一天有多人入职，这种写法就hold不住了。</p><pre class="highlight"><code class="mysql">SELECT * FROM employeesWHERE hire_date=(SELECT MAX(hire_date) FROM employees);</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据分析</category>
+      
+      <category>sql</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>数据分析</tag>
+      
+      <tag>sql</tag>
+      
+      <tag>刷题</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>怨念</title>
+    <link href="/2020/06/22/%E6%80%A8%E5%BF%B5/"/>
+    <url>/2020/06/22/%E6%80%A8%E5%BF%B5/</url>
+    
+    <content type="html"><![CDATA[<p>这是远离坏心情的帖子…</p><p>啊,2020年的六月下旬.六月的雨你什么时候结束呀?明天和导师聊什么呢?说你自己什么也没干吗?呵呵.好好干吧.</p><p>我爱生活,生活爱我.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>再见坏心情</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>01-java扫盲</title>
     <link href="/2020/06/17/01-java%E6%89%AB%E7%9B%B2/"/>
     <url>/2020/06/17/01-java%E6%89%AB%E7%9B%B2/</url>
