@@ -188,5 +188,54 @@ HAVING from_date=MIN(from_date)
 ORDER BY emp_no DESC;
 ```
 
+7.
 
+```sql
+查找薪水变动超过15次的员工号emp_no以及其对应的变动次数t
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+```
+
+这题考察的还是聚合函数，注意题目要求变动次数t
+
+```sql
+SELECT emp_no,COUNT(*) AS t FROM salaries
+GROUP BY emp_no
+HAVING t>15;
+```
+
+8.
+
+```sql
+找出所有员工当前(to_date='9999-01-01')具体的薪水salary情况，对于相同的薪水只显示一次,并按照逆序显示
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+```
+
+单纯的查salary表里有多少个salary，相同薪水只显示一次，用DISTINCT可以解决
+
+```sql
+SELECT DISTINCT(salary)
+FROM salaries
+WHERE to_date='9999-01-01'
+ORDER BY salary DESC;
+```
+
+看讨论区说DISTINCT消耗资源较大，用GROUP BY 解决数据重复问题,注意GROUP BY 要放在WHERE 子句后面
+
+```sql
+SELECT salary
+FROM salaries
+WHERE to_date='9999-01-01'
+GROUP BY salary
+ORDER BY salary DESC;
+```
 
