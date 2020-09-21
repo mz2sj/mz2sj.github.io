@@ -239,3 +239,147 @@ GROUP BY salary
 ORDER BY salary DESC;
 ```
 
+9.
+
+```sql
+获取所有部门当前(dept_manager.to_date='9999-01-01')manager的当前(salaries.to_date='9999-01-01')薪水情况，给出dept_no, emp_no以及salary(请注意，同一个人可能有多条薪水情况记录)
+CREATE TABLE `dept_manager` (
+`dept_no` char(4) NOT NULL,
+`emp_no` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+```
+
+注意时间，其他没什么
+
+```sql
+SELECT dm.dept_no,s.emp_no,s.salary
+FROM dept_manager dm INNER JOIN salaries s 
+ON dm.emp_no=s.emp_no
+WHERE dm.to_date='9999-01-01' AND s.to_date='9999-01-01';
+```
+
+10.
+
+```sql
+获取所有非manager的员工emp_no
+CREATE TABLE `dept_manager` (
+`dept_no` char(4) NOT NULL,
+`emp_no` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+```
+
+这个题的特点是解法多，先来简单的
+
+```sql
+SELECT e.emp_no FROM employees e
+WHERE e.emp_no NOT IN 
+(SELECT dm.emp_no FROM dept_manager dm);
+```
+
+也可以利用连接查询获取dept_no为空的员工
+
+```sql
+SELECT e.emp_no
+FROM employees e LEFT JOIN dept_manager dm
+ON e.emp_no=dm.emp_no
+WHERE dm.dept_no  IS NULL;
+```
+
+还有集合运算的解法
+
+EXCEPT 集合差运算|UNION 集合并运算|INTERSECT 集合交运算
+
+```sql
+SELECT emp_no FROM employees
+EXCEPT
+SELECT emp_no FROM dept_manager;
+```
+
+11.
+
+```sql
+获取所有员工当前的(dept_manager.to_date='9999-01-01')manager，如果员工是manager的话不显示(也就是如果当前的manager是自己的话结果不显示)。输出结果第一列给出当前员工的emp_no,第二列给出其manager对应的emp_no。
+CREATE TABLE `dept_emp` (
+`emp_no` int(11) NOT NULL, -- '所有的员工编号'
+`dept_no` char(4) NOT NULL, -- '部门编号'
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+CREATE TABLE `dept_manager` (
+`dept_no` char(4) NOT NULL, -- '部门编号'
+`emp_no` int(11) NOT NULL, -- '经理编号'
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+```
+
+关于时间限制的坑，还有一点就是该关联的键是dept_no,是根据dept_no来找相同部门的,再有一点就是学到了`<>`不等于。`NOT IN`的写法也是可以的，但是要是查询的结果，比较两个单独变量相等用不等于呀。
+
+```sql
+SELECT de.emp_no AS emp_no,dm.emp_no AS manager_no
+FROM dept_emp de INNER JOIN dept_manager dm 
+ON de.dept_no=dm.dept_no
+WHERE de.emp_no <> dm.emp_no AND dm.to_date='9999-01-01'
+```
+
+12.
+
+```sql
+获取所有部门中当前(dept_emp.to_date = '9999-01-01')员工当前(salaries.to_date='9999-01-01')薪水最高的相关信息，给出dept_no, emp_no以及其对应的salary，按照部门升序排列。
+CREATE TABLE `dept_emp` (
+`emp_no` int(11) NOT NULL,
+`dept_no` char(4) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+```
+
+用group_by反而错了，看下别人的解释
+
+`使用group by子句时，select子句中只能有聚合键、聚合函数、常数。emp_no并不符合这个要求。`
+
+13.
+
+```sql
+从titles表获取按照title进行分组，每组个数大于等于2，给出title以及对应的数目t。
+CREATE TABLE IF NOT EXISTS "titles" (
+`emp_no` int(11) NOT NULL,
+`title` varchar(50) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date DEFAULT NULL);
+```
+
+简单的GROUP BY~
+
+```sql
+SELECT title,COUNT(*) AS t
+FROM titles
+GROUP BY title;
+```
+
+14.
+
