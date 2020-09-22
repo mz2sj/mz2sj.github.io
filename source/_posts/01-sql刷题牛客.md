@@ -392,13 +392,144 @@ CREATE TABLE IF NOT EXISTS `titles` (
 `to_date` date DEFAULT NULL);
 ```
 
-重复的emp_no可以用Distinct区分
+重复的emp_no可以用DISTINCT区分，记住一个点，去重用DISTINCT
 
 ```sql
 SELECT title,COUNT(DISTINCT emp_no) AS t
 FROM titles
 GROUP BY title
 HAVING t>=2;
+```
+
+15.
+
+```sql
+查找employees表所有emp_no为奇数，且last_name不为Mary(注意大小写)的员工信息，并按照hire_date逆序排列(题目不能使用mod函数)
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+```
+
+被这个不能使用mod函数给唬住了，咱还可以使用`%`嘛
+
+```sql
+SELECT * FROM employees
+WHERE last_name!='Mary' AND emp_no%2==1
+ORDER BY hire_date DESC;
+```
+
+16.
+
+```sql
+统计出当前(titles.to_date='9999-01-01')各个title类型对应的员工当前(salaries.to_date='9999-01-01')薪水对应的平均工资。结果给出title以及平均工资avg。
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+CREATE TABLE IF NOT EXISTS "titles" (
+`emp_no` int(11) NOT NULL,
+`title` varchar(50) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date DEFAULT NULL);
+```
+
+GROUPY BY 要放在WHERE之后，WHERE子句中不能使用GROUPY BY
+
+```sql
+SELECT t.title,AVG(s.salary) AS avg
+FROM salaries s INNER JOIN titles t
+ON s.emp_no=t.emp_no
+WHERE t.to_date='9999-01-01' AND s.to_date='9999-01-01'
+GROUP BY t.title;
+```
+
+17.
+
+```sql
+获取当前（to_date='9999-01-01'）薪水第二多的员工的emp_no以及其对应的薪水salary
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+```
+
+先上一个错误做法
+
+```sql
+SELECT emp_no,salary
+FROM salaries
+WHERE to_date='9999-01-01'
+ORDER by salary DESC
+LIMIT 1,1
+```
+
+假如最大工资又两个是相同的，那么这样拿到的数据就不是第二大的了。以后碰到这种牵扯导顺序的题，要考虑能否把数据查全查准，用GROUP BY 查到值排名顺序的数据
+
+```sql
+SELECT emp_no,salary
+FROM salaries
+WHERE salary =(SELECT salary FROM salaries GROUP BY salary ORDER BY salary DESC LIMIT 1,1)
+AND to_date='9999-01-01';
+```
+
+18.
+
+```sql
+查找当前薪水(to_date='9999-01-01')排名第二多的员工编号emp_no、薪水salary、last_name以及first_name，你可以不使用order by完成吗
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+```
+
+排序题不让用ORDER BY,求第二大salary,小于最大值中的最大值就是第二大啦.
+
+```sql
+SELECT e.emp_no,MAX(s.salary),e.last_name,e.first_name
+FROM employees e INNER JOIN salaries s ON e.emp_no=s.emp_no
+WHERE s.salary<(SELECT MAX(salary) FROM salaries)
+AND s.to_date='9999-01-01';
+```
+
+当然这种只能求解第二高，下面这个有点难，表内条件自连接
+
+```sql
+select e.emp_no,s.salary,e.last_name,e.first_name
+from
+employees e
+join 
+salaries s on e.emp_no=s.emp_no 
+and  s.to_date='9999-01-01'
+and s.salary = 
+(
+     select s1.salary
+     from 
+     salaries s1
+     join
+     salaries s2 on s1.salary<=s2.salary 
+     and s1.to_date='9999-01-01' and s2.to_date='9999-01-01'
+     group by s1.salary
+     having count(distinct s2.salary)=2
+ )
 ```
 
 
