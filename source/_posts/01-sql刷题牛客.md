@@ -532,6 +532,141 @@ and s.salary =
  )
 ```
 
+19.
+
+```sql
+查找所有员工的last_name和first_name以及对应的dept_name，也包括暂时没有分配部门的员工
+CREATE TABLE `departments` (
+`dept_no` char(4) NOT NULL,
+`dept_name` varchar(40) NOT NULL,
+PRIMARY KEY (`dept_no`));
+CREATE TABLE `dept_emp` (
+`emp_no` int(11) NOT NULL,
+`dept_no` char(4) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+```
+
+考察外联结
+
+```sql
+SELECT e.last_name,e.first_name,d.dept_name
+FROM (employees e LEFT JOIN dept_emp de ON e.emp_no=de.emp_no)
+LEFT JOIN departments d ON d.dept_no=de.dept_no;
+```
+
+也可以这样写
+
+```sql
+SELECT e.last_name,e.first_name,d.dept_name
+FROM (employees e LEFT JOIN dept_emp de ON e.emp_no=de.emp_no) AS t
+LEFT JOIN departments d ON d.dept_no=t.dept_no;
+```
+
+20.
+
+```sql
+查找员工编号emp_no为10001其自入职以来的薪水salary涨幅(总共涨了多少)growth(可能有多次涨薪，没有降薪)
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+```
+
+是计算涨幅呀，最简单的
+
+```sql
+SELECT MAX(salary)-MIN(salary) AS growth FROM salaries
+WHERE emp_no=10001;
+```
+
+保险起见还是按照日期来选初始工资和近期工资
+
+```sql
+SELECT
+(SELECT salary FROM salaries WHERE emp_no=10001 ORDER BY from_date DESC LIMIT 0,1)
+-
+(SELECT salary FROM salaries WHERE emp_no=10001 ORDER BY from_date ASC LIMIT 0,1)
+AS growth;
+```
+
+21.
+
+```sql
+查找所有员工自入职以来的薪水涨幅情况，给出员工编号emp_no以及其对应的薪水涨幅growth，并按照growth进行升序
+（注:可能有employees表和salaries表里存在记录的员工，有对应的员工编号和涨薪记录，但是已经离职了，离职的员工salaries表的最新的to_date!='9999-01-01'，这样的数据不显示在查找结果里面）
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL, --  '入职时间'
+PRIMARY KEY (`emp_no`));
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL, --  '一条薪水记录开始时间'
+`to_date` date NOT NULL, --  '一条薪水记录结束时间'
+PRIMARY KEY (`emp_no`,`from_date`));
+```
+
+这题的重点是找到现在的工资对应的时间和初到公司对应的时间，然后迎刃而解。注意hire_date是员工被雇佣的时间。
+
+```sql
+SELECT e.emp_no,a.salary-b.salary AS growth
+FROM employees e INNER JOIN salaries a
+ON e.emp_no=a.emp_no 
+INNER JOIN salaries b
+ON e.hire_date=b.from_date
+WHERE a.to_date='9999-01-01'
+ORDER BY growth ASC;
+```
+
+22.
+
+```sql
+统计各个部门的工资记录数，给出部门编码dept_no、部门名称dept_name以及部门在salaries表里面有多少条记录sum
+CREATE TABLE `departments` (
+`dept_no` char(4) NOT NULL,
+`dept_name` varchar(40) NOT NULL,
+PRIMARY KEY (`dept_no`));
+CREATE TABLE `dept_emp` (
+`emp_no` int(11) NOT NULL,
+`dept_no` char(4) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+```
+
+统计各个部门，统计各个部门，明显是按某类计算肯定要GROUP BY 啊，你这脑子
+
+```sql
+SELECT d.dept_no,d.dept_name,COUNT(t.salary) AS sum
+FROM (salaries s INNER JOIN dept_emp de
+ON s.emp_no=de.emp_no) AS t
+INNER JOIN departments d
+ON t.dept_no=d.dept_no
+GROUP BY d.dept_no;
+```
+
 
 
 
