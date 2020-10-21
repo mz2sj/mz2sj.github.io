@@ -360,7 +360,7 @@ PRIMARY KEY (`emp_no`,`from_date`));
 
 用group_by反而错了，看下别人的解释
 
-`使用group by子句时，select子句中只能有聚合键、聚合函数、常数。emp_no并不符合这个要求。`
+`使用group by子句时，select子句中只能有聚合键、聚合函数、常数，就是除了常数和聚合其他键的函数外，不能有其他键，有其他键一定要使用聚合。emp_no并不符合这个要求。`
 
 13.
 
@@ -667,7 +667,143 @@ ON t.dept_no=d.dept_no
 GROUP BY d.dept_no;
 ```
 
+23.❌
 
+```sql
+对所有员工的当前(to_date='9999-01-01')薪水按照salary进行按照1-N的排名，相同salary并列且按照emp_no升序排列
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+```
 
+这题的难点是如何在不同rank()函数的情况下进行排名，排序其实可以转化为当前值小于其他值的个数，又因为salary有并列行为，所以进行计数时要使用distinct，至于有的人提到使用groupby这点还没太看懂。
 
- 
+```sql
+SELECT s1.emp_no,s1.salary ,
+(SELECT COUNT(DISTINCT s2.salary) FROM salaries s2 WHERE s2.salary>=s1.salary
+AND s2.to_date='9999-01-01') AS rank
+FROM salaries s1
+WHERE s1.to_date='9999-01-01'
+ORDER BY rank,s1.emp_no ASC;
+```
+
+起始sql中有关排序的函数也可以解决上面的问题
+
+```sql
+select emp_no,salary, dense_rank() over (order by salary desc) as rank
+from salaries
+where to_date='9999-01-01'
+order by rank asc,emp_no asc;
+```
+
+下面介绍几个函数的区别:
+
+比如对分数进行排名：90、85、85、70
+
+`ROW_NUMBER:1,2,3,4`
+
+`RANK:1,2,2,4`
+
+`DENSE_RANK:1、2、2、3`
+
+`NTILE`函数是将有序分区中的行分发到指定数目的组中，各个组有编号，编号从1开始，就像我们说的’分区’一样 ，分为几个区，一个区会有多少个。
+
+24.
+
+```sql
+获取所有非manager员工当前的薪水情况，给出dept_no、emp_no以及salary ，当前表示to_date='9999-01-01'
+CREATE TABLE `dept_emp` (
+`emp_no` int(11) NOT NULL,
+`dept_no` char(4) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+CREATE TABLE `dept_manager` (
+`dept_no` char(4) NOT NULL,
+`emp_no` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+CREATE TABLE `employees` (
+`emp_no` int(11) NOT NULL,
+`birth_date` date NOT NULL,
+`first_name` varchar(14) NOT NULL,
+`last_name` varchar(16) NOT NULL,
+`gender` char(1) NOT NULL,
+`hire_date` date NOT NULL,
+PRIMARY KEY (`emp_no`));
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+```
+
+这个没有很难，但是前面salary少写了一个字母就耽误了很长时间。这里不能`INNNER JOIN dept_manager`，否则就只生下来manager，写代码还是要有逻辑，不能瞎写。
+
+```sql
+SELECT de.dept_no,s.emp_no,s.salary
+FROM salaries s INNER JOIN dept_emp de ON s.emp_no=de.emp_no  AND s.to_date='9999-01-01'
+WHERE de.emp_no NOT IN (SELECT emp_no FROM dept_manager) AND de.to_date='9999-01-01';
+```
+
+25.❌
+
+```sql
+获取员工其当前的薪水比其manager当前薪水还高的相关信息，当前表示to_date='9999-01-01',
+结果第一列给出员工的emp_no，
+第二列给出其manager的manager_no，
+第三列给出该员工当前的薪水emp_salary,
+第四列给该员工对应的manager当前的薪水manager_salary
+CREATE TABLE `dept_emp` (
+`emp_no` int(11) NOT NULL,
+`dept_no` char(4) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+CREATE TABLE `dept_manager` (
+`dept_no` char(4) NOT NULL,
+`emp_no` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`dept_no`));
+CREATE TABLE `salaries` (
+`emp_no` int(11) NOT NULL,
+`salary` int(11) NOT NULL,
+`from_date` date NOT NULL,
+`to_date` date NOT NULL,
+PRIMARY KEY (`emp_no`,`from_date`));
+```
+
+看到这种题目要学会分解，dept_emp和salaries能组成员工薪水表，dept_manager和salaies能组成经理薪水表，两者都共有一个dept_no，那么只要两者dept_no相同，再比较两表的薪水大小就ok了。
+
+```sql
+SELECT t1.emp_no,t2.emp_no AS manager_no,t1.salary AS emp_salary,t2.salary AS manager_salary FROM
+(SELECT s.emp_no,s.salary,de.dept_no FROM salaries s 
+ INNER JOIN dept_emp de ON s.emp_no=de.emp_no AND s.to_date='9999-01-01' AND de.to_date='9999-01-01')
+ t1 INNER JOIN 
+ (SELECT s.emp_no,s.salary,dm.dept_no FROM salaries s
+ INNER JOIN dept_manager dm ON s.emp_no=dm.emp_no AND s.to_date='9999-01-01' AND dm.to_date='9999-01-01')
+ t2 ON t1.dept_no=t2.dept_no
+WHERE t1.salary>t2.salary;
+```
+
+这里还有一个点就是JOIN后的ON的表达式不仅局限于等于还可以使用大于等于，和where语句起到的作用相似。或者用下面这种写法，将复杂查询分为两个简单查询，再组合。salary表可以出现两次，用where字句起到类似join的作用。
+
+```sql
+SELECT s1.emp_no,s2.emp_no AS manager_no,s1.salary AS emp_salary,s2.salary AS manager_salary
+FROM dept_emp de,dept_manager dm,salaries s1,salaries s2
+WHERE de.emp_no=s1.emp_no
+AND dm.emp_no=s2.emp_no
+AND de.dept_no=dm.dept_no
+AND s1.salary>s2.salary
+AND de.to_date='9999-01-01'
+AND dm.to_date='9999-01-01'
+AND s1.to_date='9999-01-01'
+AND s2.to_date='9999-01-01'
+```
+
