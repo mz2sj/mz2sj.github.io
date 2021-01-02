@@ -2079,10 +2079,56 @@ mysql里查找某一天的后一天的用法是:DATE_ADD(yyyy-mm-dd,INTERVAL 1 D
 ![](https://uploadfiles.nowcoder.com/images/20200820/557336_1597903761838_F734DB69B9941F0DF86776922B0CF347)
 
 ```sq
+SELECT ROUND(COUNT(DISTINCT l2.user_id)*1.0/COUNT(DISTINCT l1.user_id),3)
+FROM login l1,login l2
+WHERE l1.user_id=l2.user_id AND l2.date=date(l1.date, '+1 day')；
+```
+
+68.
+
+牛客每天有很多人登录，请你统计一下牛客每个日期登录新用户个数，
+有一个登录(login)记录表，简况如下:
+
+![](https://uploadfiles.nowcoder.com/images/20200820/557336_1597903671918_2C3C4BF94A59FB9AEEA6FEA89DEE17C9)
+
+慢慢想吧
+
+```sql
+select a.date,
+sum(case when rank=1 then 1 else 0 end) new
+from 
+(select date, row_number() over(partition by user_id order by date) rank
+from login) a
+group by date;
+```
+
+```sql
+select date,sum(t) from
+(
+    select date,
+    case when (user_id,date) in 
+    (select user_id,min(date) from login group by user_id)
+    then 1
+    else 0
+    end as t
+    from login
+)
+group by date
+order by date asc
+```
+
+69.
+
+牛客每天有很多人登录，请你统计一下牛客每个日期新用户的次日留存率。
+有一个登录(login)记录表，简况如下:
+
+![](https://uploadfiles.nowcoder.com/images/20200820/557336_1597903752757_A02F3DF1419BC2D3D4EE9B2B4557053B)
+
+```sql
 
 ```
 
-68.❌
+70.❌
 
 牛客每天有很多人登录，请你统计一下牛客每个用户查询刷题信息，包括: 用户的名字，以及截止到某天，累计总共通过了多少题。 不存在没有登录却刷题的情况，但是存在登录了没刷题的情况，不会存在刷题表里面，有提交代码没有通过的情况，但是会记录在刷题表里，只不过通过数目是0。
 有一个登录(login)记录表，简况如下:
@@ -2130,7 +2176,7 @@ GROUP BY pn1.id,pn1.date
 ORDER BY pn1.date ASC,u.name ASC;
 ```
 
-69.
+71.
 
 牛客每次考试完，都会有一个成绩表(grade)，如下:
 
@@ -2153,7 +2199,7 @@ GROUP BY job
 ORDER BY avg DESC;
 ```
 
-70.
+72.
 
 牛客每次考试完，都会有一个成绩表(grade)，如下:
 
@@ -2186,7 +2232,7 @@ WHERE score>avg_score
 ORDER BY id;
 ```
 
-71.
+73.
 
 牛客每次举办企业笔试的时候，企业一般都会有不同的语言岗位，比如C++工程师，JAVA工程师，Python工程师，每个用户笔试完有不同的分数，现在有一个分数(grade)表简化如下:
 
@@ -2212,7 +2258,7 @@ ORDER BY l.name ASC,score DESC,id ASC)
 WHERE rank_score<=2
 ```
 
-72.
+74.
 
 牛客每次考试完，都会有一个成绩表(grade)，如下:
 
@@ -2242,7 +2288,7 @@ WHERE rank_score<=2
 
 ```
 
-73.
+75.
 
 牛客每次考试完，都会有一个成绩表(grade)，如下:
 
