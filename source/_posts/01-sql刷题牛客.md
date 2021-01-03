@@ -2310,3 +2310,1209 @@ WHERE rank_score<=2
 
 ```
 
+====================================================================================
+
+力扣刷题
+
+====================================================================================
+
+175.
+
+表1: Person
+
++-------------+---------+
+| 列名         | 类型     |
++-------------+---------+
+| PersonId    | int     |
+| FirstName   | varchar |
+| LastName    | varchar |
++-------------+---------+
+PersonId 是上表主键
+表2: Address
+
++-------------+---------+
+| 列名         | 类型    |
++-------------+---------+
+| AddressId   | int     |
+| PersonId    | int     |
+| City        | varchar |
+| State       | varchar |
++-------------+---------+
+AddressId 是上表主键
+
+
+编写一个 SQL 查询，满足条件：无论 person 是否有地址信息，都需要基于上述两表提供 person 的以下信息：
+
+FirstName, LastName, City, State
+
+```sql
+SELECT p.FirstName,p.Lastname,a.City,a.State
+FROM Person p LEFT JOIN Address a on p.PersonId=a.PersonId;
+```
+
+176.
+
+编写一个 SQL 查询，获取 Employee 表中第二高的薪水（Salary） 。
+
++----+--------+
+| Id | Salary |
++----+--------+
+| 1  | 100    |
+| 2  | 200    |
+| 3  | 300    |
++----+--------+
+例如上述 Employee 表，SQL查询应该返回 200 作为第二高的薪水。如果不存在第二高的薪水，那么查询应返回 null。
+
++---------------------+
+| SecondHighestSalary |
++---------------------+
+| 200                 |
++---------------------+
+
+```sql
+SELECT MAX(e1.Salary) SecondHighestSalary FROM Employee e1 
+WHERE e1.Salary<(SELECT MAX(e2.Salary) FROM Employee e2);  
+```
+
+177.
+
+编写一个 SQL 查询，获取 Employee 表中第 n 高的薪水（Salary）。
+
++----+--------+
+| Id | Salary |
++----+--------+
+| 1  | 100    |
+| 2  | 200    |
+| 3  | 300    |
++----+--------+
+例如上述 Employee 表，n = 2 时，应返回第二高的薪水 200。如果不存在第 n 高的薪水，那么查询应返回 null。
+
++------------------------+
+| getNthHighestSalary(2) |
++------------------------+
+| 200                    |
++------------------------+
+
+服了，rank()是mysql自带的函数，不能用于变量命名
+
+```sql
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+  RETURN (
+      # Write your MySQL query statement below.
+      SELECT DISTINCT Salary 
+      FROM (
+          SELECT DENSE_RANK() OVER(ORDER BY Salary DESC) AS rank_s,
+          Salary 
+          FROM Employee
+          ) AS t 
+         WHERE rank_s=N
+  );
+END
+```
+
+178.
+
+编写一个 SQL 查询来实现分数排名。
+
+如果两个分数相同，则两个分数排名（Rank）相同。请注意，平分后的下一个名次应该是下一个连续的整数值。换句话说，名次之间不应该有“间隔”。
+
++----+-------+
+| Id | Score |
++----+-------+
+| 1  | 3.50  |
+| 2  | 3.65  |
+| 3  | 4.00  |
+| 4  | 3.85  |
+| 5  | 4.00  |
+| 6  | 3.65  |
++----+-------+
+例如，根据上述给定的 Scores 表，你的查询应该返回（按分数从高到低排列）：
+
++-------+------+
+| Score | Rank |
++-------+------+
+| 4.00  | 1    |
+| 4.00  | 1    |
+| 3.85  | 2    |
+| 3.65  | 3    |
+| 3.65  | 3    |
+| 3.50  | 4    |
++-------+------+
+重要提示：对于 MySQL 解决方案，如果要转义用作列名的保留字，可以在关键字之前和之后使用撇号。例如 `Rank`
+
+```sql
+SELECT Score,DENSE_RANK() OVER(ORDER BY Score  DESC) AS 'Rank'
+FROM Scores;
+```
+
+180.❗
+
+编写一个 SQL 查询，查找所有至少连续出现三次的数字。
+
++----+-----+
+| Id | Num |
++----+-----+
+| 1  |  1  |
+| 2  |  1  |
+| 3  |  1  |
+| 4  |  2  |
+| 5  |  1  |
+| 6  |  2  |
+| 7  |  2  |
++----+-----+
+例如，给定上面的 Logs 表， 1 是唯一连续出现至少三次的数字。
+
++-----------------+
+| ConsecutiveNums |
++-----------------+
+| 1               |
++-----------------+
+
+```sql
+SELECT DISTINCT l1.num ConsecutiveNums 
+FROM logs l1 INNER JOIN logs l2
+ON l1.Num=l2.Num AND l1.Id-l2.ID between 0 and 2
+GROUP BY l1.id
+HAVING COUNT(l2.id)>2;
+```
+
+```mssql
+SELECT DISTINCT l1.num ConsecutiveNums 
+FROM logs l1 INNER JOIN logs l2
+ON l1.Num=l2.Num 
+GROUP BY l1.id
+HAVING SUM(l1.id-l2.id BETWEEN 0 AND 2)>2;
+```
+
+181.
+
+Employee 表包含所有员工，他们的经理也属于员工。每个员工都有一个 Id，此外还有一列对应员工的经理的 Id。
+
++----+-------+--------+-----------+
+| Id | Name  | Salary | ManagerId |
++----+-------+--------+-----------+
+| 1  | Joe   | 70000  | 3         |
+| 2  | Henry | 80000  | 4         |
+| 3  | Sam   | 60000  | NULL      |
+| 4  | Max   | 90000  | NULL      |
++----+-------+--------+-----------+
+给定 Employee 表，编写一个 SQL 查询，该查询可以获取收入超过他们经理的员工的姓名。在上面的表格中，Joe 是唯一一个收入超过他的经理的员工。
+
++----------+
+| Employee |
++----------+
+| Joe      |
++----------+
+
+```mysql
+SELECT e1.name Employee
+FROM Employee e1 INNER JOIN Employee e2 
+ON e1.ManagerId=e2.Id
+WHERE e1.Salary>e2.Salary;
+```
+
+182.
+
+写一个 SQL 查询，查找 Person 表中所有重复的电子邮箱。
+
+示例：
+
++----+---------+
+| Id | Email   |
++----+---------+
+| 1  | a@b.com |
+| 2  | c@d.com |
+| 3  | a@b.com |
++----+---------+
+根据以上输入，你的查询应返回以下结果：
+
++---------+
+| Email   |
++---------+
+| a@b.com |
++---------+
+
+```sql
+SELECT Email
+FROM Person
+GROUP BY Email
+HAVING COUNT(Email)>1
+```
+
+下面这个倒是用来判断重复的好办法
+
+```sql
+select distinct(p1.Email) from Person p1 inner join Person p2 on p1.Email = p2.Email and p1.Id != p2.Id;
+```
+
+183.
+
+某网站包含两个表，Customers 表和 Orders 表。编写一个 SQL 查询，找出所有从不订购任何东西的客户。
+
+Customers 表：
+
++----+-------+
+| Id | Name  |
++----+-------+
+| 1  | Joe   |
+| 2  | Henry |
+| 3  | Sam   |
+| 4  | Max   |
++----+-------+
+Orders 表：
+
++----+------------+
+| Id | CustomerId |
++----+------------+
+| 1  | 3          |
+| 2  | 1          |
++----+------------+
+例如给定上述表格，你的查询应返回：
+
++-----------+
+| Customers |
++-----------+
+| Henry     |
+| Max       |
++-----------+
+
+```sql
+SELECT Name Customers
+FROM Customers WHERE Customers.Id NOT IN 
+(SELECT CustomerId  FROM Orders);
+```
+
+```sql
+SELECT c.Name Customers
+FROM Customers c LEFT JOIN Orders O
+ON c.Id=o.CustomerId
+WHERE o.ID IS NULL
+```
+
+184.
+
+Employee 表包含所有员工信息，每个员工有其对应的 Id, salary 和 department Id。
+
++----+-------+--------+--------------+
+| Id | Name  | Salary | DepartmentId |
++----+-------+--------+--------------+
+| 1  | Joe   | 70000  | 1            |
+| 2  | Jim   | 90000  | 1            |
+| 3  | Henry | 80000  | 2            |
+| 4  | Sam   | 60000  | 2            |
+| 5  | Max   | 90000  | 1            |
++----+-------+--------+--------------+
+Department 表包含公司所有部门的信息。
+
++----+----------+
+| Id | Name     |
++----+----------+
+| 1  | IT       |
+| 2  | Sales    |
++----+----------+
+编写一个 SQL 查询，找出每个部门工资最高的员工。对于上述表，您的 SQL 查询应返回以下行（行的顺序无关紧要）。
+
++------------+----------+--------+
+| Department | Employee | Salary |
++------------+----------+--------+
+| IT         | Max      | 90000  |
+| IT         | Jim      | 90000  |
+| Sales      | Henry    | 80000  |
++------------+----------+--------+ 
+
+```sql
+#DENSE_RANK() PARTITION BY 完美结合
+SELECT Department,Employee,Salary FROM
+(SELECT e.Name Employee,e.Salary Salary,d.Name Department,
+DENSE_RANK() OVER(PARTITION BY e.DepartmentId ORDER BY e.Salary DESC) AS s_rank
+FROM Employee e INNER JOIN Department d
+ON e.DepartmentId=d.Id) t
+WHERE t.s_rank=1;
+```
+
+以后对于这种group by 后有字段不能取出来的，用这种方法 IN
+
+```sql
+select d.Name Department,e.Name Employee,Salary
+from  Employee e
+join Department d 
+on e.DepartmentId=d.Id
+where(e.DepartmentId , Salary) IN(
+    select DepartmentId, max(salary)
+    from Employee
+    group by DepartmentId
+);
+```
+
+185.
+
+Employee 表包含所有员工信息，每个员工有其对应的工号 Id，姓名 Name，工资 Salary 和部门编号 DepartmentId 。
+
++----+-------+--------+--------------+
+| Id | Name  | Salary | DepartmentId |
++----+-------+--------+--------------+
+| 1  | Joe   | 85000  | 1            |
+| 2  | Henry | 80000  | 2            |
+| 3  | Sam   | 60000  | 2            |
+| 4  | Max   | 90000  | 1            |
+| 5  | Janet | 69000  | 1            |
+| 6  | Randy | 85000  | 1            |
+| 7  | Will  | 70000  | 1            |
++----+-------+--------+--------------+
+Department 表包含公司所有部门的信息。
+
++----+----------+
+| Id | Name     |
++----+----------+
+| 1  | IT       |
+| 2  | Sales    |
++----+----------+
+编写一个 SQL 查询，找出每个部门获得前三高工资的所有员工。例如，根据上述给定的表，查询结果应返回：
+
++------------+----------+--------+
+| Department | Employee | Salary |
++------------+----------+--------+
+| IT         | Max      | 90000  |
+| IT         | Randy    | 85000  |
+| IT         | Joe      | 85000  |
+| IT         | Will     | 70000  |
+| Sales      | Henry    | 80000  |
+| Sales      | Sam      | 60000  |
++------------+----------+--------+
+
+```sql
+#PARTITION BY 真好用
+SELECT Department,Employee,Salary FROM
+(SELECT d.Name Department,e.Name Employee,e.Salary Salary,
+DENSE_RANK() OVER(PARTITION BY e.DepartmentId ORDER BY e.Salary DESC) AS s_rank
+FROM Employee e INNER JOIN Department d
+ON e.DepartmentId=d.Id) t
+WHERE t.s_rank<=3;
+```
+
+自连接解法
+
+```sql
+select d.Name as Department,e.Name as Employee,e.Salary as Salary
+from Employee as e left join Department as d 
+on e.DepartmentId = d.Id
+where e.Id in
+(
+    select e1.Id
+    from Employee as e1 left join Employee as e2
+    on e1.DepartmentId = e2.DepartmentId and e1.Salary < e2.Salary
+    group by e1.Id
+    having count(distinct e2.Salary) <= 2
+)
+and e.DepartmentId in (select Id from Department)
+order by d.Id asc,e.Salary desc
+```
+
+196.
+
+编写一个 SQL 查询，来删除 Person 表中所有重复的电子邮箱，重复的邮箱里只保留 Id 最小 的那个。
+
++----+------------------+
+| Id | Email            |
++----+------------------+
+| 1  | john@example.com |
+| 2  | bob@example.com  |
+| 3  | john@example.com |
++----+------------------+
+Id 是这个表的主键。
+例如，在运行你的查询语句之后，上面的 Person 表应返回以下几行:
+
++----+------------------+
+| Id | Email            |
++----+------------------+
+| 1  | john@example.com |
+| 2  | bob@example.com  |
++----+------------------+
+
+```sql
+#mysql删除时，先缓存再删除
+DELETE FROM Person
+WHERE Id NOT IN
+(SELECT Id FROM (SELECT MIN(Id) Id FROM Person GROUP BY Email) t)
+```
+
+这种理解也很好
+
+```sql
+delete p1
+from person p1 join person p2
+on p1.email=p2.email and p1.id>p2.id
+```
+
+197.
+
+表 Weather
+
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| recordDate    | date    |
+| temperature   | int     |
++---------------+---------+
+id 是这个表的主键
+该表包含特定日期的温度信息
+
+
+编写一个 SQL 查询，来查找与之前（昨天的）日期相比温度更高的所有日期的 id 。
+
+返回结果 不要求顺序 。
+
+查询结果格式如下例：
+
+Weather
++----+------------+-------------+
+| id | recordDate | Temperature |
++----+------------+-------------+
+| 1  | 2015-01-01 | 10          |
+| 2  | 2015-01-02 | 25          |
+| 3  | 2015-01-03 | 20          |
+| 4  | 2015-01-04 | 30          |
++----+------------+-------------+
+
+Result table:
++----+
+| id |
++----+
+| 2  |
+| 4  |
++----+
+2015-01-02 的温度比前一天高（10 -> 25）
+2015-01-04 的温度比前一天高（20 -> 30）
+
+```sql
+select date_add(@dt, interval 1 day); -- add 1 day
+select date_add(@dt, interval 1 hour); -- add 1 hour
+select date_add(@dt, interval 1 minute); -- ...
+select date_add(@dt, interval 1 second);
+select date_add(@dt, interval 1 microsecond);
+select date_add(@dt, interval 1 week);
+select date_add(@dt, interval 1 month);
+select date_add(@dt, interval 1 quarter);
+select date_add(@dt, interval 1 year);
+
+select date_sub('1998-01-01 00:00:00', interval '1 1:1:1' day_second);
+
+MySQL datediff(date1,date2)：两个日期相减 date1 - date2，返回天数。
+select datediff('2008-08-08', '2008-08-01'); -- 7
+select datediff('2008-08-01', '2008-08-08'); -- -7
+
+select str_to_date('08/09/2008', '%m/%d/%Y'); -- 2008-08-09
+select str_to_date('08/09/08' , '%m/%d/%y'); -- 2008-08-09
+select str_to_date('08.09.2008', '%m.%d.%Y'); -- 2008-08-09
+select str_to_date('08:09:30', '%h:%i:%s'); -- 08:09:30
+select str_to_date('08.09.2008 08:09:30', '%m.%d.%Y %h:%i:%s'); -- 2008-08-09 08:09:30
+```
+
+```sql
+SELECT a.id
+FROM Weather a INNER JOIN Weather b
+ON a.recordDate=DATE_ADD(b.recordDate,INTERVAL 1 day)
+WHERE a.temperature>b.temperature;
+```
+
+262.
+
+Trips 表中存所有出租车的行程信息。每段行程有唯一键 Id，Client_Id 和 Driver_Id 是 Users 表中 Users_Id 的外键。Status 是枚举类型，枚举成员为 (‘completed’, ‘cancelled_by_driver’, ‘cancelled_by_client’)。
+
++----+-----------+-----------+---------+--------------------+----------+
+| Id | Client_Id | Driver_Id | City_Id |        Status      |Request_at|
++----+-----------+-----------+---------+--------------------+----------+
+| 1  |     1     |    10     |    1    |     completed      |2013-10-01|
+| 2  |     2     |    11     |    1    | cancelled_by_driver|2013-10-01|
+| 3  |     3     |    12     |    6    |     completed      |2013-10-01|
+| 4  |     4     |    13     |    6    | cancelled_by_client|2013-10-01|
+| 5  |     1     |    10     |    1    |     completed      |2013-10-02|
+| 6  |     2     |    11     |    6    |     completed      |2013-10-02|
+| 7  |     3     |    12     |    6    |     completed      |2013-10-02|
+| 8  |     2     |    12     |    12   |     completed      |2013-10-03|
+| 9  |     3     |    10     |    12   |     completed      |2013-10-03| 
+| 10 |     4     |    13     |    12   | cancelled_by_driver|2013-10-03|
++----+-----------+-----------+---------+--------------------+----------+
+Users 表存所有用户。每个用户有唯一键 Users_Id。Banned 表示这个用户是否被禁止，Role 则是一个表示（‘client’, ‘driver’, ‘partner’）的枚举类型。
+
++----------+--------+--------+
+| Users_Id | Banned |  Role  |
++----------+--------+--------+
+|    1     |   No   | client |
+|    2     |   Yes  | client |
+|    3     |   No   | client |
+|    4     |   No   | client |
+|    10    |   No   | driver |
+|    11    |   No   | driver |
+|    12    |   No   | driver |
+|    13    |   No   | driver |
++----------+--------+--------+
+写一段 SQL 语句查出 2013年10月1日 至 2013年10月3日 期间非禁止用户的取消率。基于上表，你的 SQL 语句应返回如下结果，取消率（Cancellation Rate）保留两位小数。
+
+取消率的计算方式如下：(被司机或乘客取消的非禁止用户生成的订单数量) / (非禁止用户生成的订单总数)
+
++------------+-------------------+
+|     Day    | Cancellation Rate |
++------------+-------------------+
+| 2013-10-01 |       0.33        |
+| 2013-10-02 |       0.00        |
+| 2013-10-03 |       0.50        |
++------------+-------------------+
+
+```sql
+
+```
+
+511.
+
+活动表 Activity：
+
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| player_id    | int     |
+| device_id    | int     |
+| event_date   | date    |
+| games_played | int     |
++--------------+---------+
+表的主键是 (player_id, event_date)。
+这张表展示了一些游戏玩家在游戏平台上的行为活动。
+每行数据记录了一名玩家在退出平台之前，当天使用同一台设备登录平台后打开的游戏的数目（可能是 0 个）。
+
+
+写一条 SQL 查询语句获取每位玩家 第一次登陆平台的日期。
+
+```sql
+SELECT player_id,MIN(event_date) first_login
+FROM Activity
+GROUP BY player_id;
+```
+
+```sql
+select distinct player_id,min(event_date) over(partition by player_id) as first_login
+from Activity
+```
+
+512.
+
+Table: Activity
+
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| player_id    | int     |
+| device_id    | int     |
+| event_date   | date    |
+| games_played | int     |
++--------------+---------+
+(player_id, event_date) 是这个表的两个主键
+这个表显示的是某些游戏玩家的游戏活动情况
+每一行是在某天使用某个设备登出之前登录并玩多个游戏（可能为0）的玩家的记录
+请编写一个 SQL 查询，描述每一个玩家首次登陆的设备名称
+
+```sql
+SELECT a.player_id,a.device_id
+FROM (SELECT player_id,MIN(event_date) min_date
+FROM Activity GROUP BY player_id) t INNER JOIN Activity a
+ON t.player_id=a.player_id AND t.min_date=a.event_date
+```
+
+这种联合查询的写法注意点
+
+```sql
+SELECT player_id,device_id
+FROM activity
+WHERE (player_id,event_date) IN
+(SELECT player_id,MIN(event_date)
+FROM activity
+GROUP BY player_id)
+```
+
+534.
+
+Table: Activity
+
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| player_id    | int     |
+| device_id    | int     |
+| event_date   | date    |
+| games_played | int     |
++--------------+---------+
+（player_id，event_date）是此表的主键。
+这张表显示了某些游戏的玩家的活动情况。
+每一行是一个玩家的记录，他在某一天使用某个设备注销之前登录并玩了很多游戏（可能是 0 ）。
+
+编写一个 SQL 查询，同时报告每组玩家和日期，以及玩家到目前为止玩了多少游戏。也就是说，在此日期之前玩家所玩的游戏总数。详细情况请查看示例。
+
+棒棒棒，自己写出来了
+
+```sql
+SELECT a1.player_id,a1.event_date,SUM(a2.games_played) games_played_so_far
+FROM Activity a1 INNER JOIN Activity a2
+ON a1.player_id=a2.player_id AND a1.event_date>=a2.event_date
+GROUP BY a1.player_id,a1.event_date
+```
+
+```sql
+SELECT player_id,event_date,SUM(games_played) OVER(PARTITION BY player_id ORDER BY event_date ASC) games_played_so_far 
+FROM Activity；
+```
+
+550.
+
+Table: Activity
+
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| player_id    | int     |
+| device_id    | int     |
+| event_date   | date    |
+| games_played | int     |
++--------------+---------+
+（player_id，event_date）是此表的主键。
+这张表显示了某些游戏的玩家的活动情况。
+每一行是一个玩家的记录，他在某一天使用某个设备注销之前登录并玩了很多游戏（可能是 0）。
+
+
+编写一个 SQL 查询，报告在首次登录的第二天再次登录的玩家的比率，四舍五入到小数点后两位。换句话说，您需要计算从首次登录日期开始至少连续两天登录的玩家的数量，然后除以玩家总数。
+
+```sql
+
+```
+
+569.
+
+Employee 表包含所有员工。Employee 表有三列：员工Id，公司名和薪水。
+
++-----+------------+--------+
+|Id   | Company    | Salary |
++-----+------------+--------+
+|1    | A          | 2341   |
+|2    | A          | 341    |
+|3    | A          | 15     |
+|4    | A          | 15314  |
+|5    | A          | 451    |
+|6    | A          | 513    |
+|7    | B          | 15     |
+|8    | B          | 13     |
+|9    | B          | 1154   |
+|10   | B          | 1345   |
+|11   | B          | 1221   |
+|12   | B          | 234    |
+|13   | C          | 2345   |
+|14   | C          | 2645   |
+|15   | C          | 2645   |
+|16   | C          | 2652   |
+|17   | C          | 65     |
++-----+------------+--------+
+请编写SQL查询来查找每个公司的薪水中位数。挑战点：你是否可以在不使用任何内置的SQL函数的情况下解决此问题。
+
+求中位数的思路，先对各组数据进行排序，同时求出各组数据总数，然后再判断排名在总数/2与总数/2+1之间。
+
+```sql
+
+```
+
+570.
+
+Employee 表包含所有员工和他们的经理。每个员工都有一个 Id，并且还有一列是经理的 Id。
+
++------+----------+-----------+----------+
+|Id    |Name 	  |Department |ManagerId |
++------+----------+-----------+----------+
+|101   |John 	  |A 	      |null      |
+|102   |Dan 	  |A 	      |101       |
+|103   |James 	  |A 	      |101       |
+|104   |Amy 	  |A 	      |101       |
+|105   |Anne 	  |A 	      |101       |
+|106   |Ron 	  |B 	      |101       |
++------+----------+-----------+----------+
+给定 Employee 表，请编写一个SQL查询来查找至少有5名直接下属的经理。
+
+```sql
+SELECT Name 
+FROM Employee
+WHERE Id IN
+(SELECT ManagerId
+FROM Employee
+GROUP BY ManagerId
+HAVING COUNT(*)>=5)
+```
+
+571.
+
+Numbers 表保存数字的值及其频率。
+
++----------+-------------+
+|  Number  |  Frequency  |
++----------+-------------|
+|  0       |  7          |
+|  1       |  1          |
+|  2       |  3          |
+|  3       |  1          |
++----------+-------------+
+在此表中，数字为 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 3，所以中位数是 (0 + 0) / 2 = 0。
+
++--------+
+| median |
++--------|
+| 0.0000 |
++--------+
+请编写一个查询来查找所有数字的中位数并将结果命名为 median 。
+
+新增两列，将从后往前和从前往后的频数相加，两个数都需要大于等于总数一半，再取平均
+
+### **错误答案**
+
+```sql
+SELECT AVG(T.num) AS median
+FROM
+(SELECT  n1.Number num,Sum(n2.Frequency) as f_sum
+FROM Numbers n1 INNER JOIN Numbers n2
+on n1.Number>=n2.Number
+GROUP BY n1.Number
+ORDER BY n1.Number ASC) T
+WHERE T.f_sum BETWEEN (SELECT SUM(Frequency)/2 FROM Numbers) AND (SELECT SUM(Frequency)/2+1 FROM Numbers)
+```
+
+574.
+
+表: Candidate
+
++-----+---------+
+| id  | Name    |
++-----+---------+
+| 1   | A       |
+| 2   | B       |
+| 3   | C       |
+| 4   | D       |
+| 5   | E       |
++-----+---------+  
+表: Vote
+
++-----+--------------+
+| id  | CandidateId  |
++-----+--------------+
+| 1   |     2        |
+| 2   |     4        |
+| 3   |     3        |
+| 4   |     2        |
+| 5   |     5        |
++-----+--------------+
+id 是自动递增的主键，
+CandidateId 是 Candidate 表中的 id.
+请编写 sql 语句来找到当选者的名字，上面的例子将返回当选者 B.
+
+```sql
+#group by key order by count(key)
+SELECT Name FROM Candidate WHERE id=(
+SELECT CandidateId FROM Vote
+GROUP BY CandidateId
+ORDER BY COUNT(CandidateId) DESC LIMIT 1);
+```
+
+577.
+
+选出所有 bonus < 1000 的员工的 name 及其 bonus。
+
+Employee 表单
+
++-------+--------+-----------+--------+
+| empId |  name  | supervisor| salary |
++-------+--------+-----------+--------+
+|   1   | John   |  3        | 1000   |
+|   2   | Dan    |  3        | 2000   |
+|   3   | Brad   |  null     | 4000   |
+|   4   | Thomas |  3        | 4000   |
++-------+--------+-----------+--------+
+empId 是这张表单的主关键字
+Bonus 表单
+
++-------+-------+
+| empId | bonus |
++-------+-------+
+| 2     | 500   |
+| 4     | 2000  |
++-------+-------+
+empId 是这张表单的主关键字
+
+```sql
+SELECT e.name name,b.bonus bonus
+FROM Employee e LEFT OUTER JOIN Bonus b 
+ON e.empId=b.empId
+WHERE b.bonus<1000 or b.bonus IS NULL;
+```
+
+578.
+
+从 survey_log 表中获得回答率最高的问题，survey_log 表包含这些列：id, action, question_id, answer_id, q_num, timestamp。
+
+id 表示用户 id；action 有以下几种值："show"，"answer"，"skip"；当 action 值为 "answer" 时 answer_id 非空，而 action 值为 "show" 或者 "skip" 时 answer_id 为空；q_num 表示当前会话中问题的编号。
+
+请编写 SQL 查询来找到具有最高回答率的问题。
+
+这种group by 后又要取最值的问题，记得 order by 然后 limit 1
+
+```sql
+SELECT t.question_id survey_log
+FROM
+(SELECT question_id,COUNT(answer_id) num
+FROM survey_log
+GROUP BY question_id ORDER BY num DESC) AS t 
+LIMIT 1;
+```
+
+这中group by后order by count的写法
+
+```sql
+SELECT question_id survey_log FROM survey_log 
+WHERE answer_id IS NOT NULL
+GROUP BY question_id
+ORDER BY COUNT(answer_id) DESC
+LIMIT 1;
+```
+
+579.
+
+请你编写 SQL 语句，对于每个员工，查询他除最近一个月（即最大月）之外，剩下每个月的近三个月的累计薪水（不足三个月也要计算）。
+
+结果请按 Id 升序，然后按 Month 降序显示。
+
+示例：
+输入：
+
+| Id   | Month | Salary |
+| ---- | ----- | ------ |
+| 1    | 1     | 20     |
+| 2    | 1     | 20     |
+| 1    | 2     | 30     |
+| 2    | 2     | 30     |
+| 3    | 2     | 40     |
+| 1    | 3     | 40     |
+| 3    | 3     | 60     |
+| 1    | 4     | 60     |
+| 3    | 4     | 70     |
+
+rows 2 preceding:将当前行和它前面的两行划为一个窗口，因此sum函数就作 用在这三行上面
+
+```sql
+SELECT Id id,Month month,SUM(Salary) OVER(PARTITION BY Id ORDER BY Month ASC ROWS 2 PRECEDING) Salary
+FROM Employee
+WHERE (Id,Month)
+NOT IN
+(SELECT Id,MAX(Month)
+FROM Employee
+GROUP BY Id)
+ORDER BY Id ASC,Month DESC;
+```
+
+```sql
+SELECT
+  a.Id AS id, a.Month AS month,SUM(b.Salary) AS Salary
+FROM
+  Employee a, Employee b
+WHERE a.Id = b.Id 
+AND a.Month >= b.Month
+AND a.Month < b.Month+3 #这个限制在3个月内
+AND (a.Id, a.Month) NOT IN (SELECT Id, MAX(Month) FROM Employee GROUP BY Id)
+GROUP BY a.Id, a.Month
+ORDER BY a.Id, a.Month DESC
+```
+
+580.
+
+一所大学有 2 个数据表，分别是 student 和 department ，这两个表保存着每个专业的学生数据和院系数据。
+
+写一个查询语句，查询 department 表中每个专业的学生人数 （即使没有学生的专业也需列出）。
+
+将你的查询结果按照学生人数降序排列。 如果有两个或两个以上专业有相同的学生数目，将这些部门按照部门名字的字典序从小到大排列。
+
+student 表格如下：
+
+| Column Name  | Type      |
+| ------------ | --------- |
+| student_id   | Integer   |
+| student_name | String    |
+| gender       | Character |
+| dept_id      | Integer   |
+其中， student_id 是学生的学号， student_name 是学生的姓名， gender 是学生的性别， dept_id 是学生所属专业的专业编号。
+
+department 表格如下：
+
+| Column Name | Type    |
+| ----------- | ------- |
+| dept_id     | Integer |
+| dept_name   | String  |
+dept_id 是专业编号， dept_name 是专业名字。
+
+区分count(*）和count(s.student_id)区别 前一个是有多少条不考虑值 后一个只算s.student_id这一列的值不会计算null
+
+```sql
+SELECT d.dept_name,COUNT(s.student_id) student_number
+FROM department d LEFT JOIN student s
+ON d.dept_id=s.dept_id
+GROUP BY d.dept_name
+ORDER BY student_number DESC,d.dept_name ASC;
+```
+
+584.
+
+给定表 customer ，里面保存了所有客户信息和他们的推荐人。
+
++------+------+-----------+
+| id   | name | referee_id|
++------+------+-----------+
+|    1 | Will |      NULL |
+|    2 | Jane |      NULL |
+|    3 | Alex |         2 |
+|    4 | Bill |      NULL |
+|    5 | Zack |         1 |
+|    6 | Mark |         2 |
++------+------+-----------+
+写一个查询语句，返回一个编号列表，列表中编号的推荐人的编号都 不是 2。
+
+```sql
+select name from customer 
+where
+ifnull(referee_id,0)!=2;
+```
+
+```sql
+SELECT name 
+FROM customer
+WHERE referee_id!=2 OR referee_id IS NULL
+```
+
+585.
+
+写一个查询语句，将 2016 年 (TIV_2016) 所有成功投资的金额加起来，保留 2 位小数。
+
+对于一个投保人，他在 2016 年成功投资的条件是：
+
+他在 2015 年的投保额 (TIV_2015) 至少跟一个其他投保人在 2015 年的投保额相同。
+他所在的城市必须与其他投保人都不同（也就是说维度和经度不能跟其他任何一个投保人完全相同）。
+输入格式:
+表 insurance 格式如下：
+
+| Column Name | Type          |
+| ----------- | ------------- |
+| PID         | INTEGER(11)   |
+| TIV_2015    | NUMERIC(15,2) |
+| TIV_2016    | NUMERIC(15,2) |
+| LAT         | NUMERIC(5,2)  |
+| LON         | NUMERIC(5,2)  |
+PID 字段是投保人的投保编号， TIV_2015 是该投保人在2015年的总投保金额， TIV_2016 是该投保人在2016年的投保金额， LAT 是投保人所在城市的维度， LON 是投保人所在城市的经度。
+
+```sql
+
+```
+
+586.
+
+在表 orders 中找到订单数最多客户对应的 customer_number 。
+
+数据保证订单数最多的顾客恰好只有一位。
+
+表 orders 定义如下：
+
+| Column            | Type      |
+| ----------------- | --------- |
+| order_number (PK) | int       |
+| customer_number   | int       |
+| order_date        | date      |
+| required_date     | date      |
+| shipped_date      | date      |
+| status            | char(15)  |
+| comment           | char(200) |
+
+题目没看懂
+
+```sql
+SELECT customer_number
+FROM orders
+GROUP BY customer_number
+ORDER BY COUNT(order_number) DESC
+LIMIT 1;
+```
+
+```sql
+select customer_number
+from orders
+group by customer_number
+having count(order_number)>=all(
+    select count(order_number)
+    from orders
+    group by customer_number
+)
+```
+
+595.
+
+这里有张 World 表
+
++-----------------+------------+------------+--------------+---------------+
+| name            | continent  | area       | population   | gdp           |
++-----------------+------------+------------+--------------+---------------+
+| Afghanistan     | Asia       | 652230     | 25500100     | 20343000      |
+| Albania         | Europe     | 28748      | 2831741      | 12960000      |
+| Algeria         | Africa     | 2381741    | 37100000     | 188681000     |
+| Andorra         | Europe     | 468        | 78115        | 3712000       |
+| Angola          | Africa     | 1246700    | 20609294     | 100990000     |
++-----------------+------------+------------+--------------+---------------+
+如果一个国家的面积超过 300 万平方公里，或者人口超过 2500 万，那么这个国家就是大国家。
+
+编写一个 SQL 查询，输出表中所有大国家的名称、人口和面积。
+
+```sql
+SELECT w.name,w.population,w.area
+FROM World w
+WHERE w.area>3000000 OR population>25000000
+```
+
+596.
+
+有一个courses 表 ，有: student (学生) 和 class (课程)。
+
+请列出所有超过或等于5名学生的课。
+
+例如，表：
+
++---------+------------+
+| student | class      |
++---------+------------+
+| A       | Math       |
+| B       | English    |
+| C       | Math       |
+| D       | Biology    |
+| E       | Math       |
+| F       | Computer   |
+| G       | Math       |
+| H       | Math       |
+| I       | Math       |
++---------+------------+
+
+```sql
+SELECT class
+FROM courses
+GROUP BY class 
+HAVING COUNT(DISTINCT student)>=5
+```
+
+597.
+
+在 Facebook 或者 Twitter 这样的社交应用中，人们经常会发好友申请也会收到其他人的好友申请。
+
+表：FriendRequest
+
++----------------+---------+
+| Column Name    | Type    |
++----------------+---------+
+| sender_id      | int     |
+| send_to_id     | int     |
+| request_date   | date    |
++----------------+---------+
+此表没有主键，它可能包含重复项。
+该表包含发送请求的用户的 ID ，接受请求的用户的 ID 以及请求的日期。
+表：RequestAccepted
+
++----------------+---------+
+| Column Name    | Type    |
++----------------+---------+
+| requester_id   | int     |
+| accepter_id    | int     |
+| accept_date    | date    |
++----------------+---------+
+此表没有主键，它可能包含重复项。
+该表包含发送请求的用户的 ID ，接受请求的用户的 ID 以及请求通过的日期。
+
+
+写一个查询语句，求出好友申请的通过率，用 2 位小数表示。通过率由接受好友申请的数目除以申请总数。
+
+提示：
+
+通过的好友申请不一定都在表 friend_request 中。你只需要统计总的被通过的申请数（不管它们在不在表 FriendRequest 中），并将它除以申请总数，得到通过率
+一个好友申请发送者有可能会给接受者发几条好友申请，也有可能一个好友申请会被通过好几次。这种情况下，重复的好友申请只统计一次。
+如果一个好友申请都没有，通过率为 0.00 。
+
+```sql
+SELECT ROUND(IFNULL((SELECT COUNT(DISTINCT requester_id,accepter_id)
+FROM RequestAccepted)/
+(SELECT COUNT(DISTINCT sender_id ,send_to_id )
+FROM FriendRequest ),0),2) accept_rate
+```
+
+601.
+
+表：Stadium
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| visit_date    | date    |
+| people        | int     |
++---------------+---------+
+visit_date 是表的主键
+每日人流量信息被记录在这三列信息中：序号 (id)、日期 (visit_date)、 人流量 (people)
+每天只有一行记录，日期随着 id 的增加而增加
+
+
+编写一个 SQL 查询以找出每行的人数大于或等于 100 且 id 连续的三行或更多行记录。
+
+返回按 visit_date 升序排列的结果表。
+
+```sql
+
+```
+
+602.
+
+在 Facebook 或者 Twitter 这样的社交应用中，人们经常会发好友申请也会收到其他人的好友申请。
+
+表 request_accepted 存储了所有好友申请通过的数据记录，其中， requester_id 和 accepter_id 都是用户的编号。
+
+| requester_id | accepter_id | accept_date |
+| ------------ | ----------- | ----------- |
+| 1            | 2           | 2016_06-03  |
+| 1            | 3           | 2016-06-08  |
+| 2            | 3           | 2016-06-08  |
+| 3            | 4           | 2016-06-09  |
+写一个查询语句，求出谁拥有最多的好友和他拥有的好友数目。对于上面的样例数据，结果为：
+
+| id   | num  |
+| ---- | ---- |
+| 3    | 3    |
+注意：
+
+保证拥有最多好友数目的只有 1 个人。
+好友申请只会被接受一次，所以不会有 requester_id 和 accepter_id 值都相同的重复记录。
+
+```sql
+SELECT id,COUNT(id) num FROM 
+((SELECT requester_id id FROM request_accepted)
+UNION ALL
+(SELECT accepter_id id FROM request_accepted)) sub
+GROUP BY id
+ORDER BY num DESC
+LIMIT 1;
+```
+
+```sql
+select id, sum(num) num
+from 
+((select requester_id id, count(*) num
+from request_accepted
+group by requester_id)
+union all
+(select accepter_id id, count(*) num
+from request_accepted
+group by accepter_id)) t3
+group by id
+order by num desc
+limit 1
+```
+
