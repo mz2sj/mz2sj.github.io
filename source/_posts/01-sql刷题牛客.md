@@ -3,6 +3,7 @@ title: 01-sql刷题牛客
 date: 2020-08-25 23:22:16
 tags: [sql,数据分析,刷题]
 categories: [数据分析,sql]
+
 ---
 
 今天是刷题记录的第一天，加油啦，小孟冲冲冲！！！
@@ -2472,7 +2473,7 @@ FROM Scores;
 ```sql
 SELECT DISTINCT l1.num ConsecutiveNums 
 FROM logs l1 INNER JOIN logs l2
-ON l1.Num=l2.Num AND l1.Id-l2.ID between 0 and 2
+ON l1.Num=l2.Num AND l1.Id-l2.Id between 0 and 2
 GROUP BY l1.id
 HAVING COUNT(l2.id)>2;
 ```
@@ -2631,7 +2632,7 @@ ON e.DepartmentId=d.Id) t
 WHERE t.s_rank=1;
 ```
 
-以后对于这种group by 后有字段不能取出来的，用这种方法 IN
+以后对于这种**group by 后有字段不能取出来的，用这种方法 IN**,或者是group by后需要当作条件的
 
 ```sql
 select d.Name Department,e.Name Employee,Salary
@@ -2691,7 +2692,7 @@ ON e.DepartmentId=d.Id) t
 WHERE t.s_rank<=3;
 ```
 
-自连接解法
+自连接解法，这种通过自连接判断排名，一定要记得使用distinct
 
 ```sql
 select d.Name as Department,e.Name as Employee,e.Salary as Salary
@@ -2862,7 +2863,13 @@ Users 表存所有用户。每个用户有唯一键 Users_Id。Banned 表示这�
 +------------+-------------------+
 
 ```sql
-
+SELECT 
+t.Request_at 'Day',
+ROUND(SUM(IF(t.Status='completed',0,1))/COUNT(*),2) 'Cancellation Rate' 
+FROM Trips t INNER JOIN Users u 
+ON t.Client_id=u.Users_Id AND u.Banned='No'
+WHERE t.Request_at BETWEEN '2013-10-01' AND '2013-10-03'
+GROUP BY t.Request_at
 ```
 
 511.
@@ -2978,11 +2985,48 @@ Table: Activity
 这张表显示了某些游戏的玩家的活动情况。
 每一行是一个玩家的记录，他在某一天使用某个设备注销之前登录并玩了很多游戏（可能是 0）。
 
-
 编写一个 SQL 查询，报告在首次登录的第二天再次登录的玩家的比率，四舍五入到小数点后两位。换句话说，您需要计算从首次登录日期开始至少连续两天登录的玩家的数量，然后除以玩家总数。
 
-```sql
+自己写的说实话有点烂
 
+```sql
+SELECT ROUND(COUNT(DISTINCT t1.player_id)/(SELECT COUNT(DISTINCT t3.player_id) FROM Activity t3),2) fraction
+FROM
+Activity t1 INNER JOIN Activity t2
+ON t1.player_id=t2.player_id AND DATE_ADD(t1.event_date,INTERVAL 1 DAY)=t2.event_date
+WHERE (t1.player_id,t1.event_date) IN(
+    SELECT player_id,MIN(event_date)
+    FROM Activity
+    GROUP BY player_id
+)
+```
+
+这个就很强，用最下日期+1，省去判断连续日期，首次登录连续日期，可以用MIN求出首次日期，再+1就是次日日期，判断palyer_id，加过后的日期在不在即可计数。
+
+```sql
+SELECT
+	ROUND(COUNT(DISTINCT player_id)/(SELECT COUNT(distinct player_id) FROM Activity), 
+	2) AS fraction
+FROM
+    Activity
+WHERE
+	(player_id,event_date)
+	IN
+	(SELECT 
+        player_id,
+        Date(min(event_date)+1)
+	FROM Activity
+	GROUP BY player_id);
+```
+
+```sql
+select round(count(distinct(b.player_id))/(select count(distinct(player_id)) from activity),2) as fraction
+from activity b
+join
+(select player_id,min(event_date), min(event_date)+1 as date_2nd
+from activity
+group by 1 ) a
+on b.event_date = a.date_2nd and b.player_id = a.player_id
 ```
 
 569.
@@ -3240,6 +3284,7 @@ student 表格如下：
 | student_name | String    |
 | gender       | Character |
 | dept_id      | Integer   |
+
 其中， student_id 是学生的学号， student_name 是学生的姓名， gender 是学生的性别， dept_id 是学生所属专业的专业编号。
 
 department 表格如下：
@@ -3248,6 +3293,7 @@ department 表格如下：
 | ----------- | ------- |
 | dept_id     | Integer |
 | dept_name   | String  |
+
 dept_id 是专业编号， dept_name 是专业名字。
 
 区分count(*）和count(s.student_id)区别 前一个是有多少条不考虑值 后一个只算s.student_id这一列的值不会计算null
@@ -3306,6 +3352,7 @@ WHERE referee_id!=2 OR referee_id IS NULL
 | TIV_2016    | NUMERIC(15,2) |
 | LAT         | NUMERIC(5,2)  |
 | LON         | NUMERIC(5,2)  |
+
 PID 字段是投保人的投保编号， TIV_2015 是该投保人在2015年的总投保金额， TIV_2016 是该投保人在2016年的投保金额， LAT 是投保人所在城市的维度， LON 是投保人所在城市的经度。
 
 ```sql
@@ -3481,11 +3528,13 @@ visit_date 是表的主键
 | 1            | 3           | 2016-06-08  |
 | 2            | 3           | 2016-06-08  |
 | 3            | 4           | 2016-06-09  |
+
 写一个查询语句，求出谁拥有最多的好友和他拥有的好友数目。对于上面的样例数据，结果为：
 
 | id   | num  |
 | ---- | ---- |
 | 3    | 3    |
+
 注意：
 
 保证拥有最多好友数目的只有 1 个人。
@@ -3514,5 +3563,558 @@ group by accepter_id)) t3
 group by id
 order by num desc
 limit 1
+```
+
+603.
+
+几个朋友来到电影院的售票处，准备预约连续空余座位。
+
+你能利用表 cinema ，帮他们写一个查询语句，获取所有空余座位，并将它们按照 seat_id 排序后返回吗？
+
+| seat_id | free |
+| ------- | ---- |
+| 1       | 1    |
+| 2       | 0    |
+| 3       | 1    |
+| 4       | 1    |
+| 5       | 1    |
+
+**连续值问题怎么处理?**首先是两张表自联结，然后两张表的顺序作差值等于1，取绝对值的话就不论前后了
+
+```sql
+SELECT DISTINCT a.seat_id 
+FROM cinema a INNER JOIN cinema b
+ON abs(b.seat_id-a.seat_id)=1
+WHERE b.free=1 AND a.free=1
+ORDER BY a.seat_id ASC;
+```
+
+还有这种lag函数的用法,lag是提取之前的内容，lead是提取之后的内容
+
+```sql
+select seat_id
+from (
+    select
+        seat_id ,
+        free ,
+        lag(free,1,999) over() pre_free,
+        lead(free,1,999) over() next_free
+    from  cinema
+)tmp
+where  free=1 and (pre_free=1 or next_free=1 )
+order by  seat_id
+```
+
+607.
+
+给定 3 个表： salesperson， company， orders。
+输出所有表 salesperson 中，没有向公司 'RED' 销售任何东西的销售员。
+
+示例：
+输入
+
+表： salesperson
+
++----------+------+--------+-----------------+-----------+
+| sales_id | name | salary | commission_rate | hire_date |
++----------+------+--------+-----------------+-----------+
+|   1      | John | 100000 |     6           | 4/1/2006  |
+|   2      | Amy  | 120000 |     5           | 5/1/2010  |
+|   3      | Mark | 65000  |     12          | 12/25/2008|
+|   4      | Pam  | 25000  |     25          | 1/1/2005  |
+|   5      | Alex | 50000  |     10          | 2/3/2007  |
++----------+------+--------+-----------------+-----------+
+表 salesperson 存储了所有销售员的信息。每个销售员都有一个销售员编号 sales_id 和他的名字 name 。
+
+表： company
+
++---------+--------+------------+
+| com_id  |  name  |    city    |
++---------+--------+------------+
+|   1     |  RED   |   Boston   |
+|   2     | ORANGE |   New York |
+|   3     | YELLOW |   Boston   |
+|   4     | GREEN  |   Austin   |
++---------+--------+------------+
+表 company 存储了所有公司的信息。每个公司都有一个公司编号 com_id 和它的名字 name 。
+
+表： orders
+
++----------+------------+---------+----------+--------+
+| order_id | order_date | com_id  | sales_id | amount |
++----------+------------+---------+----------+--------+
+| 1        |   1/1/2014 |    3    |    4     | 100000 |
+| 2        |   2/1/2014 |    4    |    5     | 5000   |
+| 3        |   3/1/2014 |    1    |    1     | 50000  |
+| 4        |   4/1/2014 |    1    |    4     | 25000  |
++----------+----------+---------+----------+--------+
+表 orders 存储了所有的销售数据，包括销售员编号 sales_id 和公司编号 com_id 。
+
+```sql
+SELECT name FROM salesperson
+WHERE sales_id NOT IN 
+(SELECT sales_id 
+FROM orders o INNER JOIN company c
+ON o.com_id=c.com_id
+WHERE c.name='RED')
+```
+
+608.
+
+给定一个表 tree，id 是树节点的编号， p_id 是它父节点的 id 。
+
++----+------+
+| id | p_id |
++----+------+
+| 1  | null |
+| 2  | 1    |
+| 3  | 1    |
+| 4  | 2    |
+| 5  | 2    |
++----+------+
+树中每个节点属于以下三种类型之一：
+
+叶子：如果这个节点没有任何孩子节点。
+根：如果这个节点是整棵树的根，即没有父节点。
+内部节点：如果这个节点既不是叶子节点也不是根节点。
+
+
+写一个查询语句，输出所有节点的编号和节点的类型，并将结果按照节点编号排序。
+
+ ```sql
+
+ ```
+
+610.
+
+一个小学生 Tim 的作业是判断三条线段是否能形成一个三角形。
+
+然而，这个作业非常繁重，因为有几百组线段需要判断。
+
+假设表 triangle 保存了所有三条线段的长度 x、y、z ，请你帮 Tim 写一个查询语句，来判断每组 x、y、z 是否可以组成一个三角形？
+
+ 记一下这种 case then用法,也可以不指定变量，只在WHEN中判断。
+
+```sql
+SELECT x,y,z,
+CASE 
+WHEN x+y>z AND x+z>y and y+z>x then 'Yes'
+ELSE 'No'
+END triangle
+FROM triangle
+```
+
+```sql
+select x, y, z, if(x+y>z and x+z>y and y+z>x, 'Yes', 'No') as triangle from triangle
+```
+
+612.
+
+表 point_2d 保存了所有点（多于 2 个点）的坐标 (x,y) ，这些点在平面上两两不重合。
+
+写一个查询语句找到两点之间的最近距离，保留 2 位小数。
+
+| x    | y    |
+| ---- | ---- |
+| -1   | -1   |
+| 0    | 0    |
+| -1   | -2   |
+
+
+最近距离在点 (-1,-1) 和(-1,2) 之间，距离为 1.00 。所以输出应该为：
+
+| shortest |
+| -------- |
+| 1.00     |
+
+```sql
+SELECT  ROUND(MIN(SQRT(POWER(p1.x-p2.x,2)+POWER(P1.y-p2.y,2))),2) shortest
+FROM point_2d p1,point_2d p2
+WHERE p1.x!=p2.x OR p1.y!=p2.y
+```
+
+```sq
+select 
+round(min(sqrt(pow(t1.x-t2.x,2)+pow(t1.y-t2.y,2))),2) shortest
+from point_2d as t1,point_2d as t2
+where (t1.x,t1.y) != (t2.x,t2.y)
+```
+
+613.
+
+表 point 保存了一些点在 x 轴上的坐标，这些坐标都是整数。
+
+写一个查询语句，找到这些点中最近两个点之间的距离。
+
+| x    |
+| ---- |
+| -1   |
+| 0    |
+| 2    |
+
+
+最近距离显然是 '1' ，是点 '-1' 和 '0' 之间的距离。所以输出应该如下：
+
+| shortest |
+| -------- |
+| 1        |
+
+
+注意：每个点都与其他点坐标不同，表 table 不会有重复坐标出现。
+
+ ```sq
+SELECT MIN(ABS(p1.x-p2.x)) shortest
+FROM point p1,point p2
+WHERE p1.x!=p2.x
+ ```
+
+614.
+
+在 facebook 中，表 follow 会有 2 个字段： followee, follower ，分别表示被关注者和关注者。
+
+请写一个 sql 查询语句，对每一个关注者，查询关注他的关注者的数目。
+
+比方说：
+
++-------------+------------+
+| followee    | follower   |
++-------------+------------+
+|     A       |     B      |
+|     B       |     C      |
+|     B       |     D      |
+|     D       |     E      |
++-------------+------------+
+应该输出：
+
++-------------+------------+
+| follower    | num        |
++-------------+------------+
+|     B       |  2         |
+|     D       |  1         |
++-------------+------------+
+解释：
+
+B 和 D 都在在 follower 字段中出现，作为被关注者，B 被 C 和 D 关注，D 被 E 关注。A 不在 follower 字段内，所以A不在输出列表中。
+
+ 
+
+注意：
+
+被关注者永远不会被他 / 她自己关注。
+将结果按照字典序返回。
+
+```sql
+SELECT followee follower,COUNT(DISTINCT follower) num
+FROM follow
+WHERE followee IN
+(SELECT follower FROM follow)
+GROUP BY followee
+```
+
+615.
+
+给如下两个表，写一个查询语句，求出在每一个工资发放日，每个部门的平均工资与公司的平均工资的比较结果 （高 / 低 / 相同）。
+
+表： salary
+
+| id   | employee_id | amount | pay_date   |
+| ---- | ----------- | ------ | ---------- |
+| 1    | 1           | 9000   | 2017-03-31 |
+| 2    | 2           | 6000   | 2017-03-31 |
+| 3    | 3           | 10000  | 2017-03-31 |
+| 4    | 1           | 7000   | 2017-02-28 |
+| 5    | 2           | 6000   | 2017-02-28 |
+| 6    | 3           | 8000   | 2017-02-28 |
+
+
+employee_id 字段是表 employee 中 employee_id 字段的外键。
+
+| employee_id | department_id |
+| ----------- | ------------- |
+| 1           | 1             |
+| 2           | 2             |
+| 3           | 2             |
+
+```sql
+SELECT t1.pay_date pay_month,t2.department_id,
+CASE
+WHEN t1.avg_amount>t2.avg_amount THEN 'lower'
+WHEN t1.avg_amount=t2.avg_amount THEN 'same'
+WHEN t1.avg_amount<t2.avg_amount THEN 'higher'
+END comparison
+FROM
+(SELECT DATE_FORMAT(pay_date,'%Y-%m') pay_date,AVG(amount) avg_amount
+FROM salary
+GROUP BY DATE_FORMAT(pay_date,'%Y-%m')
+) t1
+INNER JOIN 
+(SELECT DATE_FORMAT(s.pay_date,'%Y-%m') pay_date,e.department_id,AVG(s.amount) avg_amount
+FROM salary s INNER JOIN employee e
+ON s.employee_id=e.employee_id
+GROUP BY DATE_FORMAT(s.pay_date,'%Y-%m'),e.department_id
+) t2 
+ON t1.pay_date=t2.pay_date
+```
+
+下面这个写的更好,OVER(PARTITION BY department_id,LEFT(pay_date,7))
+
+```sql
+SELECT pay_month,department_id,CASE
+            WHEN DEP_AVG_Salary=Mon_AVG_Salary THEN 'same'
+            WHEN DEP_AVG_Salary>Mon_AVG_Salary THEN 'higher'
+            ELSE 'lower'
+            END 'comparison'
+FROM (SELECT DISTINCT(LEFT(pay_date,7)) as 'pay_month',
+        e.department_id,
+        AVG(amount) OVER(PARTITION BY e.department_id,LEFT(pay_date,7)) as 'DEP_AVG_Salary',
+        AVG(amount) OVER(PARTITION BY LEFT(pay_date,7)) as 'Mon_AVG_Salary' 
+      FROM salary s
+      LEFT JOIN employee e ON s.employee_id=e.employee_id) t
+ORDER BY pay_month DESC;
+```
+
+618.
+
+一所美国大学有来自亚洲、欧洲和美洲的学生，他们的地理信息存放在如下 student 表中。
+
+| name   | continent |
+| ------ | --------- |
+| Jack   | America   |
+| Pascal | Europe    |
+| Xi     | Asia      |
+| Jane   | America   |
+
+
+写一个查询语句实现对大洲（continent）列的 透视表 操作，使得每个学生按照姓名的字母顺序依次排列在对应的大洲下面。输出的标题应依次为美洲（America）、亚洲（Asia）和欧洲（Europe）。数据保证来自美洲的学生不少于来自亚洲或者欧洲的学生。
+
+对于样例输入，它的对应输出是：
+
+| America | Asia | Europe |
+| ------- | ---- | ------ |
+| Jack    | Xi   | Pascal |
+| Jane    |      |        |
+
+**行列转换怎么弄呢？**先计算ROW_NUMBER() OVER(PARTITION BY continent ORDER BY name) 分组排序，
+
+然后GROUP BY，MAX,再CASE操作。
+
+```sql
+SELECT
+MAX(CASE WHEN continent='America' THEN name END) AS America,
+MAX(CASE WHEN continent='Asia' THEN name END) AS Asia,
+MAX(CASE WHEN continent='Europe' THEN name END) AS Europe
+FROM
+(SELECT name,continent,ROW_NUMBER() OVER(PARTITION BY continent ORDER BY name) rk
+FROM student) T
+GROUP BY rk;
+```
+
+619.
+
+表 my_numbers 的 num 字段包含很多数字，其中包括很多重复的数字。
+
+你能写一个 SQL 查询语句，找到只出现过一次的数字中，最大的一个数字吗？
+
++---+
+|num|
++---+
+| 8 |
+| 8 |
+| 3 |
+| 3 |
+| 1 |
+| 4 |
+| 5 |
+| 6 | 
+
+```sql
+SELECT MAX(num) num
+FROM
+(SELECT num,COUNT(num) n_num
+FROM my_numbers
+GROUP BY num) t
+WHERE n_num=1;
+```
+
+```sql
+SELECT
+CASE 
+WHEN COUNT(*)=1 THEN num
+ELSE NULL
+END num
+FROM my_numbers
+GROUP BY num
+ORDER BY num DESC
+LIMIT 1
+```
+
+620.
+
+某城市开了一家新的电影院，吸引了很多人过来看电影。该电影院特别注意用户体验，专门有个 LED显示板做电影推荐，上面公布着影评和相关电影描述。
+
+作为该电影院的信息部主管，您需要编写一个 SQL查询，找出所有影片描述为非 boring (不无聊) 的并且 id 为奇数 的影片，结果请按等级 rating 排列。
+
+ 
+
+例如，下表 cinema:
+
++---------+-----------+--------------+-----------+
+|   id    | movie     |  description |  rating   |
++---------+-----------+--------------+-----------+
+|   1     | War       |   great 3D   |   8.9     |
+|   2     | Science   |   fiction    |   8.5     |
+|   3     | irish     |   boring     |   6.2     |
+|   4     | Ice song  |   Fantacy    |   8.6     |
+|   5     | House card|   Interesting|   9.1     |
++---------+-----------+--------------+-----------+
+
+```sql
+SELECT *
+FROM cinema
+WHERE description!='boring' AND id%2=1
+ORDER BY rating DESC
+```
+
+627.
+
+给定一个 salary 表，如下所示，有 m = 男性 和 f = 女性 的值。交换所有的 f 和 m 值（例如，将所有 f 值更改为 m，反之亦然）。要求只使用一个更新（Update）语句，并且没有中间的临时表。
+
+注意，您必只能写一个 Update 语句，请不要编写任何 Select 语句。
+
+```sql
+UPDATE salary
+SET sex=IF(sex='m','f','m')
+```
+
+感觉case可以处理的问题更多一点
+
+```sql
+UPDATE salary
+SET sex=(CASE sex WHEN 'm' THEN 'f' ELSE 'm' END)
+```
+
+1045.
+
+Customer 表：
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| customer_id | int     |
+| product_key | int     |
++-------------+---------+
+product_key 是 Customer 表的外键。
+Product 表：
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| product_key | int     |
++-------------+---------+
+product_key 是这张表的主键。
+
+
+写一条 SQL 查询语句，从 Customer 表中查询购买了 Product 表中所有产品的客户的 id。
+
+```sql
+SELECT customer_id
+FROM Customer
+GROUP BY customer_id
+HAVING COUNT(DISTINCT product_key)=(
+SELECT COUNT(DISTINCT product_key) FROM Product
+)
+```
+
+1050.
+
+ActorDirector 表：
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| actor_id    | int     |
+| director_id | int     |
+| timestamp   | int     |
++-------------+---------+
+timestamp 是这张表的主键.
+
+
+写一条SQL查询语句获取合作过至少三次的演员和导演的 id 对 (actor_id, director_id)
+
+```sql
+SELECT actor_id,director_id
+FROM ActorDirector
+GROUP BY actor_id,director_id
+HAVING COUNT(*)>=3
+```
+
+1068.
+
+销售表 Sales：
+
++-------------+-------+
+| Column Name | Type  |
++-------------+-------+
+| sale_id     | int   |
+| product_id  | int   |
+| year        | int   |
+| quantity    | int   |
+| price       | int   |
++-------------+-------+
+(sale_id, year) 是销售表 Sales 的主键.
+product_id 是关联到产品表 Product 的外键.
+注意: price 表示每单位价格
+产品表 Product：
+
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| product_id   | int     |
+| product_name | varchar |
++--------------+---------+
+product_id 是表的主键.
+
+
+写一条SQL 查询语句获取 Sales 表中所有产品对应的 产品名称 product_name 以及该产品的所有 售卖年份 year 和 价格 price 。
+
+ ```sq
+SELECT p.product_name,s.year,s.price
+FROM Sales s INNER JOIN Product p
+ON s.product_id=p.product_id
+ ```
+
+1069.
+
+销售表：Sales
+
++-------------+-------+
+| Column Name | Type  |
++-------------+-------+
+| sale_id     | int   |
+| product_id  | int   |
+| year        | int   |
+| quantity    | int   |
+| price       | int   |
++-------------+-------+
+sale_id 是这个表的主键。
+product_id 是 Product 表的外键。
+请注意价格是每单位的。
+产品表：Product
+
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| product_id   | int     |
+| product_name | varchar |
++--------------+---------+
+product_id 是这个表的主键。
+
+
+编写一个 SQL 查询，按产品 id product_id 来统计每个产品的销售总量。
+
+```sql
+SELECT product_id,SUM(quantity) total_quantity
+FROM Sales
+GROUP BY product_id
 ```
 
