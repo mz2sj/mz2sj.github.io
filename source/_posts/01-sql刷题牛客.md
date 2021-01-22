@@ -3762,7 +3762,7 @@ where (t1.x,t1.y) != (t2.x,t2.y)
 
 注意：每个点都与其他点坐标不同，表 table 不会有重复坐标出现。
 
- ```sq
+ ```sql
 SELECT MIN(ABS(p1.x-p2.x)) shortest
 FROM point p1,point p2
 WHERE p1.x!=p2.x
@@ -4077,7 +4077,7 @@ product_id 是表的主键.
 
 写一条SQL 查询语句获取 Sales 表中所有产品对应的 产品名称 product_name 以及该产品的所有 售卖年份 year 和 价格 price 。
 
- ```sq
+ ```sql
 SELECT p.product_name,s.year,s.price
 FROM Sales s INNER JOIN Product p
 ON s.product_id=p.product_id
