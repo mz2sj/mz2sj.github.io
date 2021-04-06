@@ -145,6 +145,169 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/20/01-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3/">
+        <p class="h4 index-header">01-CV入门之赛题理解</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> 目标
+识别图像中的字符串
+
+为了简化难度，主办方提供了字符在图片中的字符框位置，我们只需识别字符框中的字符即可。
+
+下面看读取数据的一个例子
+
+import numpy as np
+
+#读取图片的起始结尾位置及标签
+def parse_json(d):
+  arr=np.array([
+    d['top'],d['height'],d['left'],d['width'],d['label']
+  ])
+  arr=arr.astype(int)
+  return arr
+
+import cv2
+
+img=cv2.imread('./data/mchar_train/000008.png')
+arr=parse_json(train_json['000008.png'])
+
+import matplotlib.pyplot as plt
+
+#显示图片
+plt.figure(figsize=(10,10))
+plt.subplot(1,arr.shape[1]+1,1)
+plt.imshow(img)
+
+
+可以看到128三个数字，由于已经给我们分好了每个字符的范围，我们可以单独把每</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-20&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CV">CV</a>&nbsp;
+          
+            <a href="/categories/%E6%AF%94%E8%B5%9B">比赛</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CV">CV</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/27/04-%E7%88%AC%E8%99%AB/">
+        <p class="h4 index-header">04-爬虫</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> chrome监控ajax请求
+浏览器中输入腾讯新闻的网址，发现不断向下拉滚动条就可以新闻会不断出现，初步判断新出现的新闻是通过ajax加载的。打开chrome的开发者工具，进入network中的js界面，将js脚本按名称排序，继续向下拉动滚动条，可以发现新出现的请求有规律。
+
+rcd?这个请求随着滚动条的拖动不断增加，我们把前几条请求单独拿出来分析。
+https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page=0&amp;expIds=&amp;callback=__jp1
+https://pacaio.match.qq.com/irs/rcd?cid=4&amp;token=9513f1a78a663e1d25b46a826f248c3c&amp;ext=&amp;page=0&amp;expIds=&amp;callback=__jp2
+https://pacaio.match.qq.com/irs/rcd?c</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-27&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E8%85%BE%E8%AE%AF%E6%96%B0%E9%97%BB%E7%88%AC%E8%99%AB">腾讯新闻爬虫</a>&nbsp;
+          
+            <a href="/tags/ajax">ajax</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/25/03-%E7%88%AC%E8%99%AB/">
+        <p class="h4 index-header">03-爬虫</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> proxy ip 代理
+代理主要用来解决ip频繁访问被服务器封号的问题，在requests中使用代理很简单.proxies格式是一个字典：{‘http’: ‘[http://IP:port‘,‘https’:'https://IP:port‘}](http://xn--ip:port%2Chttps:'https-mc9nd6a//IP:port‘}),我们将它传入requests中的get方法就可以使用
+requests.get(url, headers = headers, proxies = proxies, timeout = 10)
+
+我们可以从网上提供的一些代理池中获取有效的代理，具体代码如下：
+from bs4 import BeautifulSoup
+import requests
+import re
+import json
+
+
+def open_proxy_url(url):
+    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, lik</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-25&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/selenium">selenium</a>&nbsp;
+          
+            <a href="/tags/cookie">cookie</a>&nbsp;
+          
+            <a href="/tags/session">session</a>&nbsp;
+          
+            <a href="/tags/%E4%BB%A3%E7%90%86">代理</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/04/23/02-%E7%88%AC%E8%99%AB/">
         <p class="h4 index-header">02-爬虫</p>
         
@@ -488,194 +651,6 @@ The intuition of Noisy Model is that the words we see may be wrong words were pr
       <div>
         
           <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-16&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/nlp">nlp</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/nlp">nlp</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/02/14/03-language-modeling/">
-        <p class="h4 index-header">03-language-modeling</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">今天要学习的是语言模型，好多东西呀！
- 概念
-老师介绍了一大堆，我的理解语言模型就是对语言的合理性进行建模。这种建模可以是一个完整的句子的可能性，也可以是一句话基于之前的词预测出下一个词的可能性。数学公式表达如下：
-P(W)=P(w1,W2,W3,W4,W5…Wn)\mathrm{P}(\mathrm{W})=\mathrm{P}\left(\mathrm{w}_{1}, \mathrm{W}_{2}, \mathrm{W}_{3}, \mathrm{W}_{4}, \mathrm{W}_{5} \dots \mathrm{W}_{\mathrm{n}}\right)P(W)=P(w1​,W2​,W3​,W4​,W5​…Wn​)  一个句子出现的概率
-P(wn∣w1,W2…Wn−1)\mathrm{P}\left(\mathrm{w}_{\mathrm{n}} | \mathrm{w}_{1}, \mathrm{W}_{2} \dots \mathrm{W}_{\mathrm{n}-1}\right)P(wn​∣w1​,W2​…Wn−1​)	基于之前词预测下一词
- 语言模型的计算
-那么</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-14&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/nlp">nlp</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/nlp">nlp</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/02/12/02-basic-text-processing/">
-        <p class="h4 index-header">02 basic text processing</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">今天学习正则表达式的使用，后面还有一个小作业要做，开始啦！
- 正则表达式
- Disjunctions 析取
-我也不知道中文该怎么说，暂定析取吧。disjunction用 [] 表示，表示选取括号中表示的一个字符。下面举个例子
-
-
-
-Pattern
-Matches
-
-
-
-
-[wW]oodchunk
-Woodchunk,woodchunk
-
-
-[123456789]
-any digit(由于匹配是贪心的，所以只要是数字都会匹配)
-
-
-
-像数字每次都要把十个阿拉伯数字都写出来太麻烦了，所以有了range用法
-
-
-
-Pattern
-Matches
-
-
-
-
-[A-Z]
-An uppeer case letter
-
-
-[a-z]
-A lowwer case letter
-
-
-[0-9]
-A single digit
-
-
-
- Negation in Disjunction 析取取反
-翻译忽略， ^ carat就是取反的意思，在disjunction中经常会用到
-^ 只有在析取 [] 中作为第一个字符才表示取反，也就是说**^** 与 [] 常常连用
-
-
-
-Pattern
-Matcher
-Exampl</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-12&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/nlp">nlp</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/nlp">nlp</a>&nbsp;
-          
-            <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/02/12/01-introduction-to-nlp/">
-        <p class="h4 index-header">01 introduction to nlp</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1"> 写在前面
-研究生读了半年了，越来越迷茫了，没有认认真真做好一件事。今天，立帖为证，我一定要将这门课认真修完，勤做笔记，完成作业。话不多说，开始吧！附上课程链接。
- nlp的应用领域
-
-
-Question Answering 问答
-
-
-Information Extraction 信息抽取
-
-
-Sentiment Analysis 情感分析
-
-
-机器翻译
-
-
-自然语言在垃圾邮件侦测、词性标注、命名实体识别上已经取得了较好的表现，在情感分类、指代消解、句法分析、机器翻译、信息抽取也有所进步，尤其是现在的神经机器翻译，比之前的统计机器翻译取得了长足的进步，不过这门课开设时间已经比较早了，那时候深度学习还没有大规模应用到nlp中。但在问答、摘要、对话系统、改述（Paraphrase）等方面表现还有待提高。
- 歧义让nlp变得更加困难
-举个例子，这是纽约时报的一条新闻头条
-Fed raises interest rates
-既可以理解为Fed这个人将利率interest rates 提高了，也可以理解为Fed这个人对rates这个东西起了兴趣raise interest。
-当给出更多信息时，可</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-12&nbsp;&nbsp;
         
         
           <i class="iconfont icon-inbox"></i>

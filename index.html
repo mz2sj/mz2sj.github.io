@@ -145,6 +145,197 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/12/16/numpy%E7%9F%A5%E8%AF%86%E7%82%B9/">
+        <p class="h4 index-header">numpy知识点</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">记录一些常用函数和知识点
+ axis理解
+numpy中axis的理解
+
+axis=0,沿着竖直方向操作，操作对象是水平的一行，
+axis=1,沿着水平方向操作，操作对象是竖直的一列。
+&gt;&gt;&gt;df = pd.DataFrame([[1, 1, 1, 1], [2, 2, 2, 2], [3, 3, 3, 3]], \
+columns=["col1", "col2", "col3", "col4"])
+&gt;&gt;&gt;df
+   col1  col2  col3  col4
+    0     1     1     1     1
+    1     2     2     2     2
+    2     3     3     3     3
+
+&gt;&gt;&gt; df.mean(axis=1)
+0    1
+1    2
+2    3
+
+如代码所示，axis=1表示沿水平方向操作相加求平均，操作对象是竖直的一列，也就是
+1     1     1     1     
+2  +  2  +  2  +  2    
+3     3     3   </div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-12-16&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/numpy">numpy</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/numpy">numpy</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/10/03/%E7%AC%AC%E4%BA%8C%E5%B1%8A%E7%BF%BC%E6%94%AF%E4%BB%98%E6%9D%AF%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E5%A4%A7%E8%B5%9B%E5%A4%8D%E7%9B%98/">
+        <p class="h4 index-header">第二届翼支付杯大数据建模大赛复盘</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">暑假的时候参加了一个数据竞赛–第二届翼支付杯大数据建模大赛-信用风险用户识别。最后复赛A榜排在第15名，B榜12名。第一次正式参加比赛，原本只想排到六七十名就够了，没想到最后能进到前二十，感谢队友和自己的付出。虽然最后的结果还不错，但是做的还是模模糊糊的，现在对一些top方案和自己参加比赛的想法做一些总结。
+ 数据
+ 基础信息 base_df
+
+
+
+字段名
+字段说明（数据经过脱敏处理）
+
+
+
+
+user
+样本编号，e.g., Train_00000、Train_00001…
+
+
+sex
+性别，编码后取值为：category 0、category1
+
+
+age
+年龄，处理后仅保留大小关系，为某一区间的整数
+
+
+provider
+运营商类型，编码后取值为：category 0、category 1…
+
+
+level
+用户等级，编码后取值为：category 0、category 1…
+
+
+verified
+是否实名，编码后取值为：category 0、category1
+
+
+using_time
+使用时长，处理后仅保留大小关系，为某一区间的整数
+
+
+regist_type
+注册类型，编码后</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-10-03&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B">数据竞赛</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B">数据竞赛</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/09/08/01-%E4%B8%9A%E5%8A%A1%E7%9F%A5%E8%AF%86-%E5%A6%82%E4%BD%95%E6%A2%B3%E7%90%86%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91/">
+        <p class="h4 index-header">01-业务知识-如何梳理业务逻辑</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">因为不懂业务，所以找了门课来看看，记录一下自己的历程吧！
+所谓七步成诗法，一一道来~
+ 我们挣什么钱（经营模式）老板决定
+这个好理解一点，企业可能同样是做一件事，但是他的目标可能是不一样的。
+
+比较经典的是上面这个例子，比如视频网站，真正的使用者使用户，用户只需要看广告，而广告主却是真正付钱的人，视频网站营收的大头也是广告费用。用户是🐏，广告主是🐕。
+再比如信用卡业务的例子，信用卡中乱收费的收入占比只有2%，真正占收入的大头是信贷。
+如何弄清企业的经营模式呢？
+1.与业内人士多交流。
+2.多看新闻、财报、行业文章
+3.站在企业经营者的角度思考问题
+4.关注公司内部销售渠道考核指标，年报
+ 我们挣谁的钱（目标客户）市场部/产品
+这个部分是找🐏和🐕的问题，以信用卡问题为例，如何找到那些信贷需求旺盛的群体呢？
+目标用户群依次是：企业经营者、小老板商户、高级白领、小白领、屌丝。
+锁定核心用户的原则：
+对用户而言：这个业务是我的刚性需求，非用不可
+对企业而言：这个客户有强大的付钱能力。企业是有钱就要上。
+ 为什么客户要用我们的产品（产品属性）市场部/产品
+大部分产品并非生活必需品，要培养</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-09-08&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+            <a href="/tags/%E4%B8%9A%E5%8A%A1">业务</a>&nbsp;
+          
+            <a href="/tags/%E8%AF%BE%E7%A8%8B">课程</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/08/25/01-sql%E5%88%B7%E9%A2%98%E7%89%9B%E5%AE%A2/">
         <p class="h4 index-header">01-sql刷题牛客</p>
         
@@ -153,14 +344,24 @@
         
         <div class="index-excerpt" >
           <div class="index-text mb-1">今天是刷题记录的第一天，加油啦，小孟冲冲冲！！！
+
+
+
 查找最晚入职员工的所有信息，为了减轻入门难度，目前所有的数据里员工入职的日期都不是同一天(sqlite里面的注释为--,mysql为comment)
 CREATE TABLE employees (
-emp_no int(11) NOT NULL, -- '员工编号'
-birth_date date NOT NULL,
-first_name varchar(14) NOT NULL,
-last_name varchar(16) NOT NULL,
-gender char(1) NOT NULL,
-hire_date date NOT NULLPRIMARY KEY (emp_no));,
+
+`emp_no int(11) NOT NULL, -- '员工编号'`
+
+`birth_date date NOT NULL,`
+
+`first_name varchar(14) NOT NULL,`
+
+`last_name varchar(16) NOT NULL,`
+
+`gender char(1) NOT NULL,`
+
+`hire_date date NOT NULLPRIMARY KEY (emp_no));
+
 自己的写法，考虑的不是那么全面，只能查出一条数据
 SELECT * FROM employees
 ORDER BY hire_date DESC
@@ -168,7 +369,7 @@ LIMIt 1;
 
 但是假如最后一天有多人入职，这种写法就hold不住了。
 SELECT * FROM employees
-WHERE hire_date=(SELECT MAX(hire_date) FRO</div>
+WHERE hire_date=(SELEC</div>
         </div>
       </a>
 
@@ -545,169 +746,6 @@ img=cv2.imread('./data/cat.p</div>
             <a href="/tags/CV">CV</a>&nbsp;
           
             <a href="/tags/pytorch">pytorch</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/05/20/01-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3/">
-        <p class="h4 index-header">01-CV入门之赛题理解</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1"> 目标
-识别图像中的字符串
-
-为了简化难度，主办方提供了字符在图片中的字符框位置，我们只需识别字符框中的字符即可。
-
-下面看读取数据的一个例子
-
-import numpy as np
-
-#读取图片的起始结尾位置及标签
-def parse_json(d):
-  arr=np.array([
-    d['top'],d['height'],d['left'],d['width'],d['label']
-  ])
-  arr=arr.astype(int)
-  return arr
-
-import cv2
-
-img=cv2.imread('./data/mchar_train/000008.png')
-arr=parse_json(train_json['000008.png'])
-
-import matplotlib.pyplot as plt
-
-#显示图片
-plt.figure(figsize=(10,10))
-plt.subplot(1,arr.shape[1]+1,1)
-plt.imshow(img)
-
-
-可以看到128三个数字，由于已经给我们分好了每个字符的范围，我们可以单独把每</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-20&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/CV">CV</a>&nbsp;
-          
-            <a href="/categories/%E6%AF%94%E8%B5%9B">比赛</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/CV">CV</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/04/27/04-%E7%88%AC%E8%99%AB/">
-        <p class="h4 index-header">04-爬虫</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1"> chrome监控ajax请求
-浏览器中输入腾讯新闻的网址，发现不断向下拉滚动条就可以新闻会不断出现，初步判断新出现的新闻是通过ajax加载的。打开chrome的开发者工具，进入network中的js界面，将js脚本按名称排序，继续向下拉动滚动条，可以发现新出现的请求有规律。
-
-rcd?这个请求随着滚动条的拖动不断增加，我们把前几条请求单独拿出来分析。
-https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page=0&amp;expIds=&amp;callback=__jp1
-https://pacaio.match.qq.com/irs/rcd?cid=4&amp;token=9513f1a78a663e1d25b46a826f248c3c&amp;ext=&amp;page=0&amp;expIds=&amp;callback=__jp2
-https://pacaio.match.qq.com/irs/rcd?c</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-27&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/%E8%85%BE%E8%AE%AF%E6%96%B0%E9%97%BB%E7%88%AC%E8%99%AB">腾讯新闻爬虫</a>&nbsp;
-          
-            <a href="/tags/ajax">ajax</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/04/25/03-%E7%88%AC%E8%99%AB/">
-        <p class="h4 index-header">03-爬虫</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1"> proxy ip 代理
-代理主要用来解决ip频繁访问被服务器封号的问题，在requests中使用代理很简单.proxies格式是一个字典：{‘http’: ‘[http://IP:port‘,‘https’:'https://IP:port‘}](http://xn--ip:port%2Chttps:'https-mc9nd6a//IP:port‘}),我们将它传入requests中的get方法就可以使用
-requests.get(url, headers = headers, proxies = proxies, timeout = 10)
-
-我们可以从网上提供的一些代理池中获取有效的代理，具体代码如下：
-from bs4 import BeautifulSoup
-import requests
-import re
-import json
-
-
-def open_proxy_url(url):
-    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, lik</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-25&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/selenium">selenium</a>&nbsp;
-          
-            <a href="/tags/cookie">cookie</a>&nbsp;
-          
-            <a href="/tags/session">session</a>&nbsp;
-          
-            <a href="/tags/%E4%BB%A3%E7%90%86">代理</a>&nbsp;
           
         
       </div>
