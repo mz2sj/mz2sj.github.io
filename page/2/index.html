@@ -145,6 +145,76 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/23/02-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96%E4%B8%8E%E6%89%A9%E5%A2%9E/">
+        <p class="h4 index-header">02-CV入门之数据读取与扩增</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> Pillow
+Pilow是python中进行图像处理的一个库，话不多说看代码。
+from PIL import Image
+
+im=Image.open('./data/cat.png')
+im
+
+自己截了colab里面的猫猫，很可爱呀
+
+from PIL import Image,ImageFilter
+
+im=Image.open('./data/cat.png')
+
+im2=im.filter(ImageFilter.BLUR)
+im2.save('blur.jpg','jpeg')
+im2
+
+
+可爱的猫猫变糊了
+from PIL import Image
+
+im=Image.open('./data/cat.png')
+im.thumbnail((im.width//2,im.height//2))
+im
+
+
+可爱的猫猫变小了
+对图像处理并不熟悉，我们要做的是清楚需要对图像处理做哪些工作，然后再去查找相关API
+ Opencv 2
+import cv2
+import matplotlib.pyplot as plt
+
+
+img=cv2.imread('./data/cat.p</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-23&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CV">CV</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CV">CV</a>&nbsp;
+          
+            <a href="/tags/pytorch">pytorch</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2020/05/20/01-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3/">
         <p class="h4 index-header">01-CV入门之赛题理解</p>
         
@@ -620,48 +690,6 @@ def outliers_proc(data,col_name,scale=3):
             <a href="/tags/%E5%9B%9E%E5%BD%92">回归</a>&nbsp;
           
             <a href="/tags/%E6%AF%94%E8%B5%9B">比赛</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/02/16/04-spelling-correction/">
-        <p class="h4 index-header">04-spelling-correction</p>
-        
-        
-          
-        
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">今天要介绍的是拼写检查，主要基于语言模型。
- Spelling Tasks
-拼写检查任务主要包括两个方面，一方面是拼写错误侦测，另一方面是拼写错误修正。
-拼写错误分为两种：
-1.Non-word Errors：比如漏写导致的错误，graffe-&gt;giraffe。这类错误产生的词不存在。可以通过词典来进行侦测。找出与这些词相近的词，有两种方法，最小编辑路径法，信道法（Highest noisy channel probability）。
-2.Real-word Errors：一种是打印错误，如 three-&gt;there顺序颠倒。另一种是认知错误，如piece-&gt;peace,too-&gt;two，发音相同导致的错误。这类错误产生的词是真实存在的，要先找到与这些词发音拼写相近的词形成候选集，在通过信道模型和分类器选择最好的候选词。
- The Nosiy Channel Model of Spelling
-The intuition of Noisy Model is that the words we see may be wrong words were produce</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-16&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/nlp">nlp</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/nlp">nlp</a>&nbsp;
           
         
       </div>
