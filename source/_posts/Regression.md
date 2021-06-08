@@ -53,11 +53,18 @@ $\begin{aligned}
 
 $X=U \Sigma V^{T}$
 
+$\begin{aligned}
+\hat{W}=\left(X^{\top} x\right)^{-1} X^{\top} Y &=\left(\left(U \Sigma V^{\top}\right)^{\top}\left(U \Sigma V^{\top}\right)\right)^{-1}\left(U \Sigma V\right)^{\top} Y \\
+&=\left(V \Sigma^{\top} U^{\top} U \Sigma V^{\top}\right)^{-1} V \Sigma^{\top} U^{\top} Y \\
+&=\left(V_{\Sigma} T^{\top} \Sigma V^{\top}\right)^{\top} V \varepsilon^{\top} U^{\top} Y \\
+&=\left(V^{\top}\right)^{-1} \Sigma^{-1}\left(\Sigma^{\top}\right)^{-1} V^{-1} V \Sigma^{\top} U^{\top} Y \\
+&=V \sum^{-1}\left(\Sigma^{\top}\right)^{-1} \Sigma^{\top} U^{\top} Y \\
+&=V \Sigma^{-1} U^{\top} Y
+\end{aligned}$
+
 于是:
 
 $X^{+}=V \Sigma^{-1} U^{T}$
-
-这里的$X^+$怎么得来的还不清楚
 
 ### 几何想象法
 
@@ -110,17 +117,6 @@ L 2: \operatorname{argmin}_{w} L(w)+\lambda\|w\|_{2}^{2}, \lambda>0
 L1正则化可以引起稀疏解
 从最小化损失的角度看，由于  $\mathrm{L} 1$  项求导在O附近的左右导数都不是0, 因此更容易取到0
 解。
-从另一个方面看, L1 正则化相当于:
-
-$\begin{array}{l}
-\underset{w}{\operatorname{argmin}} L(w) \\
-\text { s.t. }\|w\|_{1}<C
-\end{array}$
-
-我们已经看到平方误差损失函数在  $w $空间是一个植球, 因此上式求解就是尼球和
-$ \|w\|_{1}=C $ 的切点, 因此更容易相切在坐标轴上。
-
-这一块没太懂
 
 #### L2正则化 Ridge
 
@@ -130,6 +126,8 @@ $\begin{aligned}
 & \longrightarrow \hat{w}=\left(X^{T} X+\lambda \mathbb{I}\right)^{-1} X^{T} Y
 \end{aligned}$
 
-可以看到，这个正则化参数和前面的 MAP 结果不谋而合。利用2范数进行正则化不仅可 以是模型选择  $w$  较小的参数，同时也避免 $X^{T}X$不可逆的问题。
+可以看到，这个正则化参数和前面的 MAP 结果不谋而合。利用2范数进行正则化不仅可 以是模型选择  $w$  较小的参数，同时也避免 $X^{T}X$不可逆的问题。L2正则化可以降低过拟合。
 
-### 逻辑回归
+
+
+正则化的知识还需要进一步理解。
