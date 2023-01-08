@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/0JOFhyF5bT.jpeg">
+  <link rel="icon" type="image/png" href="/img/0JOFhyF5bT.jpeg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="mz2sj">
+  <meta name="keywords" content="">
+  <title>微风和暖</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>微风和暖</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('https://s2.ax1x.com/2020/02/12/1bDC4K.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="fas fa-angle-down scroll-down-arrow"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5 z-depth-3" id="board">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/03/28/02-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B%E4%B9%8B%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">
+        <p class="h4 index-header">02-二手车价格预测之特征工程</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">今天要做的笔记是特征工程，感觉这次官方给的代码不是特别全。最近在忙作业和kaggle的比赛，后面自己有时间会再完善一下。自己将按照特征工程的常见任务进行介绍。
+ 异常处理
+数据收集的过程中可能会产生脏数据，导致产生离群值，数据分布明显不合理，这时候我们要对数据进行异常处理。常见的异常处理方法有：
+ 通过箱型图删除异常值
+官方提供了相关代码
+def outliers_proc(data,col_name,scale=3):
+
+  def box_plot_outliers(data_ser,box_scale):
+    iqr=box_scale*(data_ser.quantile(0.75)-data_ser.quantile(0.25))
+    val_low=data_ser.quantile(0.25)-iqr
+    val_up=data_ser.quantile(0.75)+iqr
+    rule_low=(data_ser&lt;val_low)
+    rule_up=(data_ser&gt;val_up)
+    return (rule_low,rule_</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-03-28&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+            <a href="/categories/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B">特征工程</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/03/24/01-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BB%B7%E6%A0%BC%E9%94%80%E5%94%AE%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B%E4%B9%8BEDA/">
+        <p class="h4 index-header">01-二手车价格销售价格预测之EDA</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> 写在前面
+这次参加了DataWhale组织的二手车销售价值预测组队学习，开始第一部分的学习——数据分析EDA。主要从数据分析流程和软件包工具两方面来介绍自己的收获。
+ 数据分析流程
+总结了一下，EDA主要做的工作就是发现数据缺失值和查看数据分布情况以及预测目标与其他因变量的相关性分析。
+ 缺失值分析
+对于表格数据，使用DataFrame的info()函数就可以直观的看到数据的缺失情况，但是这个只针对数值型（numeric）数据，缺失数据会以null值的形式呈现，直接调用DataFrame的isnull()函数配合sum()就可以对缺失值数据进行统计。比较坑的是object类型数据，有些缺失值数据并不会用null值表示，像下面这种：
+
+“-”明显代表缺失值数据，但被字符串代替了。如何发现这种缺失情况，需要我们对相应的数据调用value_counts()函数，或者更直观点观察看一部分数据看有无异常情况。比如类别数据中，有的类别只出现了一次，和其他类别压根不是一个数量级，那么很有可能是异常值，可以考虑将其删去。
+
+ 数据分布
+首先是预测值的数据分布情况，其次是其他数据（或者说是自变量）的分</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-03-24&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+            <a href="/categories/Regression">Regression</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+            <a href="/tags/EDA">EDA</a>&nbsp;
+          
+            <a href="/tags/%E5%9B%9E%E5%BD%92">回归</a>&nbsp;
+          
+            <a href="/tags/%E6%AF%94%E8%B5%9B">比赛</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/02/16/04-spelling-correction/">
+        <p class="h4 index-header">04-spelling-correction</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">今天要介绍的是拼写检查，主要基于语言模型。
+ Spelling Tasks
+拼写检查任务主要包括两个方面，一方面是拼写错误侦测，另一方面是拼写错误修正。
+拼写错误分为两种：
+1.Non-word Errors：比如漏写导致的错误，graffe-&gt;giraffe。这类错误产生的词不存在。可以通过词典来进行侦测。找出与这些词相近的词，有两种方法，最小编辑路径法，信道法（Highest noisy channel probability）。
+2.Real-word Errors：一种是打印错误，如 three-&gt;there顺序颠倒。另一种是认知错误，如piece-&gt;peace,too-&gt;two，发音相同导致的错误。这类错误产生的词是真实存在的，要先找到与这些词发音拼写相近的词形成候选集，在通过信道模型和分类器选择最好的候选词。
+ The Nosiy Channel Model of Spelling
+The intuition of Noisy Model is that the words we see may be wrong words were produce</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-16&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/nlp">nlp</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/nlp">nlp</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/02/14/03-language-modeling/">
+        <p class="h4 index-header">03-language-modeling</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">今天要学习的是语言模型，好多东西呀！
+ 概念
+老师介绍了一大堆，我的理解语言模型就是对语言的合理性进行建模。这种建模可以是一个完整的句子的可能性，也可以是一句话基于之前的词预测出下一个词的可能性。数学公式表达如下：
+P(W)=P(w1,W2,W3,W4,W5…Wn)\mathrm{P}(\mathrm{W})=\mathrm{P}\left(\mathrm{w}_{1}, \mathrm{W}_{2}, \mathrm{W}_{3}, \mathrm{W}_{4}, \mathrm{W}_{5} \dots \mathrm{W}_{\mathrm{n}}\right)P(W)=P(w1​,W2​,W3​,W4​,W5​…Wn​)  一个句子出现的概率
+P(wn∣w1,W2…Wn−1)\mathrm{P}\left(\mathrm{w}_{\mathrm{n}} | \mathrm{w}_{1}, \mathrm{W}_{2} \dots \mathrm{W}_{\mathrm{n}-1}\right)P(wn​∣w1​,W2​…Wn−1​)	基于之前词预测下一词
+ 语言模型的计算
+那么</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-14&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/nlp">nlp</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/nlp">nlp</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/02/12/02-basic-text-processing/">
+        <p class="h4 index-header">02 basic text processing</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">今天学习正则表达式的使用，后面还有一个小作业要做，开始啦！
+ 正则表达式
+ Disjunctions 析取
+我也不知道中文该怎么说，暂定析取吧。disjunction用 [] 表示，表示选取括号中表示的一个字符。下面举个例子
+
+
+
+Pattern
+Matches
+
+
+
+
+[wW]oodchunk
+Woodchunk,woodchunk
+
+
+[123456789]
+any digit(由于匹配是贪心的，所以只要是数字都会匹配)
+
+
+
+像数字每次都要把十个阿拉伯数字都写出来太麻烦了，所以有了range用法
+
+
+
+Pattern
+Matches
+
+
+
+
+[A-Z]
+An uppeer case letter
+
+
+[a-z]
+A lowwer case letter
+
+
+[0-9]
+A single digit
+
+
+
+ Negation in Disjunction 析取取反
+翻译忽略， ^ carat就是取反的意思，在disjunction中经常会用到
+^ 只有在析取 [] 中作为第一个字符才表示取反，也就是说**^** 与 [] 常常连用
+
+
+
+Pattern
+Matcher
+Exampl</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-12&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/nlp">nlp</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/nlp">nlp</a>&nbsp;
+          
+            <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/02/12/01-introduction-to-nlp/">
+        <p class="h4 index-header">01 introduction to nlp</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> 写在前面
+研究生读了半年了，越来越迷茫了，没有认认真真做好一件事。今天，立帖为证，我一定要将这门课认真修完，勤做笔记，完成作业。话不多说，开始吧！附上课程链接。
+ nlp的应用领域
+
+
+Question Answering 问答
+
+
+Information Extraction 信息抽取
+
+
+Sentiment Analysis 情感分析
+
+
+机器翻译
+
+
+自然语言在垃圾邮件侦测、词性标注、命名实体识别上已经取得了较好的表现，在情感分类、指代消解、句法分析、机器翻译、信息抽取也有所进步，尤其是现在的神经机器翻译，比之前的统计机器翻译取得了长足的进步，不过这门课开设时间已经比较早了，那时候深度学习还没有大规模应用到nlp中。但在问答、摘要、对话系统、改述（Paraphrase）等方面表现还有待提高。
+ 歧义让nlp变得更加困难
+举个例子，这是纽约时报的一条新闻头条
+Fed raises interest rates
+既可以理解为Fed这个人将利率interest rates 提高了，也可以理解为Fed这个人对rates这个东西起了兴趣raise interest。
+当给出更多信息时，可</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-12&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/nlp">nlp</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/nlp">nlp</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/08/%E4%BD%BF%E7%94%A8torchtext%E5%A4%84%E7%90%86%E4%B8%AD%E6%96%87%E6%96%87%E6%9C%AC/">
+        <p class="h4 index-header">使用torchtext处理中文文本</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">torchtext是pytorch中专门用来处理文本的包，使用torchtext可以灵活的帮我们生成batch和词向量。网上介绍的大多是基于英文的版本，自己在中文文本上进行了尝试，将之前的英文文本分类改成中文文本分类。下面开始介绍。
+ 数据格式
+
+
+
+text
+label
+
+
+
+
+又要写博客了，好开心啊
+0
+
+
+程序出bug了，唉
+1
+
+
+
+数据格式可以是csv、tsv、json文件，自己比较喜欢处理csv、tsv文件两者是一样的，json文件还没怎么接触。数据的内容如上所示，包括文本列和标签列，一般会分为train、dev、test三个集合。本文用到train.tsv、dev.tsv、test.tsv。
+ Field
+我也不知道这个该叫啥，针对我们要处理的不同数据分别创建Field对象。
+import torchtext.data as data
+import jieba
+
+def tokenizer(x):
+    return list(jieba.cut(x))
+
+text_field=data.Field(tokenize=tokenizer,fix_length=60)
+l</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-08&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/torchtext">torchtext</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/07/TextCNN/">
+        <p class="h4 index-header">TextCNN</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">学了点pytorch，最近在知乎刷到了一个repo主要是介绍文本分类的，感觉还不错，打算用来入门，自己将会比较细致的实现代码，分析代码的结构。天下大事必做于易，天下大事必做于细。寒假来了，自己基础较差，只能多花点时间了。
+ 基础网络
+作者自己没有直接调用torch的api，而是在其基础上进行实现。一些模块继承自nn.Module层，并且实现了初始化和前向计算。嘿呀，等我熟练了，我也要自己做一个工具箱。不多说上代码
+ Conv1d
+import torch.nn.Functional as F
+
+class Conv1d(nn.Module):
+    def __init__(self,in_channels,out_channels,filter_sizes):
+        super(Conv1d,self).__init__()
+        self.convs=nn.ModuleList([
+            nn.Conv1d(in_channels,out_channels,kernel_size=fs)
+            for fs in filte</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-07&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CNN">CNN</a>&nbsp;
+          
+            <a href="/tags/%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB">文本分类</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/07/colab%E4%BD%BF%E7%94%A8/">
+        <p class="h4 index-header">colab使用</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">最近学习pytorch的使用，自己的电脑没有显卡，一些实验做不了，想起之前本科老师安利的colab，感谢谷歌提供的免费资源。
+ 访问谷歌
+colab基于谷歌云盘，既然是谷歌的服务，难免就要翻墙了。自己用的shadowsocks，一年100块左右，大部分时间都挺稳定的。开启小飞机，你就可以看到外面的世界啦！
+ 云盘挂载
+关于colab的基础使用这里就不介绍了，可以自行百度。在使用colab的过程中，经常需要挂载云盘文件，参考了许多人的方法后，介绍一个无坑版。首先，在colab左侧的代码提示部分选择挂载colab会自动生成云盘挂载代码，如下所示：
+
+from google.colab import drive
+
+drive.mount('/gdrive')
+
+运行第一个单元格的代码，第二个是打开相关文件的代码忽略。运行后会给出一个超链接，点击进去验证得到验证码输入即可挂载成功，这时候我们挂载的位置是在/gdrive/gdrive/gdrive 目录下。那么如何切换到我们想要的目录呢？再次打开左侧的代码提示部分，进入文件栏，点击 ......... 进入上层目录，进入/gdrive/gdri</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-07&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/colab%20Google%20Drive">colab Google Drive</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav aria-label="index posts navigation">
+    <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/2/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByClassName("page-number")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "死亡如风，常伴吾身&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="/lib/katex/katex.min.css"  >
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>

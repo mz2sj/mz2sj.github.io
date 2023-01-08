@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/0JOFhyF5bT.jpeg">
+  <link rel="icon" type="image/png" href="/img/0JOFhyF5bT.jpeg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="mz2sj">
+  <meta name="keywords" content="">
+  <title>第二届翼支付杯大数据建模大赛复盘 ~ 微风和暖</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>微风和暖</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 十月 3日 2020, 3:51 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    5.6k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      27 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>暑假的时候参加了一个数据竞赛–第二届翼支付杯大数据建模大赛-信用风险用户识别。最后复赛A榜排在第15名，B榜12名。第一次正式参加比赛，原本只想排到六七十名就够了，没想到最后能进到前二十，感谢队友和自己的付出。虽然最后的结果还不错，但是做的还是模模糊糊的，现在对一些top方案和自己参加比赛的想法做一些总结。</p>
+<h2 id="数据"><a class="markdownIt-Anchor" href="#数据"></a> 数据</h2>
+<h3 id="基础信息-base_df"><a class="markdownIt-Anchor" href="#基础信息-base_df"></a> 基础信息 base_df</h3>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>字段说明（数据经过脱敏处理）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>user</td>
+<td>样本编号，e.g., Train_00000、Train_00001…</td>
+</tr>
+<tr>
+<td>sex</td>
+<td>性别，编码后取值为：category 0、category1</td>
+</tr>
+<tr>
+<td>age</td>
+<td>年龄，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>provider</td>
+<td>运营商类型，编码后取值为：category 0、category 1…</td>
+</tr>
+<tr>
+<td>level</td>
+<td>用户等级，编码后取值为：category 0、category 1…</td>
+</tr>
+<tr>
+<td>verified</td>
+<td>是否实名，编码后取值为：category 0、category1</td>
+</tr>
+<tr>
+<td>using_time</td>
+<td>使用时长，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>regist_type</td>
+<td>注册类型，编码后取值为：category 0、category 1…</td>
+</tr>
+<tr>
+<td>card_a_cnt</td>
+<td>a类型卡的数量，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>card_b_cnt</td>
+<td>b类型卡的数量，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>card_c_cnt</td>
+<td>c类型卡的数量，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>card_d_cnt</td>
+<td>d类型卡的数量，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>op1_cnt</td>
+<td>某类型1操作数量，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>op2_cnt</td>
+<td>某类型2操作数量，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>service1_cnt</td>
+<td>某业务1产生数量，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>service1_amt</td>
+<td>某业务1产生金额，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>service2_cnt</td>
+<td>某业务2产生数量，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>agreement_total</td>
+<td>开通协议数量，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>agreement1</td>
+<td>是否开通协议1，编码后取值为：category 0、category1</td>
+</tr>
+<tr>
+<td>agreement2</td>
+<td>是否开通协议2，编码后取值为：category 0、category1</td>
+</tr>
+<tr>
+<td>agreement3</td>
+<td>是否开通协议3，编码后取值为：category 0、category1</td>
+</tr>
+<tr>
+<td>agreement4</td>
+<td>是否开通协议4，编码后取值为：category 0、category1</td>
+</tr>
+<tr>
+<td>acc_count</td>
+<td>账号数量，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>login_cnt_period1</td>
+<td>某段时期1的登录次数，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>login_cnt_period2</td>
+<td>某段时期2的登录次数，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>ip_cnt</td>
+<td>某段时期登录ip个数，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>login_cnt_avg</td>
+<td>某段时期登录次数均值，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>login_days_cnt</td>
+<td>某段时期登录天数，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>province</td>
+<td>省份，处理成类别编码</td>
+</tr>
+<tr>
+<td>city</td>
+<td>城市，处理成类别编码</td>
+</tr>
+<tr>
+<td>balance</td>
+<td>余额等级，处理成保留大小关系的类别编码：level 1、level2… 例如：level 2 &gt; level 1</td>
+</tr>
+<tr>
+<td>balance_avg</td>
+<td>近某段时期余额均值等级，处理成保留大小关系的类别编码：level 1、level2… 例如：level 2 &gt; level 1</td>
+</tr>
+<tr>
+<td>balance1</td>
+<td>类型1余额等级，处理成保留大小关系的类别编码：level 1、level2… 例如：level 2 &gt; level 1</td>
+</tr>
+<tr>
+<td>balance1_avg</td>
+<td>近某段时期类型1余额均值等级，处理成保留大小关系的类别编码：level 1、level2… 例如：level 2 &gt; level 1</td>
+</tr>
+<tr>
+<td>balance2</td>
+<td>类型2余额等级，处理成保留大小关系的类别编码：level 1、level2… 例如：level 2 &gt; level 1</td>
+</tr>
+<tr>
+<td>balance2_avg</td>
+<td>近某段时期类型2余额均值等级，处理成保留大小关系的类别编码：level 1、level2… 例如：level 2 &gt; level 1</td>
+</tr>
+<tr>
+<td>service3</td>
+<td>是否服务3用户，编码后取值为：category 0、category1</td>
+</tr>
+<tr>
+<td>service3_level</td>
+<td>服务3等级，编码后取值为：category 0、category1…</td>
+</tr>
+<tr>
+<td>product1_amount</td>
+<td>产品1金额等级，处理成保留大小关系的类别编码：level 1、level2… 例如：level 2 &gt; level 1</td>
+</tr>
+<tr>
+<td>product2_amount</td>
+<td>产品2金额等级，处理成保留大小关系的类别编码：level 1、level2… 例如：level 2 &gt; level 1</td>
+</tr>
+<tr>
+<td>product3_amount</td>
+<td>产品3金额等级，处理成保留大小关系的类别编码：level 1、level2… 例如：level 2 &gt; level 1</td>
+</tr>
+<tr>
+<td>product4_amount</td>
+<td>产品4金额等级，处理成保留大小关系的类别编码：level 1、level2… 例如：level 2 &gt; level 1</td>
+</tr>
+<tr>
+<td>product5_amount</td>
+<td>产品5金额等级，处理成保留大小关系的类别编码：level 1、level2… 例如：level 2 &gt; level 1</td>
+</tr>
+<tr>
+<td>product6_amount</td>
+<td>产品6金额等级，处理成保留大小关系的类别编码：level 1、level2… 例如：level 2 &gt; level 1</td>
+</tr>
+<tr>
+<td>product7_cnt</td>
+<td>产品7申请次数，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>product7_fail_cnt</td>
+<td>产品7申请失败次数，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="操作信息-op_df"><a class="markdownIt-Anchor" href="#操作信息-op_df"></a> 操作信息 op_df</h3>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>字段说明（数据经过脱敏处理）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>user</td>
+<td>样本编号，e.g., Train_00000、Train_00001…</td>
+</tr>
+<tr>
+<td>op_type</td>
+<td>操作类型编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>op_mode</td>
+<td>操作模式编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>op_device</td>
+<td>操作设备编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>ip</td>
+<td>设备ip编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>net_type</td>
+<td>网络类型编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>channel</td>
+<td>渠道类型编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>ip_3</td>
+<td>设备ip前三位编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>tm_diff</td>
+<td>距离某起始时间点的时间间隔，处理成如下格式。例如： 9 days 09:02:45.000000000，表示距离某起始时间点9天9小时2分钟45秒</td>
+</tr>
+</tbody>
+</table>
+<h4 id="交易信息-trans_df"><a class="markdownIt-Anchor" href="#交易信息-trans_df"></a> 交易信息 trans_df</h4>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>字段说明（数据经过脱敏处理）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>user</td>
+<td>样本编号，e.g., Train_00000、Train_00001…</td>
+</tr>
+<tr>
+<td>platform</td>
+<td>平台类型编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>tunnel_in</td>
+<td>来源类型编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>tunnel_out</td>
+<td>去向类型编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>交易金额，处理后仅保留大小关系，为某一区间的整数</td>
+</tr>
+<tr>
+<td>type1</td>
+<td>交易类型1编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>type2</td>
+<td>交易类型2编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>ip</td>
+<td>设备ip编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>ip_3</td>
+<td>设备ip前三位编码，处理成类别编码</td>
+</tr>
+<tr>
+<td>tm_diff</td>
+<td>距离某起始时间点的时间间隔，处理成如下格式。例如： 9 days 09:02:45.000000000，表示距离某起始时间点9天9小时2分钟45秒</td>
+</tr>
+</tbody>
+</table>
+<p>评价方式采用roc_auc_score</p>
+<h2 id="top1方案"><a class="markdownIt-Anchor" href="#top1方案"></a> top1方案</h2>
+<p>1.第一个比较有意思的点就是作者根据<code>user</code>键将trans_df和op_df中merge进了base_df的<code>label</code>,这样就能对trans_df和op_df作target_encoding啦~</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_trans_op_label</span><span class="hljs-params">(trans, op, train_label)</span>:</span>
+    trans_ = trans.copy()
+    op_ = op.copy()
+    user_label_dict = dict(zip(train_label.user.values, 		       train_label.label.values))
+    trans_[<span class="hljs-string">'label'</span>] = trans_[<span class="hljs-string">'user'</span>].map(user_label_dict)
+    op_[<span class="hljs-string">'label'</span>] = op_[<span class="hljs-string">'user'</span>].map(user_label_dict)
+
+    <span class="hljs-keyword">return</span> trans_, op_
+</code></pre>
+<p>让我们学习一下pandas中的<code>map</code>操作。</p>
+<p>其次就是将trans_df和op_df拼接成一张表trans_op_df，这样一张表就同时包含操作和交易信息,也许会带来更多的信息哦</p>
+<p><img src="https://s1.ax1x.com/2020/10/03/03tuDJ.png" srcset="/img/loading.gif" alt="03tuDJ.png" /></p>
+<p>2.构建session，这个是根据操作或者交易的时间差来确定一个session，并不是很懂。当相邻两个操作或者交易时间差超过600时，赋值为1作cumsum。</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_session_fea</span><span class="hljs-params">(file)</span>:</span>
+    tmp = file.groupby(<span class="hljs-string">'user'</span>)[<span class="hljs-string">'timestamp'</span>].shift()
+    file[<span class="hljs-string">'delta_time'</span>] = file[<span class="hljs-string">'timestamp'</span>] - tmp
+    file[<span class="hljs-string">'session'</span>] = np.where(file[<span class="hljs-string">'delta_time'</span>] &gt; <span class="hljs-number">600</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)
+    file[<span class="hljs-string">'session'</span>] = file.groupby([<span class="hljs-string">'user'</span>])[<span class="hljs-string">'session'</span>].transform(<span class="hljs-string">'cumsum'</span>)
+    <span class="hljs-keyword">del</span> file[<span class="hljs-string">'delta_time'</span>]
+
+    <span class="hljs-keyword">return</span> file
+</code></pre>
+<p>怎么解释呢？当相邻的操作或交易在一定的时间范围内完成时，就认为是一个session，当很多操作在相邻的时间内完成，是否可以看成一种行为模式，用cumsum来累积？另外一个点就是pandas中的<code>groupby</code>后作shift的操作，可以对一个组内的某个变量进行偏移操作。</p>
+<p>3.一些针对op_df和trans_df的交叉特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_fea_op_df</span><span class="hljs-params">(op_df)</span>:</span>
+    op_df[<span class="hljs-string">'op_pattern'</span>] = op_df[<span class="hljs-string">'op_type'</span>].map(str) + <span class="hljs-string">'_'</span> + op_df[<span class="hljs-string">'op_mode'</span>].map(str) + <span class="hljs-string">'_'</span> + op_df[<span class="hljs-string">'op_device'</span>].map(str)
+    op_df[<span class="hljs-string">'op_type_mode'</span>] = op_df[<span class="hljs-string">'op_type'</span>].map(str) + <span class="hljs-string">'_'</span> + op_df[<span class="hljs-string">'op_mode'</span>].map(str)
+    op_df[<span class="hljs-string">'op_type_device'</span>] = op_df[<span class="hljs-string">'op_type'</span>].map(str) + <span class="hljs-string">'_'</span> + op_df[<span class="hljs-string">'op_device'</span>].map(str)
+    op_df[<span class="hljs-string">'op_mode_device'</span>] = op_df[<span class="hljs-string">'op_mode'</span>].map(str) + <span class="hljs-string">'_'</span> + op_df[<span class="hljs-string">'op_device'</span>].map(str)
+    op_df[<span class="hljs-string">'ip_net_type'</span>] = op_df[<span class="hljs-string">'ip'</span>].map(str) + <span class="hljs-string">'_'</span> + op_df[<span class="hljs-string">'net_type'</span>].map(str)
+    op_df[<span class="hljs-string">'ip3_net_type'</span>] = op_df[<span class="hljs-string">'ip_3'</span>].map(str) + <span class="hljs-string">'_'</span> + op_df[<span class="hljs-string">'net_type'</span>].map(str)
+    op_df[<span class="hljs-string">'net_type_channel'</span>] = op_df[<span class="hljs-string">'net_type'</span>].map(str) + <span class="hljs-string">'_'</span> +  op_df[<span class="hljs-string">'channel'</span>].map(str)
+   <span class="hljs-comment"># op_df['time_diff'] = op_df['timestamp'].diff(-1)</span>
+    op_df.rename(columns={<span class="hljs-string">'ip'</span> : <span class="hljs-string">'op_ip'</span>, <span class="hljs-string">'ip_3'</span>: <span class="hljs-string">'op_ip_3'</span>,}, inplace=<span class="hljs-literal">True</span>)
+    <span class="hljs-keyword">return</span> op_df
+</code></pre>
+<p>可以看出来的一点是，对于交叉特诊，作者也是将相关的一些特征进行组合。自己当时只做了一列列别数量较少的特征的交叉，在这里可以看到作者对ip等很多类别的特征也进行了交叉。</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_fea_trans_df</span><span class="hljs-params">(trans_df)</span>:</span>
+    trans_df[<span class="hljs-string">'tunnel_io'</span>] = trans_df[<span class="hljs-string">'tunnel_in'</span>].astype(str) + <span class="hljs-string">'_'</span> + trans_df[<span class="hljs-string">'tunnel_out'</span>].astype(str)
+    trans_df[<span class="hljs-string">'type'</span>] = trans_df[<span class="hljs-string">'type1'</span>].astype(str) + <span class="hljs-string">'_'</span> +trans_df[<span class="hljs-string">'type2'</span>].astype(str)
+    trans_df[<span class="hljs-string">'tunnel_io_type'</span>] = trans_df[<span class="hljs-string">'tunnel_io'</span>].astype(str) + <span class="hljs-string">'_'</span> + trans_df[<span class="hljs-string">'type'</span>].astype(str)
+    trans_df[<span class="hljs-string">'platform_tunnel_io_type'</span>] = trans_df[<span class="hljs-string">'platform'</span>].astype(str) + <span class="hljs-string">'_'</span> + trans_df[<span class="hljs-string">'tunnel_io_type'</span>]
+    trans_df[<span class="hljs-string">'platform_tunnel_io'</span>] = trans_df[<span class="hljs-string">'platform'</span>].astype(str) + <span class="hljs-string">'_'</span> + trans_df[<span class="hljs-string">'tunnel_io'</span>]
+    trans_df[<span class="hljs-string">'platform_type'</span>] = trans_df[<span class="hljs-string">'platform'</span>].astype(str) + <span class="hljs-string">'_'</span> + trans_df[<span class="hljs-string">'type'</span>]
+    trans_df[<span class="hljs-string">'platform_amount'</span>] = trans_df[<span class="hljs-string">'platform'</span>].astype(str) + <span class="hljs-string">'_'</span> + trans_df[<span class="hljs-string">'amount'</span>].astype(str)
+    trans_df[<span class="hljs-string">'type_amount'</span>] = trans_df[<span class="hljs-string">'type'</span>].astype(str) + <span class="hljs-string">'_'</span> + trans_df[<span class="hljs-string">'amount'</span>].astype(str)
+    trans_df[<span class="hljs-string">'tunnel_io_amount'</span>] = trans_df[<span class="hljs-string">'type'</span>].astype(str) + <span class="hljs-string">'_'</span> + trans_df[<span class="hljs-string">'amount'</span>].astype(str)
+    trans_df[<span class="hljs-string">'type1_amount'</span>] = trans_df[<span class="hljs-string">'type1'</span>].astype(str) + <span class="hljs-string">'_'</span> + trans_df[<span class="hljs-string">'amount'</span>].astype(str)
+    trans_df[<span class="hljs-string">'type2_amount'</span>] = trans_df[<span class="hljs-string">'type2'</span>].astype(str) + <span class="hljs-string">'_'</span> + trans_df[<span class="hljs-string">'amount'</span>].astype(str)
+    trans_df[<span class="hljs-string">'tunnel_in_amount'</span>] = trans_df[<span class="hljs-string">'tunnel_in'</span>].astype(str) + <span class="hljs-string">'_'</span> + trans_df[<span class="hljs-string">'amount'</span>].astype(str)
+    trans_df[<span class="hljs-string">'tunnel_out_amount'</span>] = trans_df[<span class="hljs-string">'tunnel_out'</span>].astype(str) + <span class="hljs-string">'_'</span> + trans_df[<span class="hljs-string">'amount'</span>].astype(str)
+    trans_df[<span class="hljs-string">'amount_diff'</span>] = trans_df[<span class="hljs-string">'amount'</span>].astype(int).diff(<span class="hljs-number">-1</span>)
+    trans_df[<span class="hljs-string">'time_diff'</span>] = trans_df[<span class="hljs-string">'timestamp'</span>].diff(<span class="hljs-number">-1</span>)
+    trans_df[<span class="hljs-string">'amount_per_time'</span>] = trans_df[<span class="hljs-string">'amount_diff'</span>] / np.where(trans_df[<span class="hljs-string">'time_diff'</span>] == <span class="hljs-number">0</span>, <span class="hljs-number">0.01</span>, trans_df[<span class="hljs-string">'time_diff'</span>])
+    trans_df = gen_session_fea(trans_df)
+</code></pre>
+<p>比较有看点的是对amount做了<code>diff</code>操作，计算相邻两次交易的差额，并计算了相邻两次交易的时间，两者相除得到交易额与时间差的比值。</p>
+<p>3.base_df交叉特征。对于base_df里的数值特征作加减乘除操作。</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">int_cols_cross</span><span class="hljs-params">(df, cols)</span>:</span>
+    <span class="hljs-string">"""[summary]
+        对base数据的int64特征进行min-max归一化后进行加减乘除交互
+    Parameters
+    ----------
+    df : [DataFrame]
+        [训练集和测试集合并的数据]
+    cols : [list]
+        [交互特征]
+
+    Returns
+    -------
+    [DataFrame, list]
+        [整数特征交互后的data, 及交互特征名称]
+    """</span>
+    cross_feature = []
+    df = df.copy()
+    <span class="hljs-keyword">for</span> i, col <span class="hljs-keyword">in</span> tqdm(enumerate(cols), desc=<span class="hljs-string">'extract cross feature for base'</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(i + <span class="hljs-number">1</span>, len(cols)):
+            df[col + <span class="hljs-string">'_'</span> + <span class="hljs-string">'div_'</span> + cols[j]] = min_max_unif(df[col]) / min_max_unif(df[cols[j]])
+            df[col + <span class="hljs-string">'_'</span> + <span class="hljs-string">'sub_'</span> + cols[j]] = min_max_unif(df[col]) - min_max_unif(df[cols[j]])
+            df[col + <span class="hljs-string">'_'</span> + <span class="hljs-string">'mul_'</span> + cols[j]] = min_max_unif(df[col]) * min_max_unif(df[cols[j]])
+            df[col + <span class="hljs-string">'_'</span> + <span class="hljs-string">'sum_'</span> + cols[j]] = min_max_unif(df[col]) + min_max_unif(df[cols[j]])
+
+            cross_feature.append(col + <span class="hljs-string">'_'</span> + <span class="hljs-string">'div_'</span> + cols[j])
+            cross_feature.append(col + <span class="hljs-string">'_'</span> + <span class="hljs-string">'sub_'</span> + cols[j])
+            cross_feature.append(col + <span class="hljs-string">'_'</span> + <span class="hljs-string">'mul_'</span> + cols[j])
+            cross_feature.append(col + <span class="hljs-string">'_'</span> + <span class="hljs-string">'sum_'</span> + cols[j])
+
+    <span class="hljs-keyword">return</span> df, cross_feature
+</code></pre>
+<p>这个感觉很强呀，加减乘除都用到数值特征上。</p>
+<p>3.count计数特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_cnt_feature</span><span class="hljs-params">(df, feature)</span>:</span>
+    cnt_features = []
+    <span class="hljs-keyword">for</span> fea <span class="hljs-keyword">in</span> feature:
+        df[fea + <span class="hljs-string">'_count'</span>] = df.groupby([fea])[<span class="hljs-string">'user'</span>].transform(<span class="hljs-string">'count'</span>)
+        cnt_features.append(fea + <span class="hljs-string">'_count'</span>)
+
+    <span class="hljs-keyword">return</span> df
+</code></pre>
+<p>但是为什么只对<code>cnt_feature = ['city', 'province', 'balance', 'ip_cnt', 'using_time', ]</code>这些特征作计数特征就不知道是为什么了，难道也是一个个试出来的嘛？</p>
+<p>4.trans_df的amount统计特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_user_amount_features</span><span class="hljs-params">(df)</span>:</span>
+    group_df = df.groupby([<span class="hljs-string">'user'</span>])[<span class="hljs-string">'amount'</span>].agg({
+        <span class="hljs-string">'user_amount_mean'</span>: <span class="hljs-string">'mean'</span>,
+       <span class="hljs-comment"># 'user_amount_std': 'std',</span>
+        <span class="hljs-string">'user_amount_max'</span>: <span class="hljs-string">'max'</span>,
+        <span class="hljs-string">'user_amount_min'</span>: <span class="hljs-string">'min'</span>,
+        <span class="hljs-string">'user_amount_sum'</span>: <span class="hljs-string">'sum'</span>,
+        <span class="hljs-string">'user_amount_med'</span>: <span class="hljs-string">'median'</span>,
+        <span class="hljs-string">'user_amount_cnt'</span>: <span class="hljs-string">'count'</span>,
+        <span class="hljs-comment"># 'user_amount_q1': lambda x: x.quantile(0.25),</span>
+        <span class="hljs-comment"># 'user_amount_q3': lambda x: x.quantile(0.75),</span>
+        <span class="hljs-comment">#'user_amount_qsub': lambda x: x.quantile(0.75) - x.quantile(0.25)</span>
+        <span class="hljs-comment">#'user_amount_skew': 'skew',</span>
+        }).reset_index()
+    <span class="hljs-keyword">return</span> group_df
+</code></pre>
+<p>这个没什么好说的，肯定得做</p>
+<p>5.nunique特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_user_nunique_features</span><span class="hljs-params">(df, value, prefix)</span>:</span>
+    group_df = df.groupby([<span class="hljs-string">'user'</span>])[value].agg({
+        <span class="hljs-string">'user_{}_{}_nuniq'</span>.format(prefix, value): <span class="hljs-string">'nunique'</span>
+    }).reset_index()
+    <span class="hljs-keyword">return</span> group_df
+</code></pre>
+<p>计算一个用户在某个字段上有几个unique值.</p>
+<p>trans_df:<code>['days_diff', 'platform', 'tunnel_in', 'tunnel_out', 'type1', 'type2', ]</code></p>
+<p>6.一个值有几个用户的nunique统计结果</p>
+<p>首先计算一个值有几个用户</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">file_cols_user_nunique</span><span class="hljs-params">(file, feature_lst, prefix)</span>:</span>
+    col_nuniq_fea_lst = []
+    <span class="hljs-keyword">for</span> col <span class="hljs-keyword">in</span> tqdm(feature_lst):
+        col_nuniq = file.groupby(col)[<span class="hljs-string">'user'</span>].nunique()
+        col_nuniq_dic = dict(zip(col_nuniq.index, col_nuniq.values))
+        file[prefix + <span class="hljs-string">'_'</span> + col + <span class="hljs-string">'_user_nuniq'</span>] = file[col].map(col_nuniq_dic)
+        col_nuniq_fea_lst.append(prefix + <span class="hljs-string">'_'</span> + col + <span class="hljs-string">'_user_nuniq'</span>)
+
+    <span class="hljs-keyword">return</span> file, col_nuniq_fea_lst
+</code></pre>
+<p>在对上面的计算值作统计计算</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_stastic_col_user_nunique</span><span class="hljs-params">(file, feat, prefix)</span>:</span>
+    group_df = file.groupby(<span class="hljs-string">'user'</span>)[feat].agg({
+        prefix + feat + <span class="hljs-string">'_mean'</span>: <span class="hljs-string">'mean'</span>,
+        prefix + feat + <span class="hljs-string">'_std'</span>: <span class="hljs-string">'std'</span>,
+        prefix + feat + <span class="hljs-string">'_max'</span>: <span class="hljs-string">'max'</span>,
+        prefix + feat + <span class="hljs-string">'_min'</span>: <span class="hljs-string">'min'</span>,
+        prefix + feat + <span class="hljs-string">'_sum'</span>: <span class="hljs-string">'sum'</span>,
+        prefix + feat + <span class="hljs-string">'_med'</span>: <span class="hljs-string">'median'</span>,
+        <span class="hljs-comment">#prefix + feat + '_q1'  : lambda x: x.quantile(0.25),</span>
+        <span class="hljs-comment">#prefix + feat + '_q3'  : lambda x: x.quantile(0.75),</span>
+        <span class="hljs-comment">#prefix + feat + 'q_sub': lambda x: x.quantile(0.75) - x.quantile(0.25),</span>
+        <span class="hljs-comment">#prefix + feat + '_skew': 'skew',</span>
+    })
+    <span class="hljs-keyword">return</span> group_df
+</code></pre>
+<p>这个在trans_df、op_df、trans_op_df都可以做。</p>
+<p>7.利用pivot_table计算在各个值类别上交易的聚合</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_user_group_amount_features</span><span class="hljs-params">(df, value)</span>:</span>
+    group_df = df.pivot_table(index=<span class="hljs-string">'user'</span>,
+                              columns=value,
+                              values=<span class="hljs-string">'amount'</span>,
+                              dropna=<span class="hljs-literal">False</span>,
+                              aggfunc=[<span class="hljs-string">'count'</span>, <span class="hljs-string">'sum'</span>,
+                                       <span class="hljs-string">'mean'</span>, <span class="hljs-string">'max'</span>, <span class="hljs-string">'min'</span>, <span class="hljs-string">'median'</span>,
+                                       ]).fillna(<span class="hljs-number">0</span>)
+    group_df.columns = [<span class="hljs-string">'user_{}_{}_amount_{}'</span>.format(value, f[<span class="hljs-number">1</span>], f[<span class="hljs-number">0</span>]) <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> group_df.columns]
+    group_df.reset_index(inplace=<span class="hljs-literal">True</span>)
+
+    <span class="hljs-keyword">return</span> group_df
+</code></pre>
+<p>这种特征构造方式在类别不是特别多的时候比较适用。</p>
+<p>8.计算不同时间窗口下用户交易额统计信息</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_user_window_amount_features</span><span class="hljs-params">(df, window)</span>:</span>
+    group_df = df[df[<span class="hljs-string">'days_diff'</span>]&gt;window].groupby(<span class="hljs-string">'user'</span>)[<span class="hljs-string">'amount'</span>].agg({
+        <span class="hljs-string">'user_amount_mean_{}d'</span>.format(window): <span class="hljs-string">'mean'</span>,
+        <span class="hljs-string">'user_amount_std_{}d'</span>.format(window): <span class="hljs-string">'std'</span>,
+        <span class="hljs-string">'user_amount_max_{}d'</span>.format(window): <span class="hljs-string">'max'</span>,
+        <span class="hljs-string">'user_amount_min_{}d'</span>.format(window): <span class="hljs-string">'min'</span>,
+        <span class="hljs-string">'user_amount_sum_{}d'</span>.format(window): <span class="hljs-string">'sum'</span>,
+        <span class="hljs-string">'user_amount_med_{}d'</span>.format(window): <span class="hljs-string">'median'</span>,
+        <span class="hljs-string">'user_amount_cnt_{}d'</span>.format(window): <span class="hljs-string">'count'</span>,
+        <span class="hljs-comment"># 'user_amount_q1_{}d'.format(window): lambda x: x.quantile(0.25),</span>
+        <span class="hljs-comment"># 'user_amount_q3_{}d'.format(window): lambda x: x.quantile(0.75),</span>
+        <span class="hljs-comment"># 'user_amount_qsub_{}d'.format(window): lambda x: x.quantile(0.75) - x.quantile(0.25),</span>
+        <span class="hljs-comment"># 'user_amount_skew_{}d'.format(window): 'skew',</span>
+        <span class="hljs-comment"># 'user_amount_q4_{}d'.format(window): lambda x: x.quantile(0.8),</span>
+        <span class="hljs-comment"># 'user_amount_q5_{}d'.format(window): lambda x: x.quantile(0.3),</span>
+        <span class="hljs-comment"># 'user_amount_q6_{}d'.format(window): lambda x: x.quantile(0.7),</span>
+        }).reset_index()
+    <span class="hljs-keyword">return</span> group_df
+</code></pre>
+<p>9.空值特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_user_null_features</span><span class="hljs-params">(df, value, prefix)</span>:</span>
+    df[<span class="hljs-string">'is_null'</span>] = <span class="hljs-number">0</span>
+    df.loc[df[value].isnull(), <span class="hljs-string">'is_null'</span>] = <span class="hljs-number">1</span>
+
+    group_df = df.groupby([<span class="hljs-string">'user'</span>])[<span class="hljs-string">'is_null'</span>].agg({<span class="hljs-string">'user_{}_{}_null_cnt'</span>.format(prefix, value): <span class="hljs-string">'sum'</span>,
+                                                    <span class="hljs-string">'user_{}_{}_null_ratio'</span>.format(prefix, value): <span class="hljs-string">'mean'</span>}).reset_index()
+    <span class="hljs-keyword">return</span> group_df
+</code></pre>
+<p>10.统计一些特殊值上时间的聚合特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_file_type_days_diff</span><span class="hljs-params">(df, file, type, time_feat)</span>:</span>
+    plot_feats = []
+    <span class="hljs-comment">#file_type_unique = file[type].value_counts().index.tolist()</span>
+    file_type_unique = []
+
+    <span class="hljs-keyword">if</span> type == <span class="hljs-string">'type1'</span>:
+        file_type_unique = [<span class="hljs-string">'45a1168437c708ff'</span>,
+                             <span class="hljs-string">'f67d4b5a05a1352a'</span>, 
+                             ]
+    <span class="hljs-keyword">elif</span> type == <span class="hljs-string">'type2'</span>:
+        file_type_unique = [<span class="hljs-string">'11a213398ee0c623'</span>,]
+
+    <span class="hljs-keyword">elif</span> type == <span class="hljs-string">'channel'</span>:
+        file_type_unique = [<span class="hljs-string">'b2e7fa260df4998d'</span>,
+                            <span class="hljs-string">'116a2503b987ea81'</span>,
+                            <span class="hljs-string">'8adb3dcfea9dcf5e'</span>]
+
+    <span class="hljs-keyword">elif</span> type == <span class="hljs-string">'tunnel_io'</span>:
+        file_type_unique = [<span class="hljs-string">'b2e7fa260df4998d_6ee790756007e69a'</span>,]
+    <span class="hljs-keyword">elif</span> type == <span class="hljs-string">'type'</span>:
+        file_type_unique = [<span class="hljs-string">'f67d4b5a05a1352a_nan'</span>,
+                            <span class="hljs-string">'19d44f1a51919482_11a213398ee0c623'</span>,
+                            <span class="hljs-string">'45a1168437c708ff_11a213398ee0c623'</span>,
+                            <span class="hljs-string">'674e8d5860bc033d_11a213398ee0c623'</span>,
+                            <span class="hljs-string">'0a3cf8dac7dca9d1_b5a8be737a50b171'</span>]
+
+    <span class="hljs-keyword">for</span> tp <span class="hljs-keyword">in</span> file_type_unique:
+        <span class="hljs-keyword">assert</span> file_type_unique != []
+        group_df = file[file[type] == tp].groupby([<span class="hljs-string">'user'</span>])[time_feat].agg(
+            {<span class="hljs-string">'user_{}_{}_min_{}'</span>.format(type, tp, time_feat): <span class="hljs-string">'min'</span>,
+             <span class="hljs-string">'user_{}_{}_mean_{}'</span>.format(type, tp, time_feat): <span class="hljs-string">'mean'</span>,
+             <span class="hljs-string">'user_{}_{}_max_{}'</span>.format(type, tp, time_feat): <span class="hljs-string">'max'</span>,
+             <span class="hljs-string">'user_{}_{}_std_{}'</span>.format(type, tp, time_feat): <span class="hljs-string">'std'</span>,
+             <span class="hljs-string">'user_{}_{}_median_{}'</span>.format(type, tp, time_feat): <span class="hljs-string">'median'</span>,
+             <span class="hljs-string">'user_{}_{}_sum_{}'</span>.format(type, tp, time_feat): <span class="hljs-string">'sum'</span>,
+             <span class="hljs-comment"># 'user_{}_{}_q1_{}'.format(type, tp, time_feat): lambda x: x.quantile(0.25),</span>
+             <span class="hljs-comment"># 'user_{}_{}_q3_{}'.format(type, tp, time_feat): lambda x: x.quantile(0.75),</span>
+             <span class="hljs-comment"># 'user_{}_{}_q_sub_{}'.format(type, tp, time_feat): lambda x: x.quantile(0.75) - x.quantile(0.25),</span>
+             <span class="hljs-comment"># 'user_{}_{}_skew_{}'.format(type, tp, time_feat): 'skew',</span>
+             }).reset_index()
+        df = df.merge(group_df, on=[<span class="hljs-string">'user'</span>], how=<span class="hljs-string">'left'</span>)
+        stastic = [<span class="hljs-string">'min'</span>, <span class="hljs-string">'max'</span>, <span class="hljs-string">'max'</span>, <span class="hljs-string">'std'</span>, <span class="hljs-string">'median'</span>, <span class="hljs-string">'sum'</span>,]
+        <span class="hljs-keyword">for</span> stast <span class="hljs-keyword">in</span> stastic:
+            plot_feats.append(<span class="hljs-string">'user_{}_{}_{}_{}'</span>.format(type, tp, stast, time_feat))
+
+    <span class="hljs-keyword">return</span> df, plot_feats
+</code></pre>
+<p>这个特殊值的选择作者也没有提到，应该是要根据一些画图分析得到。</p>
+<p>11.doc2vec特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">d2v_feat</span><span class="hljs-params">(df, feat, length, num)</span>:</span>
+    print(<span class="hljs-string">'Start training Doc2Vec models.......'</span>)
+    df[feat] = df[feat].astype(str)
+    group_df = df.groupby([<span class="hljs-string">'user'</span>])[feat].agg(list).reset_index()
+    documents = [TaggedDocument(doc, [i]) <span class="hljs-keyword">for</span> i, doc <span class="hljs-keyword">in</span> zip(group_df[<span class="hljs-string">'user'</span>].values, group_df[feat])]
+    model = Doc2Vec(documents, vector_size=length, window=<span class="hljs-number">10</span>, min_count=<span class="hljs-number">1</span>, workers=<span class="hljs-number">1</span>, seed=<span class="hljs-number">2020</span>,
+                    epochs=<span class="hljs-number">20</span>,  hs=<span class="hljs-number">1</span>, )
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(<span class="hljs-string">'./d2v_models/'</span>):
+        os.makedirs(<span class="hljs-string">'./d2v_models/'</span>)
+    model.save(<span class="hljs-string">'../d2v_models/d2v_testb_{}.model'</span>.format(num))
+    <span class="hljs-comment"># model = Doc2Vec.load('./d2v_models/d2v_testb_{}.model'.format(num))</span>
+    doc_df = group_df[<span class="hljs-string">'user'</span>].apply(<span class="hljs-keyword">lambda</span> x: <span class="hljs-string">','</span>.join([str(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> model[x]])).str.split(<span class="hljs-string">','</span>, expand=<span class="hljs-literal">True</span>).apply(pd.to_numeric)
+    doc_df.columns = [<span class="hljs-string">'{}_d2v_{}'</span>.format(feat, i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(length)]
+
+    <span class="hljs-keyword">return</span> pd.concat([group_df[[<span class="hljs-string">'user'</span>]], doc_df], axis=<span class="hljs-number">1</span>)
+</code></pre>
+<p>em…,看懂代码就行啦。用在trans_df的amount上。自己也做了这个特征，还用在了其他的字段序列上，感觉也不能无脑对所有字段都用，还是要根据实验结果有选择的用。</p>
+<p>12.word2vec特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">w2v_feat</span><span class="hljs-params">(df, feat, length, num)</span>:</span>
+    <span class="hljs-string">"""
+
+    :param df:         进行word2vec编码的数据
+    :param feat:       进行编码的特征
+    :param length:     embedding向量长度
+    :return:
+    """</span>
+    <span class="hljs-keyword">global</span> w2v_fea_lst
+    w2v_fea_lst = []
+    print(<span class="hljs-string">'Start training Word2Vec models.....'</span>)
+    df[feat] = df[feat].astype(str)
+    group_df = df.groupby([<span class="hljs-string">'user'</span>])[feat].agg(list).reset_index()
+    model = Word2Vec(group_df[feat].values, size=length, window=<span class="hljs-number">10</span>, min_count=<span class="hljs-number">1</span>, sg=<span class="hljs-number">1</span>, hs=<span class="hljs-number">1</span>, workers=<span class="hljs-number">1</span>,
+                     iter=<span class="hljs-number">20</span>, seed=<span class="hljs-number">2020</span>,)
+    <span class="hljs-comment"># if feat == 'amount':</span>
+    <span class="hljs-comment">#     model = Word2Vec.load('../w2v_models/w2v_testb_{}_{}.model'.format(feat, num))</span>
+    <span class="hljs-comment"># elif feat == 'channel':</span>
+    <span class="hljs-comment">#     model = Word2Vec.load('../w2v_models/w2v_channel_16.model')</span>
+    <span class="hljs-comment"># elif feat == 'trans_op_ip' or feat == 'trans_op_ip_3':</span>
+    <span class="hljs-comment">#     model = Word2Vec.load('../w2v_models/w2v_trans_op_2.model')</span>
+    <span class="hljs-comment"># else:</span>
+    <span class="hljs-comment">#     if not os.path.exists('../w2v_models/'):</span>
+    <span class="hljs-comment">#         os.makedirs('../w2v_models/')</span>
+    <span class="hljs-comment"># model = Word2Vec.load('./w2v_models/w2v_testb_{}_{}.model'.format(feat, num))</span>
+    model.save(<span class="hljs-string">'../w2v_models/w2v_testb_{}_{}.model'</span>.format(feat, num))
+
+    group_df[feat] = group_df[feat].apply(<span class="hljs-keyword">lambda</span> x: pd.DataFrame([model[c] <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> x]))
+    <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> tqdm(range(length), desc=<span class="hljs-string">'extract w2v {} statistic feature'</span>.format(feat)):
+        group_df[<span class="hljs-string">'{}_w2v_{}_mean'</span>.format(feat,m)] = group_df[feat].apply(<span class="hljs-keyword">lambda</span> x: x[m].mean())
+        <span class="hljs-comment"># group_df['{}_w2v_{}_median'.format(feat, m)] = group_df[feat].apply(lambda x: x[m].median())</span>
+        <span class="hljs-comment"># group_df['{}_w2v_{}_max'.format(feat, m)] = group_df[feat].apply(lambda x: x[m].max())</span>
+        <span class="hljs-comment"># group_df['{}_w2v_{}_min'.format(feat, m)] = group_df[feat].apply(lambda x: x[m].min())</span>
+        <span class="hljs-comment"># group_df['{}_w2v_{}_sum'.format(feat, m)] = group_df[feat].apply(lambda x: x[m].sum())</span>
+        <span class="hljs-comment"># group_df['{}_w2v_{}_std'.format(feat, m)] = group_df[feat].apply(lambda x: x[m].std())</span>
+
+
+        w2v_fea_lst.append(<span class="hljs-string">'{}_w2v_{}_mean'</span>.format(feat,m))
+    <span class="hljs-keyword">del</span> group_df[feat]
+
+    <span class="hljs-keyword">return</span> group_df
+</code></pre>
+<p>用在trans_df的amount上</p>
+<p>13.tf_idf特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_user_tfidf_features</span><span class="hljs-params">(df, value,)</span>:</span>
+    print(<span class="hljs-string">'Start tfdif encoding for {}........'</span>.format(value))
+    df[value] = df[value].astype(str)
+    df[value].fillna(<span class="hljs-string">'-1'</span>, inplace=<span class="hljs-literal">True</span>)
+    group_df = df.groupby([<span class="hljs-string">'user'</span>]).apply(<span class="hljs-keyword">lambda</span> x: x[value].tolist()).reset_index()
+    group_df.columns = [<span class="hljs-string">'user'</span>, <span class="hljs-string">'list'</span>]
+    group_df[<span class="hljs-string">'list'</span>] = group_df[<span class="hljs-string">'list'</span>].apply(<span class="hljs-keyword">lambda</span> x: <span class="hljs-string">','</span>.join(x))
+    enc_vec = TfidfVectorizer()
+    tfidf_vec = enc_vec.fit_transform(group_df[<span class="hljs-string">'list'</span>])
+    svd_enc = TruncatedSVD(n_components=<span class="hljs-number">10</span>, n_iter=<span class="hljs-number">20</span>, random_state=<span class="hljs-number">2020</span>)
+    vec_svd = svd_enc.fit_transform(tfidf_vec)
+    vec_svd = pd.DataFrame(vec_svd)
+    vec_svd.columns = [<span class="hljs-string">'svd_tfidf_{}_{}'</span>.format(value, i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">10</span>)]
+    group_df = pd.concat([group_df, vec_svd], axis=<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">del</span> group_df[<span class="hljs-string">'list'</span>]
+    <span class="hljs-keyword">return</span> group_df
+</code></pre>
+<p>14.countvec特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_user_countvec_features</span><span class="hljs-params">(df, value,)</span>:</span>
+    print(<span class="hljs-string">'Start countvec encoding for {}........'</span>.format(value))
+    df[value] = df[value].astype(str)
+    df[value].fillna(<span class="hljs-string">'-1'</span>, inplace=<span class="hljs-literal">True</span>)
+    group_df = df.groupby([<span class="hljs-string">'user'</span>]).apply(<span class="hljs-keyword">lambda</span> x: x[value].tolist()).reset_index()
+    group_df.columns = [<span class="hljs-string">'user'</span>, <span class="hljs-string">'list'</span>]
+    group_df[<span class="hljs-string">'list'</span>] = group_df[<span class="hljs-string">'list'</span>].apply(<span class="hljs-keyword">lambda</span> x: <span class="hljs-string">','</span>.join(x))
+    enc_vec = CountVectorizer()
+    tfidf_vec = enc_vec.fit_transform(group_df[<span class="hljs-string">'list'</span>])
+    svd_enc = TruncatedSVD(n_components=<span class="hljs-number">10</span>, n_iter=<span class="hljs-number">20</span>, random_state=<span class="hljs-number">2020</span>)
+    vec_svd = svd_enc.fit_transform(tfidf_vec)
+    vec_svd = pd.DataFrame(vec_svd)
+    vec_svd.columns = [<span class="hljs-string">'svd_countvec_{}_{}'</span>.format(value, i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">10</span>)]
+    group_df = pd.concat([group_df, vec_svd], axis=<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">del</span> group_df[<span class="hljs-string">'list'</span>]
+    <span class="hljs-keyword">return</span> group_df
+</code></pre>
+<p>15.计算各个用户在op_df和trans_df上在一些字段上的统计特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_user_group_trans_op_features</span><span class="hljs-params">(df, columns, value)</span>:</span>
+    group_df = df.pivot_table(index=<span class="hljs-string">'user'</span>,
+                              columns=columns,
+                              values=value,
+                              dropna=<span class="hljs-literal">False</span>,
+                              aggfunc=[<span class="hljs-string">'count'</span>, <span class="hljs-string">'sum'</span>,
+                                       <span class="hljs-string">'mean'</span>, <span class="hljs-string">'max'</span>, <span class="hljs-string">'min'</span>, <span class="hljs-string">'median'</span>,
+                                       ]).fillna(<span class="hljs-number">0</span>)
+    group_df.columns = [<span class="hljs-string">'user_{}_{}_{}_{}'</span>.format(columns, f[<span class="hljs-number">1</span>], value, f[<span class="hljs-number">0</span>]) <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> group_df.columns]
+    group_df[<span class="hljs-string">'op_trans_ratio'</span>] = group_df[<span class="hljs-string">'user_property_trans_{}_count'</span>.format(value)] / group_df[
+        <span class="hljs-string">'user_property_op_{}_count'</span>.format(value)]
+
+    group_df.reset_index(inplace=<span class="hljs-literal">True</span>)
+
+    <span class="hljs-keyword">return</span> group_df
+</code></pre>
+<p>16.获取各个用户在第一次和最后一次操作或交易时的特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">user_trans_behavior_feature</span><span class="hljs-params">(df, trans_op)</span>:</span>
+    print(<span class="hljs-string">"Starting extract user's trans behavior......"</span>)
+
+    <span class="hljs-comment"># 获取第一次和最后一次行为</span>
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-string">'property'</span>].values[<span class="hljs-number">-1</span>]).to_dict()
+    df[<span class="hljs-string">'last_beahvior'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-string">'property'</span>].values[<span class="hljs-number">0</span>]).to_dict()
+    df[<span class="hljs-string">'first_beahvior'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+    <span class="hljs-comment"># 是否有过交易行为</span>
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: judge_has_trans(x)).to_dict()
+    df[<span class="hljs-string">'has_trans'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+    <span class="hljs-comment"># 最后一次交易days_diff</span>
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: last_trans_time(x)).to_dict()
+    df[<span class="hljs-string">'last_days_diff_trans'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+    <span class="hljs-comment"># 第一次交易days_diff</span>
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: first_trans_time(x)).to_dict()
+    df[<span class="hljs-string">'first_days_diff_trans'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+    <span class="hljs-comment"># 最后一次交易hour</span>
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: last_trans_hour(x)).to_dict()
+    df[<span class="hljs-string">'last_hour_trans'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+    <span class="hljs-comment"># 第一次交易hour</span>
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: first_trans_hour(x)).to_dict()
+    df[<span class="hljs-string">'first_hour_trans'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+    <span class="hljs-comment"># 最后一次交易week</span>
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: last_trans_week(x)).to_dict()
+    df[<span class="hljs-string">'last_week_trans'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+    <span class="hljs-comment"># 第一次交易week</span>
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: first_trans_week(x)).to_dict()
+    df[<span class="hljs-string">'first_week_trans'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+    <span class="hljs-comment"># 最后一次交易timestamp</span>
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: last_trans_timestamp(x)).to_dict()
+    df[<span class="hljs-string">'last_time_trans'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+    <span class="hljs-comment"># 第一次交易timestamp</span>
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: first_trans_timestamp(x)).to_dict()
+    df[<span class="hljs-string">'first_time_trans'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+    <span class="hljs-comment"># 平均交易次数</span>
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: gen_trans_count(x)).to_dict()
+    df[<span class="hljs-string">'trans_count'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+    <span class="hljs-comment"># 操作次数</span>
+    group_dic = trans_op.groupby(<span class="hljs-string">'user'</span>).apply(<span class="hljs-keyword">lambda</span> x: gen_op_count(x)).to_dict()
+    df[<span class="hljs-string">'op_count'</span>] = df[<span class="hljs-string">'user'</span>].map(group_dic)
+
+    <span class="hljs-keyword">return</span> df
+</code></pre>
+<p>17.判断用户是否有交易</p>
+<pre class="highlight"><code class="python">data[<span class="hljs-string">'has_trans'</span>] = pd.factorize(data[<span class="hljs-string">'has_trans'</span>])[<span class="hljs-number">0</span>]
+</code></pre>
+<p>二值特征用一列01就可以了</p>
+<p>18.类别编码</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">kfold_stats_feature</span><span class="hljs-params">(train, test, feats, k, seed)</span>:</span>
+    folds = StratifiedKFold(n_splits=k, shuffle=<span class="hljs-literal">True</span>, random_state=seed)  <span class="hljs-comment"># 这里最好和后面模型的K折交叉验证保持一致</span>
+
+    train[<span class="hljs-string">'fold'</span>] = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">for</span> fold_, (trn_idx, val_idx) <span class="hljs-keyword">in</span> enumerate(folds.split(train, train[<span class="hljs-string">'label'</span>])):
+        train.loc[val_idx, <span class="hljs-string">'fold'</span>] = fold_
+
+    kfold_features = []
+    <span class="hljs-keyword">for</span> feat <span class="hljs-keyword">in</span> tqdm(feats, desc=<span class="hljs-string">'Target encoding for base feature'</span>):
+        nums_columns = [<span class="hljs-string">'label'</span>]
+        <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> nums_columns:
+            colname = feat + <span class="hljs-string">'_'</span> + f + <span class="hljs-string">'_kfold_mean'</span>
+            kfold_features.append(colname)
+            train[colname] = <span class="hljs-literal">None</span>
+            <span class="hljs-keyword">for</span> fold_, (trn_idx, val_idx) <span class="hljs-keyword">in</span> enumerate(folds.split(train, train[<span class="hljs-string">'label'</span>])):
+                tmp_trn = train.iloc[trn_idx]
+                order_label = tmp_trn.groupby([feat])[f].mean()
+                tmp = train.loc[train.fold == fold_, [feat]]
+                train.loc[train.fold == fold_, colname] = tmp[feat].map(order_label)
+                <span class="hljs-comment"># fillna</span>
+                global_mean = tmp_trn[f].mean()
+                train.loc[train.fold == fold_, colname] = train.loc[train.fold == fold_, colname].fillna(global_mean)
+            train[colname] = train[colname].astype(float)
+
+        <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> nums_columns:
+            colname = feat + <span class="hljs-string">'_'</span> + f + <span class="hljs-string">'_kfold_mean'</span>
+            test[colname] = <span class="hljs-literal">None</span>
+            order_label = train.groupby([feat])[f].mean()
+            test[colname] = test[feat].map(order_label)
+            <span class="hljs-comment"># fillna</span>
+            global_mean = train[f].mean()
+            test[colname] = test[colname].fillna(global_mean)
+            test[colname] = test[colname].astype(float)
+    <span class="hljs-keyword">del</span> train[<span class="hljs-string">'fold'</span>]
+    <span class="hljs-keyword">return</span> train, test
+</code></pre>
+<p>对一些值类别比较多的变量作target encoding</p>
+<p>19.对序列变量作target_encoding</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">target_encoding</span><span class="hljs-params">(file, train, test, feats, k, prefix, not_adp=True, agg_lst=[<span class="hljs-string">'mean'</span>], seed=<span class="hljs-number">2020</span>)</span>:</span>
+    folds = StratifiedKFold(n_splits=k, shuffle=<span class="hljs-literal">True</span>, random_state=seed)  <span class="hljs-comment"># 这里最好和后面模型的K折交叉验证保持一致</span>
+
+    train[<span class="hljs-string">'fold'</span>] = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">for</span> fold_, (trn_idx, val_idx) <span class="hljs-keyword">in</span> enumerate(folds.split(train, train[<span class="hljs-string">'label'</span>])):
+        train.loc[val_idx, <span class="hljs-string">'fold'</span>] = fold_
+
+    tt_file = train[[<span class="hljs-string">'user'</span>, <span class="hljs-string">'label'</span>]].merge(file, on=<span class="hljs-string">'user'</span>, how=<span class="hljs-string">'left'</span>)
+
+    te_features = []
+    <span class="hljs-keyword">for</span> feat <span class="hljs-keyword">in</span> tqdm(feats, desc=<span class="hljs-string">'Target encoding for {} feature '</span>.format(prefix)):
+        col_name = feat + <span class="hljs-string">'_te'</span>
+        <span class="hljs-comment"># te_features.append(col_name)</span>
+        <span class="hljs-keyword">for</span> fold_, (trn_idx, val_idx) <span class="hljs-keyword">in</span> enumerate(folds.split(train, train[<span class="hljs-string">'label'</span>])):
+            tmp_users = train.iloc[trn_idx][<span class="hljs-string">'user'</span>].values
+            tmp_file = file[file.user.isin(tmp_users)]
+            tmp_file = tmp_file.merge(train[[<span class="hljs-string">'user'</span>, <span class="hljs-string">'label'</span>]], on=<span class="hljs-string">'user'</span>, how=<span class="hljs-string">'left'</span>)
+
+            <span class="hljs-keyword">if</span> not_adp:
+                match = tmp_file.groupby(feat)[<span class="hljs-string">'label'</span>].mean()
+            <span class="hljs-keyword">else</span>:
+                match = tmp_file.groupby([feat, <span class="hljs-string">'user'</span>])[<span class="hljs-string">'label'</span>].agg(eu_sum=<span class="hljs-string">'sum'</span>, eu_count=<span class="hljs-string">'count'</span>).reset_index()
+                match[<span class="hljs-string">'eu_mean'</span>] = match[<span class="hljs-string">'eu_sum'</span>] / match[<span class="hljs-string">'eu_count'</span>]
+                match = match[<span class="hljs-string">'eu_mean'</span>].groupby(match[feat]).mean()
+
+            tmp_users = train.iloc[val_idx][<span class="hljs-string">'user'</span>].values
+            tmp_file = file[file.user.isin(tmp_users)]
+            tmp_file[col_name] = tmp_file[feat].map(match)
+            <span class="hljs-keyword">for</span> agg_ <span class="hljs-keyword">in</span> agg_lst:
+                tmp = tmp_file.groupby(<span class="hljs-string">'user'</span>)[col_name].agg(agg_)
+                train.loc[train.fold == fold_, col_name + <span class="hljs-string">'_'</span> + agg_] = train.loc[train.fold == fold_, <span class="hljs-string">'user'</span>].map(tmp)
+
+        <span class="hljs-keyword">if</span> not_adp:
+            match = tt_file.groupby(feat)[<span class="hljs-string">'label'</span>].mean()
+        <span class="hljs-keyword">else</span>:
+            match = tt_file.groupby([feat, <span class="hljs-string">'user'</span>])[<span class="hljs-string">'label'</span>].agg(eu_sum=<span class="hljs-string">'sum'</span>, eu_count=<span class="hljs-string">'count'</span>).reset_index()
+            match[<span class="hljs-string">'eu_mean'</span>] = match[<span class="hljs-string">'eu_sum'</span>] / match[<span class="hljs-string">'eu_count'</span>]
+            match = match[<span class="hljs-string">'eu_mean'</span>].groupby(match[feat]).mean()
+
+        tmp_file = file[file.user.isin(test[<span class="hljs-string">'user'</span>].values)]
+        tmp_file[col_name] = tmp_file[feat].map(match)
+        <span class="hljs-keyword">for</span> agg_ <span class="hljs-keyword">in</span> agg_lst:
+            tmp = tmp_file.groupby(<span class="hljs-string">'user'</span>)[col_name].agg(agg_)
+            test[col_name + <span class="hljs-string">'_'</span> + agg_] = test[<span class="hljs-string">'user'</span>].map(tmp)
+
+
+    <span class="hljs-keyword">del</span> train[<span class="hljs-string">'fold'</span>]
+    gc.collect()
+    <span class="hljs-comment"># print(train[te_features])</span>
+
+    <span class="hljs-keyword">return</span> train, test
+</code></pre>
+<p>首先要把序列merge上label再进行编码聚合后输出单行的编码结果</p>
+<p>20.有序变量编码</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">order_encode</span><span class="hljs-params">(df, col)</span>:</span>
+    <span class="hljs-string">"""
+
+    :param df:      Dataframe
+    :param col:     feature
+    :description:   对有序类别变量顺序编码
+    :return:
+    """</span>
+    df.loc[df[col].notnull(), col] = df.loc[df[col].notnull(), col].apply(<span class="hljs-keyword">lambda</span> x: str(x).split(<span class="hljs-string">' '</span>)[<span class="hljs-number">1</span>]).astype(int)
+    df[col] = df[col].fillna(<span class="hljs-number">-1</span>).astype(int)
+
+    <span class="hljs-keyword">return</span> df
+</code></pre>
+<p>对于一些有序的变量要还原为对应数值以捕获对应的大小关系。</p>
+<p>21.无序变量编码</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">label_encode</span><span class="hljs-params">(df, order_cols)</span>:</span>
+    <span class="hljs-comment"># LabelEncoder</span>
+    cat_cols = [f <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> df.select_dtypes(<span class="hljs-string">'object'</span>).columns <span class="hljs-keyword">if</span> f <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> [<span class="hljs-string">'user'</span>] + order_cols]
+    <span class="hljs-keyword">for</span> col <span class="hljs-keyword">in</span> cat_cols:
+        le = LabelEncoder()
+        df[col].fillna(<span class="hljs-string">'-1'</span>, inplace=<span class="hljs-literal">True</span>)
+        df[col] = le.fit_transform(df[col])
+        <span class="hljs-comment">#cat_cols.append(col)</span>
+    <span class="hljs-keyword">return</span>  df
+</code></pre>
+<p>22.风险值较高的省份二值化编码</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">province_binary</span><span class="hljs-params">(df, )</span>:</span>
+    <span class="hljs-string">"""[summary]
+        对风险率排名最高的五个省份进行二值化及组合编码
+    Parameters
+    ----------
+    df : [data数据]
+        [train or test]
+
+    Returns
+    -------
+    [DataFrame]
+        [经过省份二值化编码的训练集/测试集]
+    """</span>
+    <span class="hljs-comment">#省份二值化编码</span>
+    df[<span class="hljs-string">'is_21_province'</span>] = df.apply(<span class="hljs-keyword">lambda</span> x: <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> x.province == <span class="hljs-number">21</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>, axis=<span class="hljs-number">1</span>)
+    df[<span class="hljs-string">'is_26_province'</span>] = df.apply(<span class="hljs-keyword">lambda</span> x: <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> x.province == <span class="hljs-number">26</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>, axis=<span class="hljs-number">1</span>)
+    df[<span class="hljs-string">'is_30_province'</span>] = df.apply(<span class="hljs-keyword">lambda</span> x: <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> x.province == <span class="hljs-number">30</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>, axis=<span class="hljs-number">1</span>)
+    df[<span class="hljs-string">'is_20_province'</span>] = df.apply(<span class="hljs-keyword">lambda</span> x: <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> x.province == <span class="hljs-number">20</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>, axis=<span class="hljs-number">1</span>)
+    df[<span class="hljs-string">'is_16_province'</span>] = df.apply(<span class="hljs-keyword">lambda</span> x: <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> x.province == <span class="hljs-number">16</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>, axis=<span class="hljs-number">1</span>)
+
+    df[<span class="hljs-string">'binary_province'</span>] = df[<span class="hljs-string">'is_21_province'</span>].map(str) + df[<span class="hljs-string">'is_26_province'</span>].map(str) + \
+                               df[<span class="hljs-string">'is_30_province'</span>].map(str) + df[<span class="hljs-string">'is_20_province'</span>].map(str) + df[<span class="hljs-string">'is_16_province'</span>].map(str)
+
+    le = LabelEncoder()
+    df[<span class="hljs-string">'binary_province'</span>].fillna(<span class="hljs-string">'-1'</span>, inplace=<span class="hljs-literal">True</span>)
+    df[<span class="hljs-string">'binary_province'</span>] = le.fit_transform(df[<span class="hljs-string">'binary_province'</span>])
+
+    <span class="hljs-keyword">return</span> df
+</code></pre>
+<p>23.交易操作比例</p>
+<pre class="highlight"><code class="python">train_data[<span class="hljs-string">'trans_ratio'</span>] = train_data[<span class="hljs-string">'trans_count'</span>] / train_data[<span class="hljs-string">'op_count'</span>]
+test_data[<span class="hljs-string">'trans_ratio'</span>] = test_data[<span class="hljs-string">'trans_count'</span>] / test_data[<span class="hljs-string">'op_count'</span>]
+</code></pre>
+<p>到这里，作者用到的各种编码方式就介绍结束了。其实，自己已经用到了大多数编码方式，不多自己用的比较无脑，对可以用的变量自己都用了。虽热也有一些特征选择的方法，但好像并不是那么实用，问了一些大佬，推荐的做法是做一组或一个特征就实验一下，结果提升了就保留。对于一些类别变量，lgb不用onehot变量。</p>
+<h3 id="top2"><a class="markdownIt-Anchor" href="#top2"></a> top2</h3>
+<p>top2的很多特征编码方式和top1相近，这里主要介绍其特殊的特征处理方式。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B">数据竞赛</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B">数据竞赛</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <script defer src="https://utteranc.es/client.js"
+          repo="mz2sj/utterances"
+          issue-term="pathname"
+  
+          label="utterances"
+    
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "第二届翼支付杯大数据建模大赛复盘&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="/lib/katex/katex.min.css"  >
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/0JOFhyF5bT.jpeg">
+  <link rel="icon" type="image/png" href="/img/0JOFhyF5bT.jpeg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="mz2sj">
+  <meta name="keywords" content="">
+  <title>02-二手车价格预测之特征工程 ~ 微风和暖</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>微风和暖</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 三月 28日 2020, 7:32 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.4k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      6 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>今天要做的笔记是特征工程，感觉这次官方给的代码不是特别全。最近在忙作业和kaggle的比赛，后面自己有时间会再完善一下。自己将按照特征工程的常见任务进行介绍。</p>
+<h3 id="异常处理"><a class="markdownIt-Anchor" href="#异常处理"></a> 异常处理</h3>
+<p>数据收集的过程中可能会产生脏数据，导致产生离群值，数据分布明显不合理，这时候我们要对数据进行异常处理。常见的异常处理方法有：</p>
+<h4 id="通过箱型图删除异常值"><a class="markdownIt-Anchor" href="#通过箱型图删除异常值"></a> 通过箱型图删除异常值</h4>
+<p>官方提供了相关代码</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">outliers_proc</span><span class="hljs-params">(data,col_name,scale=<span class="hljs-number">3</span>)</span>:</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">box_plot_outliers</span><span class="hljs-params">(data_ser,box_scale)</span>:</span>
+    iqr=box_scale*(data_ser.quantile(<span class="hljs-number">0.75</span>)-data_ser.quantile(<span class="hljs-number">0.25</span>))
+    val_low=data_ser.quantile(<span class="hljs-number">0.25</span>)-iqr
+    val_up=data_ser.quantile(<span class="hljs-number">0.75</span>)+iqr
+    rule_low=(data_ser&lt;val_low)
+    rule_up=(data_ser&gt;val_up)
+    <span class="hljs-keyword">return</span> (rule_low,rule_up),(val_low,val_up)
+
+  data_n=data.copy()
+  data_series=data_n[col_name]
+  rule,value=box_plot_outliers(data_series,box_scale=scale)
+  index=np.arange(data_series.shape[<span class="hljs-number">0</span>])[rule[<span class="hljs-number">0</span>]|rule[<span class="hljs-number">1</span>]]
+  print(<span class="hljs-string">'Delete number is :{}'</span>.format(len(index)))
+  data_n=data_n.drop(index)
+  data_n.reset_index(drop=<span class="hljs-literal">True</span>,inplace=<span class="hljs-literal">True</span>)
+  print(<span class="hljs-string">'Now column number is :{}'</span>.format(data_n.shape[<span class="hljs-number">0</span>]))
+  index_low=np.arange(data_series.shape[<span class="hljs-number">0</span>])[rule[<span class="hljs-number">0</span>]]
+  outliers=data_series.iloc[index_low]
+  print(<span class="hljs-string">'Description of data less than the lower bound is :'</span>)
+  print(pd.Series(outliers).describe())
+  index_up=np.arange(data_series.shape[<span class="hljs-number">0</span>])[rule[<span class="hljs-number">1</span>]]
+  outliers=data_series.iloc[index_up]
+  print(<span class="hljs-string">'Description of data larger than the upper bound is:'</span>)
+  print(pd.Series(outliers).describe())
+
+  fig,ax=plt.subplots(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,figsize=(<span class="hljs-number">10</span>,<span class="hljs-number">7</span>))
+  sns.boxplot(y=data[col_name],data=data,palette=<span class="hljs-string">'Set1'</span>,ax=ax[<span class="hljs-number">0</span>])
+  sns.boxplot(y=data_n[col_name],data=data_n,palette=<span class="hljs-string">'Set1'</span>,ax=ax[<span class="hljs-number">1</span>])
+  <span class="hljs-keyword">return</span> data_n
+</code></pre>
+<img src="https://s1.ax1x.com/2020/03/28/GA39YT.png" srcset="/img/loading.gif" alt="GA39YT.png" style="zoom: 80%;" />
+<p>可以看出异常值得到了有效剔除，不过这段代码不是太懂，有时间还要再研究一下。</p>
+<h4 id="box-cox-转换处理有偏分布"><a class="markdownIt-Anchor" href="#box-cox-转换处理有偏分布"></a> BOX-COX 转换（处理有偏分布）</h4>
+<p><a href="https://zhuanlan.zhihu.com/p/40125782" target="_blank" rel="noopener">待完善</a> ，我们希望数据尽量符合正态分布，除了这种方法，常见的还有对数据取log、倒数等。</p>
+<h4 id="长尾截断"><a class="markdownIt-Anchor" href="#长尾截断"></a> 长尾截断</h4>
+<p>对此自己持怀疑态度，网上也没找到相关代码。如果数据的特征少时，截断一部分数据还能接受，如果符合长尾的特则很多再进行长尾阶段似乎显得不合适。</p>
+<h3 id="特征归一化标准化"><a class="markdownIt-Anchor" href="#特征归一化标准化"></a> 特征归一化/标准化</h3>
+<p>sklearn有专门的数据归一化和标注化的包，当然自己写也不难</p>
+<h4 id="归一化"><a class="markdownIt-Anchor" href="#归一化"></a> 归一化</h4>
+<pre class="highlight"><code class="pyth">def max_min(x):
+  return (x-np.min(x))/(np.max(x)-np.min(x))
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> sklearn.preprocessing <span class="hljs-keyword">import</span> MinMaxScaler
+
+scaler = MinMaxScaler()
+x = scaler.fit_transform(x)
+</code></pre>
+<h4 id="标准化"><a class="markdownIt-Anchor" href="#标准化"></a> 标准化</h4>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">standard</span><span class="hljs-params">(x)</span>:</span>
+  <span class="hljs-keyword">return</span> (x-np.mean(x))/(np.var(x))
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> sklearn.preprocessing <span class="hljs-keyword">import</span> StandardScaler
+scaler = StandardScaler()
+x = scaler.fit_transform(x)
+</code></pre>
+<h4 id="幂率分布"><a class="markdownIt-Anchor" href="#幂率分布"></a> 幂率分布</h4>
+<p>这种情况我还没遇到过，在此记录下</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mo stretchy="false">(</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>x</mi></mrow><mrow><mn>1</mn><mo>+</mo><mi>m</mi><mi>e</mi><mi>d</mi><mi>i</mi><mi>a</mi><mi>n</mi></mrow></mfrac><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">log(\frac{1+x}{1+median})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2484389999999999em;vertical-align:-0.403331em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mbin mtight">+</span><span class="mord mathdefault mtight">m</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mbin mtight">+</span><span class="mord mathdefault mtight">x</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.403331em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span></span></span></span></p>
+<h3 id="数据分桶"><a class="markdownIt-Anchor" href="#数据分桶"></a> 数据分桶</h3>
+<p>通俗理解下，就是将数据分段。举个例子年龄段的分桶</p>
+<h4 id="等频分桶"><a class="markdownIt-Anchor" href="#等频分桶"></a> 等频分桶</h4>
+<p>待完善</p>
+<h4 id="等距分桶"><a class="markdownIt-Anchor" href="#等距分桶"></a> 等距分桶</h4>
+<pre class="highlight"><code class="python">bin=[i*<span class="hljs-number">10</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">31</span>)]
+data[<span class="hljs-string">'power_bin'</span>]=pd.cut(data[<span class="hljs-string">'power'</span>],bin,labels=<span class="hljs-literal">False</span>)
+data[[<span class="hljs-string">'power_bin'</span>,<span class="hljs-string">'power'</span>]].head()
+</code></pre>
+<h4 id="best-ks分桶"><a class="markdownIt-Anchor" href="#best-ks分桶"></a> Best-KS分桶</h4>
+<p>待完善</p>
+<h4 id="卡方分桶"><a class="markdownIt-Anchor" href="#卡方分桶"></a> 卡方分桶</h4>
+<p>待完善</p>
+<h3 id="缺失值处理"><a class="markdownIt-Anchor" href="#缺失值处理"></a> 缺失值处理</h3>
+<p>对于树模型，模型本身已经有了对于缺失值的处理机制，这时候我们可以不对数据进行处理。</p>
+<p>其他的常见方法是对缺失值进行填充，常见的有平均数、中位数、众数等等。</p>
+<p>分箱，对含有缺失值的数据进行分箱，缺失的数据单独为一类，但是如果还想利用原来未缺失的数据值，分箱并未对缺失值数据进行填充。</p>
+<h3 id="特征构造"><a class="markdownIt-Anchor" href="#特征构造"></a> 特征构造</h3>
+<h4 id="构造统计量"><a class="markdownIt-Anchor" href="#构造统计量"></a> 构造统计量</h4>
+<p>如各个类别的数据求均值、方差、极值、中位数等等</p>
+<pre class="highlight"><code class="python">train_gb=train.groupby(<span class="hljs-string">'brand'</span>)
+all_info={}
+<span class="hljs-keyword">for</span> kind,kind_data <span class="hljs-keyword">in</span> train_gb:
+  info={}
+  kind_data=kind_data[kind_data[<span class="hljs-string">'price'</span>]&gt;<span class="hljs-number">0</span>]
+  info[<span class="hljs-string">'brand_amount'</span>]=len(kind_data)
+  info[<span class="hljs-string">'brand_price_max'</span>]=kind_data.price.max()
+  info[<span class="hljs-string">'brand_price_median'</span>]=kind_data.price.median()
+  info[<span class="hljs-string">'brand_price_min'</span>]=kind_data.price.min()
+  info[<span class="hljs-string">'brand_price_sum'</span>]=kind_data.price.sum()
+  info[<span class="hljs-string">'brand_price_std'</span>]=kind_data.price.std()
+  info[<span class="hljs-string">'brand_price_average'</span>]=round(kind_data.price.sum()/(len(kind_data)+<span class="hljs-number">1</span>),<span class="hljs-number">2</span>)
+  all_info[kind]=info
+brand_fe=pd.DataFrame(all_info).T.reset_index().rename(columns={<span class="hljs-string">'index'</span>:<span class="hljs-string">'brand'</span>})
+data=data.merge(brand_fe,how=<span class="hljs-string">'left'</span>,on=<span class="hljs-string">'brand'</span>)
+</code></pre>
+<h4 id="时间特征"><a class="markdownIt-Anchor" href="#时间特征"></a> 时间特征</h4>
+<p>求相对时间、节假日等，在本项目中，汽车的使用时间很明显就会对销售价格产生影响。</p>
+<pre class="highlight"><code class="python">ata[<span class="hljs-string">'used_time'</span>]=(pd.to_datetime(data[<span class="hljs-string">'creatDate'</span>],format=<span class="hljs-string">'%Y%m%d'</span>,errors=<span class="hljs-string">'coerce'</span>)-
+            pd.to_datetime(data[<span class="hljs-string">'regDate'</span>],format=<span class="hljs-string">'%Y%m%d'</span>,errors=<span class="hljs-string">'coerce'</span>)).dt.days
+</code></pre>
+<h4 id="地理特征"><a class="markdownIt-Anchor" href="#地理特征"></a> 地理特征</h4>
+<p>前提是你得知道数据中所包含的地理信息，</p>
+<pre class="highlight"><code class="python">data[<span class="hljs-string">'city'</span>]=data[<span class="hljs-string">'regionCode'</span>].apply(<span class="hljs-keyword">lambda</span> x:str(x))[:<span class="hljs-number">-3</span>]
+</code></pre>
+<p>除了以上的特征构造方式外，还有特征组合、对数据的非线性变换（log、根值、平方）等等。私以为构造可解释的特征组合还比较有说服力，胡乱组合的特征可能就有点碰运气了。</p>
+<h3 id="特征筛选"><a class="markdownIt-Anchor" href="#特征筛选"></a> 特征筛选</h3>
+<h4 id="过滤式"><a class="markdownIt-Anchor" href="#过滤式"></a> 过滤式</h4>
+<p>通过相关系数选择发、互信息法、卡方检验、Relief、方差选择法选择特征，相关系数法比较好理解，越相关的特征当然更值得选择。</p>
+<pre class="highlight"><code class="python">data_numeric=data[[<span class="hljs-string">'power'</span>,<span class="hljs-string">'kilometer'</span>,<span class="hljs-string">'brand_amount'</span>,<span class="hljs-string">'brand_price_average'</span>,<span class="hljs-string">'brand_price_max'</span>,<span class="hljs-string">'brand_price_median'</span>]]
+correlation=data_numeric.corr()
+
+f,ax=plt.subplots(figsize=(<span class="hljs-number">7</span>,<span class="hljs-number">7</span>))
+plt.title(<span class="hljs-string">'Correlation of Numeric Features with Price'</span>,y=<span class="hljs-number">1</span>,size=<span class="hljs-number">16</span>)
+sns.heatmap(correlation,square=<span class="hljs-literal">True</span>,vmax=<span class="hljs-number">0.8</span>)
+</code></pre>
+<p>u1s1,热力图可以直接看出哪些特征比较相关，不过这个图似乎少了price这个变量</p>
+<p>[<img src="https://s1.ax1x.com/2020/03/28/GAaTkd.png" srcset="/img/loading.gif" alt="GAaTkd.png" style="zoom:80%;" /></p>
+<h4 id="包裹式"><a class="markdownIt-Anchor" href="#包裹式"></a> 包裹式</h4>
+<p>把学习器的性能作为特征子集的评价准则，类似于auto-ml？或者是logistic回归的变量系数，系数越大越相关。利用包帮我们自助寻找特征</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> mlxtend.feature_selection <span class="hljs-keyword">import</span> SequentialFeatureSelector <span class="hljs-keyword">as</span> SFS
+<span class="hljs-keyword">from</span> sklearn.linear_model <span class="hljs-keyword">import</span> LinearRegression
+sfs=SFS(LinearRegression(),
+        k_features=<span class="hljs-number">10</span>,
+        forward=<span class="hljs-literal">True</span>,
+        floating=<span class="hljs-literal">False</span>,
+        scoring=<span class="hljs-string">'r2'</span>,
+        cv=<span class="hljs-number">0</span>)
+x=data.drop([<span class="hljs-string">'price'</span>],axis=<span class="hljs-number">1</span>)
+x=x.fillna(<span class="hljs-number">0</span>)
+y=y.fillna(<span class="hljs-number">0</span>)
+y=data[<span class="hljs-string">'price'</span>]
+sfs.fit(x,y)
+sfs.k_feature_names_
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> mlxtend.plotting <span class="hljs-keyword">import</span> plot_sequential_feature_selection <span class="hljs-keyword">as</span> plot_sfs
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+fig1=plot_sfs(sfs.get_metric_dict(),kind=<span class="hljs-string">'std_dev'</span>)
+plt.grid()
+plt.show()
+</code></pre>
+<h4 id="嵌入式"><a class="markdownIt-Anchor" href="#嵌入式"></a> 嵌入式</h4>
+<p>结合过滤式和包裹式，在训练过程进行特征选择。其实就是把数据输入算法中，让算法自己取选择特征呗。</p>
+<h3 id="降维"><a class="markdownIt-Anchor" href="#降维"></a> 降维</h3>
+<p>降维自己还是有点了解的，对于高维度数据可以降到低维度。在数据可视化也常用到。常用的降维算法有PCA、t-SNE、LDA、LSA等等。</p>
+<p>这次的内容好多啊，感觉给的笔记也不是很全，还需要自己再多做总结。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>
+                  &nbsp;
+                
+                  <a class="hover-with-bg" href="/categories/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B">特征工程</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <script defer src="https://utteranc.es/client.js"
+          repo="mz2sj/utterances"
+          issue-term="pathname"
+  
+          label="utterances"
+    
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "02-二手车价格预测之特征工程&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="/lib/katex/katex.min.css"  >
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>

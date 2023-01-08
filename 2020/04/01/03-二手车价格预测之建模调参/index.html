@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/0JOFhyF5bT.jpeg">
+  <link rel="icon" type="image/png" href="/img/0JOFhyF5bT.jpeg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="mz2sj">
+  <meta name="keywords" content="">
+  <title>03-二手车价格预测之建模调参 ~ 微风和暖</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>微风和暖</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 四月 1日 2020, 9:22 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.9k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      9 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>今天要总结的是建模调参部分，可谓重中之重，DataWhale官方的参考代码十分详细，够自己消化好一阵子了。</p>
+<h3 id="数据处理"><a class="markdownIt-Anchor" href="#数据处理"></a> 数据处理</h3>
+<p>作者向我们分享了一种减少内存空间占用的方法，其思想是对于每个Series将数据类型转化为合适的精度，对于非数值型数据转化为<code>category</code>类型数据。</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reduce_mem_usage</span><span class="hljs-params">(df)</span>:</span>
+    <span class="hljs-string">""" iterate through all the columns of a dataframe and modify the data type
+        to reduce memory usage.        
+    """</span>
+    start_mem = df.memory_usage().sum() 
+    print(<span class="hljs-string">'Memory usage of dataframe is {:.2f} MB'</span>.format(start_mem))
+    
+    <span class="hljs-keyword">for</span> col <span class="hljs-keyword">in</span> df.columns:
+        col_type = df[col].dtype
+        
+        <span class="hljs-keyword">if</span> col_type != object:
+            c_min = df[col].min()
+            c_max = df[col].max()
+            <span class="hljs-keyword">if</span> str(col_type)[:<span class="hljs-number">3</span>] == <span class="hljs-string">'int'</span>:
+                <span class="hljs-keyword">if</span> c_min &gt; np.iinfo(np.int8).min <span class="hljs-keyword">and</span> c_max &lt; np.iinfo(np.int8).max:
+                    df[col] = df[col].astype(np.int8)
+                <span class="hljs-keyword">elif</span> c_min &gt; np.iinfo(np.int16).min <span class="hljs-keyword">and</span> c_max &lt; np.iinfo(np.int16).max:
+                    df[col] = df[col].astype(np.int16)
+                <span class="hljs-keyword">elif</span> c_min &gt; np.iinfo(np.int32).min <span class="hljs-keyword">and</span> c_max &lt; np.iinfo(np.int32).max:
+                    df[col] = df[col].astype(np.int32)
+                <span class="hljs-keyword">elif</span> c_min &gt; np.iinfo(np.int64).min <span class="hljs-keyword">and</span> c_max &lt; np.iinfo(np.int64).max:
+                    df[col] = df[col].astype(np.int64)  
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">if</span> c_min &gt; np.finfo(np.float16).min <span class="hljs-keyword">and</span> c_max &lt; np.finfo(np.float16).max:
+                    df[col] = df[col].astype(np.float16)
+                <span class="hljs-keyword">elif</span> c_min &gt; np.finfo(np.float32).min <span class="hljs-keyword">and</span> c_max &lt; np.finfo(np.float32).max:
+                    df[col] = df[col].astype(np.float32)
+                <span class="hljs-keyword">else</span>:
+                    df[col] = df[col].astype(np.float64)
+        <span class="hljs-keyword">else</span>:
+            df[col] = df[col].astype(<span class="hljs-string">'category'</span>)
+
+    end_mem = df.memory_usage().sum() 
+    print(<span class="hljs-string">'Memory usage after optimization is: {:.2f} MB'</span>.format(end_mem))
+    print(<span class="hljs-string">'Decreased by {:.1f}%'</span>.format(<span class="hljs-number">100</span> * (start_mem - end_mem) / start_mem))
+    <span class="hljs-keyword">return</span> df
+</code></pre>
+<p><a href="https://imgchr.com/i/G8ULnS" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/04/01/G8ULnS.png" srcset="/img/loading.gif" alt="G8ULnS.png" /></a></p>
+<p>可以看出，放弃不必要的精度确实能节省不少内存空间。</p>
+<h3 id="简单建模与分析"><a class="markdownIt-Anchor" href="#简单建模与分析"></a> 简单建模与分析</h3>
+<p>对于数值数据的预测，首先采用了最简单的线性回归模型。</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> sklearn.linear_model <span class="hljs-keyword">import</span> LinearRegression
+
+model = LinearRegression(normalize=<span class="hljs-literal">True</span>)
+model = model.fit(train_X, train_y)
+
+
+sorted(dict(zip(continuous_feature_names, model.coef_)).items(), key=<span class="hljs-keyword">lambda</span> x:x[<span class="hljs-number">1</span>], reverse=<span class="hljs-literal">True</span>)
+</code></pre>
+<p>值得一提的是，我们可以根据线性模型对应的权重来判断属性的重要程度，权重越大，属性与预测结果越相关。</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> matplotlib <span class="hljs-keyword">import</span> pyplot <span class="hljs-keyword">as</span> plt
+
+subsample_index=np.random.randint(low=<span class="hljs-number">0</span>,high=len(train_y),size=<span class="hljs-number">50</span>)
+
+plt.scatter(train_X[<span class="hljs-string">'v_9'</span>][subsample_index],train_y[subsample_index],color=<span class="hljs-string">'black'</span>)
+plt.scatter(train_X[<span class="hljs-string">'v_9'</span>][subsample_index],model.predict(train_X.loc[subsample_index]),color=<span class="hljs-string">'blue'</span>)
+plt.xlabel(<span class="hljs-string">'v_9'</span>)
+plt.ylabel(<span class="hljs-string">'price'</span>)
+plt.legend([<span class="hljs-string">'True Price'</span>,<span class="hljs-string">'Predicted Price'</span>],loc=<span class="hljs-string">'upper right'</span>)
+print(<span class="hljs-string">'The predicted price is obvious different from true price'</span>)
+plt.show()
+</code></pre>
+<p>但是我们选取权重最大的属性对数据进行预测后发现和真实数据差别偏大，那么很可能是模型除了问题</p>
+<p><a href="https://imgchr.com/i/G8di8I" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/04/01/G8di8I.png" srcset="/img/loading.gif" alt="G8di8I.png" /></a></p>
+<p>对我们要预测的数据作图</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> seaborn <span class="hljs-keyword">as</span> sns
+print(<span class="hljs-string">'It is clear to see the price shows a exponential distribution'</span>)
+plt.figure(figsize=(<span class="hljs-number">15</span>,<span class="hljs-number">5</span>))
+plt.subplot(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>)
+sns.distplot(train_y)
+plt.subplot(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>)
+sns.distplot(train_y[train_y&lt;np.quantile(train_y,<span class="hljs-number">0.9</span>)])
+</code></pre>
+<p><a href="https://imgchr.com/i/G8dmVg" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/04/01/G8dmVg.md.png" srcset="/img/loading.gif" alt="G8dmVg.md.png" /></a></p>
+<p>数据呈长尾分布，我们对其进行log变换</p>
+<pre class="highlight"><code class="python">train_y_ln = np.log(train_y + <span class="hljs-number">1</span>)
+
+<span class="hljs-keyword">import</span> seaborn <span class="hljs-keyword">as</span> sns
+print(<span class="hljs-string">'The transformed price seems like normal distribution'</span>)
+plt.figure(figsize=(<span class="hljs-number">15</span>,<span class="hljs-number">5</span>))
+plt.subplot(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>)
+sns.distplot(train_y_ln)
+plt.subplot(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>)
+sns.distplot(train_y_ln[train_y_ln &lt; np.quantile(train_y_ln, <span class="hljs-number">0.9</span>)])
+</code></pre>
+<p><a href="https://imgchr.com/i/G8d1x0" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/04/01/G8d1x0.md.png" srcset="/img/loading.gif" alt="G8d1x0.md.png" /></a></p>
+<p>长尾现象明显缓解，再作预测，选取最相关的权重。</p>
+<pre class="highlight"><code class="python">plt.scatter(train_X[<span class="hljs-string">'v_9'</span>][subsample_index],train_y[subsample_index],color=<span class="hljs-string">'black'</span>)
+plt.scatter(train_X[<span class="hljs-string">'v_9'</span>][subsample_index],np.exp(model.predict(train_X.loc[subsample_index])),color=<span class="hljs-string">'blue'</span>)
+plt.xlabel(<span class="hljs-string">'v_9'</span>)
+plt.ylabel(<span class="hljs-string">'price'</span>)
+plt.legend([<span class="hljs-string">'True Price'</span>,<span class="hljs-string">'Predicted Price'</span>],loc=<span class="hljs-string">'upper right'</span>)
+print(<span class="hljs-string">'The predicted price seems normal after np.log(transforming'</span>)
+plt.show()
+</code></pre>
+<p><a href="https://imgchr.com/i/G8dJqU" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/04/01/G8dJqU.png" srcset="/img/loading.gif" alt="G8dJqU.png" /></a></p>
+<p>这时拟合效果要好得多。</p>
+<h3 id="交叉验证"><a class="markdownIt-Anchor" href="#交叉验证"></a> 交叉验证</h3>
+<p>交叉验证将数据分成若干份，每次取一份作验证集，其余的作训练集，这样可以将模型所有数据都机型训练，并且对模型泛化结果进行检验。</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> cross_val_score
+<span class="hljs-keyword">from</span> sklearn.metrics <span class="hljs-keyword">import</span> mean_absolute_error,  make_scorer
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_transfer</span><span class="hljs-params">(func)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">wrapper</span><span class="hljs-params">(y, yhat)</span>:</span>
+        result = func(np.log(y), np.nan_to_num(np.log(yhat)))
+        <span class="hljs-keyword">return</span> result
+    <span class="hljs-keyword">return</span> wrapper
+
+scores = cross_val_score(model, X=train_X, y=train_y, verbose=<span class="hljs-number">1</span>, cv = <span class="hljs-number">5</span>, scoring=make_scorer(log_transfer(mean_absolute_error)))
+
+print(<span class="hljs-string">'AVG:'</span>, np.mean(scores))
+
+scores = cross_val_score(model, X=train_X, y=train_y_ln, verbose=<span class="hljs-number">1</span>, cv = <span class="hljs-number">5</span>, scoring=make_scorer(mean_absolute_error))
+
+print(<span class="hljs-string">'AVG:'</span>, np.mean(scores))
+
+scores = pd.DataFrame(scores.reshape(<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>))
+scores.columns = [<span class="hljs-string">'cv'</span> + str(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, <span class="hljs-number">6</span>)]
+scores.index = [<span class="hljs-string">'MAE'</span>]
+scores
+</code></pre>
+<p>z在这里就捕将数据输出一一列出了。</p>
+<p>但是使用交叉验证时也要考虑到数据的真实情况，比如数据与时间相关时，那么把后时间靠后的数据作为训练集，时间靠前的作为验证集，颠倒了顺序，不合逻辑。在实际建模时，要注意考虑这一点。</p>
+<h3 id="绘制学习率验证曲线"><a class="markdownIt-Anchor" href="#绘制学习率验证曲线"></a> 绘制学习率验证曲线</h3>
+<p>可以使我们清楚的看出训练数据和验证数据得分（损失）的下降情况。</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> learning_curve,validation_curve
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">plot_learning_curve</span><span class="hljs-params">(estimator, title, X, y, ylim=None, cv=None,n_jobs=<span class="hljs-number">1</span>, train_size=np.linspace<span class="hljs-params">(<span class="hljs-number">.1</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">5</span> )</span>)</span>:</span>  
+    plt.figure()  
+    plt.title(title)  
+    <span class="hljs-keyword">if</span> ylim <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:  
+        plt.ylim(*ylim)  
+    plt.xlabel(<span class="hljs-string">'Training example'</span>)  
+    plt.ylabel(<span class="hljs-string">'score'</span>)  
+    train_sizes, train_scores, test_scores = learning_curve(estimator, X, y, cv=cv, n_jobs=n_jobs, train_sizes=train_size, scoring = make_scorer(mean_absolute_error))  
+    train_scores_mean = np.mean(train_scores, axis=<span class="hljs-number">1</span>)  
+    train_scores_std = np.std(train_scores, axis=<span class="hljs-number">1</span>)  
+    test_scores_mean = np.mean(test_scores, axis=<span class="hljs-number">1</span>)  
+    test_scores_std = np.std(test_scores, axis=<span class="hljs-number">1</span>)  
+    plt.grid()<span class="hljs-comment">#区域  </span>
+    plt.fill_between(train_sizes, train_scores_mean - train_scores_std,  
+                     train_scores_mean + train_scores_std, alpha=<span class="hljs-number">0.1</span>,  
+                     color=<span class="hljs-string">"r"</span>)  
+    plt.fill_between(train_sizes, test_scores_mean - test_scores_std,  
+                     test_scores_mean + test_scores_std, alpha=<span class="hljs-number">0.1</span>,  
+                     color=<span class="hljs-string">"g"</span>)  
+    plt.plot(train_sizes, train_scores_mean, <span class="hljs-string">'o-'</span>, color=<span class="hljs-string">'r'</span>,  
+             label=<span class="hljs-string">"Training score"</span>)  
+    plt.plot(train_sizes, test_scores_mean,<span class="hljs-string">'o-'</span>,color=<span class="hljs-string">"g"</span>,  
+             label=<span class="hljs-string">"Cross-validation score"</span>)  
+    plt.legend(loc=<span class="hljs-string">"best"</span>)  
+    <span class="hljs-keyword">return</span> plt  
+
+plot_learning_curve(LinearRegression(),<span class="hljs-string">'linear_model'</span>,train_X[:<span class="hljs-number">1000</span>],train_y_ln[:<span class="hljs-number">1000</span>],ylim=(<span class="hljs-number">0.0</span>,<span class="hljs-number">0.5</span>),cv=<span class="hljs-number">5</span>,n_jobs=<span class="hljs-number">1</span>)
+</code></pre>
+<p><a href="https://imgchr.com/i/G8wvAe" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/04/01/G8wvAe.png" srcset="/img/loading.gif" alt="G8wvAe.png" /></a></p>
+<h3 id="多种模型对比"><a class="markdownIt-Anchor" href="#多种模型对比"></a> 多种模型对比</h3>
+<p>在交叉验证的基础上，使用多个模型</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> sklearn.linear_model <span class="hljs-keyword">import</span> LinearRegression
+<span class="hljs-keyword">from</span> sklearn.linear_model <span class="hljs-keyword">import</span> Ridge
+<span class="hljs-keyword">from</span> sklearn.linear_model <span class="hljs-keyword">import</span> Lasso
+
+models = [LinearRegression(),
+          Ridge(),
+          Lasso()]
+
+result = dict()
+<span class="hljs-keyword">for</span> model <span class="hljs-keyword">in</span> models:
+    model_name = str(model).split(<span class="hljs-string">'('</span>)[<span class="hljs-number">0</span>]
+    scores = cross_val_score(model, X=train_X, y=train_y_ln, verbose=<span class="hljs-number">0</span>, cv = <span class="hljs-number">5</span>, scoring=make_scorer(mean_absolute_error))
+    result[model_name] = scores
+    print(model_name + <span class="hljs-string">' is finished'</span>)
+</code></pre>
+<p><a href="https://imgchr.com/i/G80ag1" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/04/01/G80ag1.png" srcset="/img/loading.gif" alt="G80ag1.png" /></a></p>
+<p>还可以通过带正则化的线性回归模型进行特征筛选。</p>
+<pre class="highlight"><code class="python">model = Ridge().fit(train_X, train_y_ln)
+print(<span class="hljs-string">'intercept:'</span>+ str(model.intercept_))
+sns.barplot(abs(model.coef_), continuous_feature_names)
+</code></pre>
+<p><a href="https://imgchr.com/i/G805b8" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/04/01/G805b8.png" srcset="/img/loading.gif" alt="G805b8.png" /></a></p>
+<pre class="highlight"><code class="python">model = Lasso().fit(train_X, train_y_ln)
+print(<span class="hljs-string">'intercept:'</span>+ str(model.intercept_))
+sns.barplot(abs(model.coef_), continuous_feature_names)
+</code></pre>
+<p><a href="https://imgchr.com/i/G80bCj" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/04/01/G80bCj.png" srcset="/img/loading.gif" alt="G80bCj.png" /></a></p>
+<h3 id="非线性模型"><a class="markdownIt-Anchor" href="#非线性模型"></a> 非线性模型</h3>
+<p>前面说了那么多线性回归的模型，下面介绍非线性模型</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> sklearn.linear_model <span class="hljs-keyword">import</span> LinearRegression
+<span class="hljs-keyword">from</span> sklearn.svm <span class="hljs-keyword">import</span> SVC
+<span class="hljs-keyword">from</span> sklearn.tree <span class="hljs-keyword">import</span> DecisionTreeRegressor
+<span class="hljs-keyword">from</span> sklearn.ensemble <span class="hljs-keyword">import</span> RandomForestRegressor
+<span class="hljs-keyword">from</span> sklearn.ensemble <span class="hljs-keyword">import</span> GradientBoostingRegressor
+<span class="hljs-keyword">from</span> sklearn.neural_network <span class="hljs-keyword">import</span> MLPRegressor
+<span class="hljs-keyword">from</span> xgboost.sklearn <span class="hljs-keyword">import</span> XGBRegressor
+<span class="hljs-keyword">from</span> lightgbm.sklearn <span class="hljs-keyword">import</span> LGBMRegressor
+
+models = [LinearRegression(),
+          DecisionTreeRegressor(),
+          RandomForestRegressor(),
+          GradientBoostingRegressor(),
+          MLPRegressor(solver=<span class="hljs-string">'lbfgs'</span>, max_iter=<span class="hljs-number">100</span>), 
+          XGBRegressor(n_estimators = <span class="hljs-number">100</span>, objective=<span class="hljs-string">'reg:squarederror'</span>), 
+          LGBMRegressor(n_estimators = <span class="hljs-number">100</span>)]
+
+result = dict()
+<span class="hljs-keyword">for</span> model <span class="hljs-keyword">in</span> models:
+    model_name = str(model).split(<span class="hljs-string">'('</span>)[<span class="hljs-number">0</span>]
+    scores = cross_val_score(model, X=train_X, y=train_y_ln, verbose=<span class="hljs-number">0</span>, cv = <span class="hljs-number">5</span>, scoring=make_scorer(mean_absolute_error))
+    result[model_name] = scores
+    print(model_name + <span class="hljs-string">' is finished'</span>)
+    
+result = pd.DataFrame(result)
+result.index = [<span class="hljs-string">'cv'</span> + str(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, <span class="hljs-number">6</span>)]
+result
+</code></pre>
+<p><a href="https://imgchr.com/i/G8BMPH" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/04/01/G8BMPH.md.png" srcset="/img/loading.gif" alt="G8BMPH.md.png" /></a></p>
+<p>可以看出随机森林还是顶的。</p>
+<h3 id="模型调参"><a class="markdownIt-Anchor" href="#模型调参"></a> 模型调参</h3>
+<h4 id="贪心调参"><a class="markdownIt-Anchor" href="#贪心调参"></a> 贪心调参</h4>
+<pre class="highlight"><code class="python"><span class="hljs-comment">## LGB的参数集合：</span>
+
+objective = [<span class="hljs-string">'regression'</span>, <span class="hljs-string">'regression_l1'</span>, <span class="hljs-string">'mape'</span>, <span class="hljs-string">'huber'</span>, <span class="hljs-string">'fair'</span>]
+
+num_leaves = [<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>,<span class="hljs-number">15</span>,<span class="hljs-number">20</span>,<span class="hljs-number">40</span>, <span class="hljs-number">55</span>]
+max_depth = [<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>,<span class="hljs-number">15</span>,<span class="hljs-number">20</span>,<span class="hljs-number">40</span>, <span class="hljs-number">55</span>]
+bagging_fraction = []
+feature_fraction = []
+drop_rate = []
+
+
+best_obj = dict()
+<span class="hljs-keyword">for</span> obj <span class="hljs-keyword">in</span> objective:
+    model = LGBMRegressor(objective=obj)
+    score = np.mean(cross_val_score(model, X=train_X, y=train_y_ln, verbose=<span class="hljs-number">0</span>, cv = <span class="hljs-number">5</span>, scoring=make_scorer(mean_absolute_error)))
+    best_obj[obj] = score
+    
+best_leaves = dict()
+<span class="hljs-keyword">for</span> leaves <span class="hljs-keyword">in</span> num_leaves:
+    model = LGBMRegressor(objective=min(best_obj.items(), key=<span class="hljs-keyword">lambda</span> x:x[<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>], num_leaves=leaves)
+    score = np.mean(cross_val_score(model, X=train_X, y=train_y_ln, verbose=<span class="hljs-number">0</span>, cv = <span class="hljs-number">5</span>, scoring=make_scorer(mean_absolute_error)))
+    best_leaves[leaves] = score
+    
+best_depth = dict()
+<span class="hljs-keyword">for</span> depth <span class="hljs-keyword">in</span> max_depth:
+    model = LGBMRegressor(objective=min(best_obj.items(), key=<span class="hljs-keyword">lambda</span> x:x[<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>],
+                          num_leaves=min(best_leaves.items(), key=<span class="hljs-keyword">lambda</span> x:x[<span class="hljs-number">1</span>])[<span class="hljs-number">0</span>],
+                          max_depth=depth)
+    score = np.mean(cross_val_score(model, X=train_X, y=train_y_ln, verbose=<span class="hljs-number">0</span>, cv = <span class="hljs-number">5</span>, scoring=make_scorer(mean_absolute_error)))
+    best_depth[depth] = score
+    
+sns.lineplot(x=[<span class="hljs-string">'0_initial'</span>,<span class="hljs-string">'1_turning_obj'</span>,<span class="hljs-string">'2_turning_leaves'</span>,<span class="hljs-string">'3_turning_depth'</span>], y=[<span class="hljs-number">0.143</span> ,min(best_obj.values()), min(best_leaves.values()), min(best_depth.values())])
+</code></pre>
+<h4 id="网格调参"><a class="markdownIt-Anchor" href="#网格调参"></a> 网格调参</h4>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> GridSearchCV
+
+parameters = {<span class="hljs-string">'objective'</span>: objective , <span class="hljs-string">'num_leaves'</span>: num_leaves, <span class="hljs-string">'max_depth'</span>: max_depth}
+model = LGBMRegressor()
+clf = GridSearchCV(model, parameters, cv=<span class="hljs-number">5</span>)
+clf = clf.fit(train_X, train_y)
+
+model = LGBMRegressor(objective=<span class="hljs-string">'regression'</span>,
+                          num_leaves=<span class="hljs-number">55</span>,
+                          max_depth=<span class="hljs-number">15</span>)
+
+np.mean(cross_val_score(model, X=train_X, y=train_y_ln, verbose=<span class="hljs-number">0</span>, cv = <span class="hljs-number">5</span>, scoring=make_scorer(mean_absolute_error)))
+</code></pre>
+<p>网格调参比较好理解，我们事先输入我们认为合理的参数，对所有参数的组合进行实验，找出得分最高的参数组合。</p>
+<h4 id="贝叶斯调参"><a class="markdownIt-Anchor" href="#贝叶斯调参"></a> 贝叶斯调参</h4>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> bayes_opt <span class="hljs-keyword">import</span> BayesianOptimization
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rf_cv</span><span class="hljs-params">(num_leaves, max_depth, subsample, min_child_samples)</span>:</span>
+    val = cross_val_score(
+        LGBMRegressor(objective = <span class="hljs-string">'regression_l1'</span>,
+            num_leaves=int(num_leaves),
+            max_depth=int(max_depth),
+            subsample = subsample,
+            min_child_samples = int(min_child_samples)
+        ),
+        X=train_X, y=train_y_ln, verbose=<span class="hljs-number">0</span>, cv = <span class="hljs-number">5</span>, scoring=make_scorer(mean_absolute_error)
+    ).mean()
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> - val
+
+rf_bo = BayesianOptimization(
+    rf_cv,
+    {
+    <span class="hljs-string">'num_leaves'</span>: (<span class="hljs-number">2</span>, <span class="hljs-number">100</span>),
+    <span class="hljs-string">'max_depth'</span>: (<span class="hljs-number">2</span>, <span class="hljs-number">100</span>),
+    <span class="hljs-string">'subsample'</span>: (<span class="hljs-number">0.1</span>, <span class="hljs-number">1</span>),
+    <span class="hljs-string">'min_child_samples'</span> : (<span class="hljs-number">2</span>, <span class="hljs-number">100</span>)
+    }
+)
+</code></pre>
+<p>对于贝叶斯调参和贪心调参，自己确实不够了解，还需要再专门学习一下。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E6%AF%94%E8%B5%9B">比赛</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <script defer src="https://utteranc.es/client.js"
+          repo="mz2sj/utterances"
+          issue-term="pathname"
+  
+          label="utterances"
+    
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "03-二手车价格预测之建模调参&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="/lib/katex/katex.min.css"  >
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>

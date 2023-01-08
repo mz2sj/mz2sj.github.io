@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/0JOFhyF5bT.jpeg">
+  <link rel="icon" type="image/png" href="/img/0JOFhyF5bT.jpeg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="mz2sj">
+  <meta name="keywords" content="">
+  <title>04-CV入门之模型训练与验证 ~ 微风和暖</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>微风和暖</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 五月 30日 2020, 8:07 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      4 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h3 id="数据集划分"><a class="markdownIt-Anchor" href="#数据集划分"></a> 数据集划分</h3>
+<p>在模型的训练过程中，模型只能利用训练数据来进行训练，模型并不能接触到测试集上的样本。因此模型如果将训练集学的过好，模型就会记住训练样本的细节，导致模型在测试集的泛化效果较差，这种现象称为过拟合（Overfitting）。与过拟合相对应的是欠拟合（Underfitting），即模型在训练集上的拟合效果较差。</p>
+<p><img src="https://s1.ax1x.com/2020/05/30/tQdKu4.png" srcset="/img/loading.gif" alt="tQdKu4.png" /></p>
+<p>如图所示：随着模型复杂度和模型训练轮数的增加，CNN模型在训练集上的误差会降低，但在测试集上的误差会逐渐降低，然后逐渐升高，而我们为了追求的是模型在测试集上的精度越高越好 。 解决上述问题最好的解决方法：构建一个与测试集尽可能<strong>分布一致</strong>的样本集（可称为验证集），在训练过程中不断验证模型在验证集上的精度，并以此控制模型的训练。</p>
+<p>因为训练集和验证集是分开的，所以模型在验证集上面的精度在一定程度上可以反映模型的泛化能力。在划分验证集的时候，需要注意验证集的分布应该与测试集尽量保持一致，不然模型在验证集上的精度就失去了指导意义。</p>
+<h4 id="留出法"><a class="markdownIt-Anchor" href="#留出法"></a> 留出法</h4>
+<p>直接将训练集划分成两部分，新的训练集和验证集。这种划分方式的优点是最为直接简单；缺点是只得到了一份验证集，有可能导致模型在验证集上过拟合。留出法应用场景是数据量比较大的情况。</p>
+<p><img src="https://s1.ax1x.com/2020/05/30/tQdzI1.png" srcset="/img/loading.gif" alt="tQdzI1.png" /></p>
+<h4 id="交叉验证法"><a class="markdownIt-Anchor" href="#交叉验证法"></a> 交叉验证法</h4>
+<p><img src="C:%5CUsers%5CMZ%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1590842709000.png" srcset="/img/loading.gif" alt="1590842709000" /></p>
+<p>将训练集划分成K份，将其中的K-1份作为训练集，剩余的1份作为验证集，循环K训练。这种划分方式是所有的训练集都是验证集，最终模型验证精度是K份平均得到。这种方式的优点是验证集精度比较可靠，训练K次可以得到K个有多样性差异的模型；CV验证的缺点是需要训练K次，不适合数据量很大的情况。</p>
+<h4 id="自助采样法"><a class="markdownIt-Anchor" href="#自助采样法"></a> 自助采样法</h4>
+<p><img src="https://s1.ax1x.com/2020/05/30/tQwPxO.png" srcset="/img/loading.gif" alt="tQwPxO.png" /></p>
+<p>通过有放回的采样方式得到新的训练集和验证集，每次的训练集和验证集都是有区别的。这种划分方式一般适用于数据量较小的情况。</p>
+<h3 id="模型训练与验证"><a class="markdownIt-Anchor" href="#模型训练与验证"></a> 模型训练与验证</h3>
+<p>放下代码，其实之前代码已经写的差不多了</p>
+<pre class="highlight"><code class="python">train_loader = torch.utils.data.DataLoader(
+    train_dataset,
+    batch_size=<span class="hljs-number">10</span>, 
+    shuffle=<span class="hljs-literal">True</span>, 
+    num_workers=<span class="hljs-number">10</span>, 
+)
+    
+val_loader = torch.utils.data.DataLoader(
+    val_dataset,
+    batch_size=<span class="hljs-number">10</span>, 
+    shuffle=<span class="hljs-literal">False</span>, 
+    num_workers=<span class="hljs-number">10</span>, 
+)
+
+model = SVHN_Model1()
+criterion = nn.CrossEntropyLoss (size_average=<span class="hljs-literal">False</span>)
+optimizer = torch.optim.Adam(model.parameters(), <span class="hljs-number">0.001</span>)
+best_loss = <span class="hljs-number">1000.0</span>
+<span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> range(<span class="hljs-number">20</span>):
+    print(<span class="hljs-string">'Epoch: '</span>, epoch)
+
+    train(train_loader, model, criterion, optimizer, epoch)
+    val_loss = validate(val_loader, model, criterion)
+    
+    <span class="hljs-comment"># 记录下验证集精度</span>
+    <span class="hljs-keyword">if</span> val_loss &lt; best_loss:
+        best_loss = val_loss
+        torch.save(model.state_dict(), <span class="hljs-string">'./model.pt'</span>)
+</code></pre>
+<pre class="highlight"><code class="py"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">train</span><span class="hljs-params">(train_loader, model, criterion, optimizer, epoch)</span>:</span>
+    <span class="hljs-comment"># 切换模型为训练模式</span>
+    model.train()
+
+    <span class="hljs-keyword">for</span> i, (input, target) <span class="hljs-keyword">in</span> enumerate(train_loader):
+        c0, c1, c2, c3, c4, c5 = model(data[<span class="hljs-number">0</span>])
+        loss = criterion(c0, data[<span class="hljs-number">1</span>][:, <span class="hljs-number">0</span>]) + \
+                criterion(c1, data[<span class="hljs-number">1</span>][:, <span class="hljs-number">1</span>]) + \
+                criterion(c2, data[<span class="hljs-number">1</span>][:, <span class="hljs-number">2</span>]) + \
+                criterion(c3, data[<span class="hljs-number">1</span>][:, <span class="hljs-number">3</span>]) + \
+                criterion(c4, data[<span class="hljs-number">1</span>][:, <span class="hljs-number">4</span>]) + \
+                criterion(c5, data[<span class="hljs-number">1</span>][:, <span class="hljs-number">5</span>])
+        loss /= <span class="hljs-number">6</span>
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate</span><span class="hljs-params">(val_loader, model, criterion)</span>:</span>
+    <span class="hljs-comment"># 切换模型为预测模型</span>
+    model.eval()
+    val_loss = []
+
+    <span class="hljs-comment"># 不记录模型梯度信息</span>
+    <span class="hljs-keyword">with</span> torch.no_grad():
+        <span class="hljs-keyword">for</span> i, (input, target) <span class="hljs-keyword">in</span> enumerate(val_loader):
+            c0, c1, c2, c3, c4, c5 = model(data[<span class="hljs-number">0</span>])
+            loss = criterion(c0, data[<span class="hljs-number">1</span>][:, <span class="hljs-number">0</span>]) + \
+                    criterion(c1, data[<span class="hljs-number">1</span>][:, <span class="hljs-number">1</span>]) + \
+                    criterion(c2, data[<span class="hljs-number">1</span>][:, <span class="hljs-number">2</span>]) + \
+                    criterion(c3, data[<span class="hljs-number">1</span>][:, <span class="hljs-number">3</span>]) + \
+                    criterion(c4, data[<span class="hljs-number">1</span>][:, <span class="hljs-number">4</span>]) + \
+                    criterion(c5, data[<span class="hljs-number">1</span>][:, <span class="hljs-number">5</span>])
+            loss /= <span class="hljs-number">6</span>
+            val_loss.append(loss.item())
+    <span class="hljs-keyword">return</span> np.mean(val_loss)
+</code></pre>
+<pre class="highlight"><code class="python">torch.save(model_object.state_dict(), <span class="hljs-string">'model.pt'</span>)
+model.load_state_dict(torch.load(<span class="hljs-string">' model.pt'</span>))
+</code></pre>
+<h3 id="模型调参"><a class="markdownIt-Anchor" href="#模型调参"></a> 模型调参</h3>
+<p>在参加本次比赛的过程中，我建议大家以如下逻辑完成：</p>
+<ul>
+<li>1.初步构建简单的CNN模型，不用特别复杂，跑通训练、验证和预测的流程；</li>
+<li>2.简单CNN模型的损失会比较大，尝试增加模型复杂度，并观察验证集精度；</li>
+<li>3.在增加模型复杂度的同时增加数据扩增方法，直至验证集精度不变。</li>
+</ul>
+<p><img src="C:%5CUsers%5CMZ%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1590843146998.png" srcset="/img/loading.gif" alt="1590843146998" /></p>
+<p>ok，有时间再修改。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/CV">CV</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/CV">CV</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <script defer src="https://utteranc.es/client.js"
+          repo="mz2sj/utterances"
+          issue-term="pathname"
+  
+          label="utterances"
+    
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "04-CV入门之模型训练与验证&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="/lib/katex/katex.min.css"  >
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/0JOFhyF5bT.jpeg">
+  <link rel="icon" type="image/png" href="/img/0JOFhyF5bT.jpeg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="mz2sj">
+  <meta name="keywords" content="">
+  <title>04-爬虫 ~ 微风和暖</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>微风和暖</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期一, 四月 27日 2020, 4:57 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    877 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      4 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h3 id="chrome监控ajax请求"><a class="markdownIt-Anchor" href="#chrome监控ajax请求"></a> chrome监控ajax请求</h3>
+<p>浏览器中输入腾讯新闻的网址，发现不断向下拉滚动条就可以新闻会不断出现，初步判断新出现的新闻是通过ajax加载的。打开chrome的开发者工具，进入network中的js界面，将js脚本按名称排序，继续向下拉动滚动条，可以发现新出现的请求有规律。</p>
+<p><img src="https://s1.ax1x.com/2020/04/27/JfrVbR.png" srcset="/img/loading.gif" alt="JfrVbR.png" /></p>
+<p><code>rcd?</code>这个请求随着滚动条的拖动不断增加，我们把前几条请求单独拿出来分析。</p>
+<p><code>https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page=0&amp;expIds=&amp;callback=__jp1</code></p>
+<p><code>https://pacaio.match.qq.com/irs/rcd?cid=4&amp;token=9513f1a78a663e1d25b46a826f248c3c&amp;ext=&amp;page=0&amp;expIds=&amp;callback=__jp2</code></p>
+<p><code>https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page=1&amp;expIds=20200427A0I0UN|20200427002954|20200402012032|20200427A0CB27|20200427A0H4VM|20200427A0GJP8|20200427002536|20200426005210|20200427A0CW43|20200427A0H11D&amp;callback=__jp4</code></p>
+<p><code>https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page=2&amp;expIds=20200427A0BLNR|20200427A08JMI|20200426005565|20200427A0BBTS|20200427A088DC|20200427A05064|20200427A04L6I|20200427A066PB|20200427V05K49&amp;callback=__jp5</code></p>
+<p><code>https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page=3&amp;expIds=20200427V01DY9|20200427000076|20200426A0O227|20200427A00E00|20200427A02TN7|20200426A0PR2B|20200426A0PLML|20200426A0HWYG|20200426A0Q1GM|20200426A0PGG8&amp;callback=__jp6</code></p>
+<p>出去开头的请求规律不规范外，可以发现请求的一些规律，第三条之后的请求：<code>cid=137</code>,<code>page=1 2 3...</code>,<code>callback=__jp4 5 6</code>,从第二条开始看的话，<code>page=0 1 2 3</code></p>
+<p>又综合分析一下，经过自己的尝试我们可以构造出下面的请求</p>
+<pre class="highlight"><code class="python">url=<span class="hljs-string">'https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page={}'</span>.format(i)
+</code></pre>
+<p>只需要更改<code>i</code>就可以获取不同页面的内容，并且是直接返回json，省去解析的麻烦。</p>
+<p>不用selenium就可以爬取新闻</p>
+<p>下面放上自己的代码</p>
+<h3 id="requests爬取腾讯新闻"><a class="markdownIt-Anchor" href="#requests爬取腾讯新闻"></a> requests爬取腾讯新闻</h3>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> requests
+
+
+url_fmt=<span class="hljs-string">'https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page={}'</span>
+title_list=[]
+tags_list=[]
+keywords_list=[]
+vurl_list=[]
+intro_list=[]
+category_list=[]
+source_list=[]
+bimg_list=[]
+
+<span class="hljs-keyword">for</span> page <span class="hljs-keyword">in</span> range(<span class="hljs-number">100</span>):
+    url=url_fmt.format(page)
+    res=requests.get(url)
+    data=res.json()[<span class="hljs-string">'data'</span>]
+    
+    <span class="hljs-keyword">for</span> new <span class="hljs-keyword">in</span> data:
+        <span class="hljs-keyword">try</span>:
+            title=new[<span class="hljs-string">'title'</span>]
+            tags=new[<span class="hljs-string">'tags'</span>]
+            keywords=new[<span class="hljs-string">'keywords'</span>]
+            vurl=new[<span class="hljs-string">'vurl'</span>]
+            intro=new[<span class="hljs-string">'intro'</span>]
+            category=new[<span class="hljs-string">'category'</span>]
+            source=new[<span class="hljs-string">'source'</span>]
+            bimg=new[<span class="hljs-string">'bimg'</span>]
+        <span class="hljs-keyword">except</span>:
+            <span class="hljs-keyword">continue</span>
+        title_list.append(title)
+        tags_list.append(tags)
+        keywords_list.append(keywords)
+        vurl_list.append(vurl)
+        intro_list.append(intro)
+        category_list.append(category)
+        source_list.append(source)
+        bimg_list.append(bimg)
+    time.sleep(<span class="hljs-number">2</span>)
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+
+news=pd.DataFrame({<span class="hljs-string">'title'</span>:title_list,
+                   <span class="hljs-string">'tags'</span>:tags_list,
+                   <span class="hljs-string">'keywords'</span>:keywords_list,
+                   <span class="hljs-string">'vurl'</span>:vurl_list,
+                   <span class="hljs-string">'intro'</span>:intro_list,
+                   <span class="hljs-string">'category'</span>:category_list,
+                   <span class="hljs-string">'source'</span>:source_list,
+                   <span class="hljs-string">'bimg'</span>:bimg_list})
+news.to_csv(<span class="hljs-string">'news.csv'</span>)
+</code></pre>
+<p><img src="https://s1.ax1x.com/2020/04/27/Jfx7gf.png" srcset="/img/loading.gif" alt="Jfx7gf.png" /></p>
+<p>大功告成！！！</p>
+<h3 id="selenium模拟拖动滚动条"><a class="markdownIt-Anchor" href="#selenium模拟拖动滚动条"></a> selenium模拟拖动滚动条</h3>
+<p>可以让selenium模拟拖动滚动条使新闻更新，在这里发现展示的新闻数量是有限的，拖动到一定程度将不能再拖动。</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">from</span>  selenium <span class="hljs-keyword">import</span> webdriver
+<span class="hljs-keyword">from</span> lxml <span class="hljs-keyword">import</span> etree
+
+
+<span class="hljs-comment">#模拟打开界面</span>
+driver=webdriver.Chrome(<span class="hljs-string">r'C:\Users\MZ\Downloads\chromedriver_win32\chromedriver.exe'</span>)
+driver.get(<span class="hljs-string">'https://news.qq.com/'</span>)
+driver.maximize_window()
+time.sleep(<span class="hljs-number">3</span>)
+current_window_1=driver.current_window_handle
+print(current_window_1)
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-comment">#无法拖动时退出拖动，使用chrome自带copy xpath 构造解析式</span>
+number_before=<span class="hljs-number">0</span>
+
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">50</span>):
+    driver.execute_script(<span class="hljs-string">"window.scrollTo(0,document.body.scrollHeight-100)"</span>)
+    html=driver.page_source
+    tree=etree.HTML(html)
+    number_after=len(tree.xpath(<span class="hljs-string">'/html/body/div/div[4]/div[2]/div/div/ul[2]/li'</span>))<span class="hljs-number">-1</span>
+    <span class="hljs-keyword">if</span> number_before==number_after:
+        <span class="hljs-keyword">break</span>
+    time.sleep(<span class="hljs-number">1</span>)
+    number_before=number_after
+html=driver.page_source
+print(number_after)
+</code></pre>
+<pre class="highlight"><code class="python">news_number=len(tree.xpath(<span class="hljs-string">'/html/body/div/div[4]/div[2]/div/div/ul[2]/li'</span>))<span class="hljs-number">-1</span>
+
+title_fmt=<span class="hljs-string">'/html/body/div/div[4]/div[2]/div/div/ul[2]/li[{}]/a/img/@alt'</span>
+img_fmt=<span class="hljs-string">'/html/body/div/div[4]/div[2]/div/div/ul[2]/li[{}]/a/img/@src'</span>
+news_src=<span class="hljs-string">'/html/body/div/div[4]/div[2]/div/div/ul[2]/li[{}]/a/@href'</span>
+
+title_list=[]
+img_list=[]
+src_list=[]
+
+<span class="hljs-keyword">for</span> number <span class="hljs-keyword">in</span> range(news_number):
+    <span class="hljs-keyword">try</span>:
+        title=tree.xpath(title_fmt.format(number))[<span class="hljs-number">0</span>]
+        img=tree.xpath(img_fmt.format(number))[<span class="hljs-number">0</span>]
+        src=tree.xpath(news_src.format(number))[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">except</span>:
+        <span class="hljs-keyword">continue</span>
+    
+    title_list.append(title)
+    img_list.append(img)
+    src_list.append(src) 
+</code></pre>
+<pre class="highlight"><code class="python">news=pd.DataFrame({<span class="hljs-string">'title'</span>:title_list,<span class="hljs-string">'url'</span>:src_list,<span class="hljs-string">'img'</span>:img_list})
+news.to_csv(<span class="hljs-string">'news.csv'</span>)
+news.head(<span class="hljs-number">10</span>)
+</code></pre>
+<p><img src="https://s1.ax1x.com/2020/04/27/JhQp79.png" srcset="/img/loading.gif" alt="JhQp79.png" /></p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E8%85%BE%E8%AE%AF%E6%96%B0%E9%97%BB%E7%88%AC%E8%99%AB">腾讯新闻爬虫</a>
+                
+                  <a class="hover-with-bg" href="/tags/ajax">ajax</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <script defer src="https://utteranc.es/client.js"
+          repo="mz2sj/utterances"
+          issue-term="pathname"
+  
+          label="utterances"
+    
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "04-爬虫&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="/lib/katex/katex.min.css"  >
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>

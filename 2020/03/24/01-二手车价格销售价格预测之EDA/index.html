@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/0JOFhyF5bT.jpeg">
+  <link rel="icon" type="image/png" href="/img/0JOFhyF5bT.jpeg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="mz2sj">
+  <meta name="keywords" content="">
+  <title>01-二手车价格销售价格预测之EDA ~ 微风和暖</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>微风和暖</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期二, 三月 24日 2020, 4:59 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.6k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      6 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h3 id="写在前面"><a class="markdownIt-Anchor" href="#写在前面"></a> 写在前面</h3>
+<p>这次参加了DataWhale组织的二手车销售价值预测组队学习，开始第一部分的学习——数据分析EDA。主要从数据分析流程和软件包工具两方面来介绍自己的收获。</p>
+<h3 id="数据分析流程"><a class="markdownIt-Anchor" href="#数据分析流程"></a> 数据分析流程</h3>
+<p>总结了一下，EDA主要做的工作就是发现数据缺失值和查看数据分布情况以及预测目标与其他因变量的相关性分析。</p>
+<h4 id="缺失值分析"><a class="markdownIt-Anchor" href="#缺失值分析"></a> 缺失值分析</h4>
+<p>对于表格数据，使用DataFrame的<code>info()</code>函数就可以直观的看到数据的缺失情况，但是这个只针对数值型（numeric）数据，缺失数据会以null值的形式呈现，直接调用DataFrame的<code>isnull()</code>函数配合<code>sum()</code>就可以对缺失值数据进行统计。比较坑的是object类型数据，有些缺失值数据并不会用null值表示，像下面这种：</p>
+<p><img src="https://s1.ax1x.com/2020/03/24/8LKOZ8.png" srcset="/img/loading.gif" alt="8LKOZ8.png" /></p>
+<p>“-”明显代表缺失值数据，但被字符串代替了。如何发现这种缺失情况，需要我们对相应的数据调用<code>value_counts()</code>函数，或者更直观点观察看一部分数据看有无异常情况。比如类别数据中，有的类别只出现了一次，和其他类别压根不是一个数量级，那么很有可能是异常值，可以考虑将其删去。</p>
+<p><img src="https://s1.ax1x.com/2020/03/24/8LYuqA.png" srcset="/img/loading.gif" alt="8LYuqA.png" /></p>
+<h4 id="数据分布"><a class="markdownIt-Anchor" href="#数据分布"></a> 数据分布</h4>
+<p>首先是预测值的数据分布情况，其次是其他数据（或者说是自变量）的分布情况。对于数值型数据我们可以用正太分布、对数正态分布进行拟合，其他分布自己还不太了解。对于类别特征，我们要查看各种类别对应的数量，可以用柱状图来可视化。也可以查看不同类别的数据对应的目标预测值（price）的分布情况，可以用来分析的图表有箱型图、小提琴图。箱型图可以帮助了解数据的特征范围，也可用来查看离群点。小提琴图在箱型图的基础上显示了目标数据值的分布情况。</p>
+<p><img src="https://datavizcatalogue.com/ZH/%E6%96%B9%E6%B3%95/images/anatomy/SVG/%E5%B0%8F%E6%8F%90%E7%90%B4%E5%9B%BE.svg" srcset="/img/loading.gif" alt="violin" /></p>
+<p><img src="https://niyanchun.com/usr/uploads/2018/07/1539567941.png" srcset="/img/loading.gif" alt="箱型图" /></p>
+<h4 id="相关性分析"><a class="markdownIt-Anchor" href="#相关性分析"></a> 相关性分析</h4>
+<p>主要是预测值和自变量之间的相关性分析，还有各个自变量之间的相关性分析。常用散点图来绘制，看数据之间是不是有相关性关系。如果预测值和某个自变量有很强的线性关系，那么毫无疑问这个变量对我们的预测是十分有用的。如果有两个自变量它们之间具有很明显的线性关系，那么我们可以只保留其中一个。相关性分析中常用到的图表有热力图、散点图等等。</p>
+<h3 id="软件工具技能包"><a class="markdownIt-Anchor" href="#软件工具技能包"></a> 软件工具技能包</h3>
+<p>以前只知道用pandas读数据，matplotlib绘图，这次学到了一些新知识，在此记录。</p>
+<h4 id="missingno"><a class="markdownIt-Anchor" href="#missingno"></a> missingno</h4>
+<p>见名知意，这个包是用来处理缺失值的。</p>
+<pre class="highlight"><code class="python">missingno.matrix(dataframe)
+</code></pre>
+<p><img src="https://s1.ax1x.com/2020/03/24/8LtwOH.png" srcset="/img/loading.gif" alt="8LtwOH.png" /></p>
+<pre class="highlight"><code class="python">missingno.bar(dataframe)
+</code></pre>
+<p><img src="https://s1.ax1x.com/2020/03/24/8LtW6g.png" srcset="/img/loading.gif" alt="8LtW6g.png" /></p>
+<p>可以直观的让我们看出哪些数据有缺失值</p>
+<h4 id="pandas"><a class="markdownIt-Anchor" href="#pandas"></a> pandas</h4>
+<pre class="highlight"><code class="python">DataFrame.skew()
+DataFrame.kurt()
+</code></pre>
+<p>查看数值型数据的偏度和峰度</p>
+<pre class="highlight"><code class="python">DataFrame.corr() 
+</code></pre>
+<p>计算数据的相关性</p>
+<pre class="highlight"><code class="python">Series.astype(<span class="hljs-string">'category'</span>)
+Series.cat.add_category(list)
+</code></pre>
+<p>astype将某个Seiries转成category型数据</p>
+<p>add_category为category型数据添加新的类别</p>
+<pre class="highlight"><code class="python">pd.melt(dataframe,id_vars,value_vars,var_name,value_name)
+</code></pre>
+<p>将列名转为列数据，id_vars是保留的列，value_vars是要转换的列，var_name、value_name对应保留和转换后的列名，盗用一张图表示</p>
+<p><img src="https://img-blog.csdn.net/20180927155514513?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21pbmdrb3Vrb3U=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" srcset="/img/loading.gif" alt="melt" /></p>
+<h4 id="seaborn"><a class="markdownIt-Anchor" href="#seaborn"></a> seaborn</h4>
+<p>有中文的<a href="https://seaborn.apachecn.org/" target="_blank" rel="noopener">文档</a>，查阅起来十分方便</p>
+<p>以前绘图使用的都是matplotlib，今天见识到了seaborn的强大，并且绘制出来的图也十分好看</p>
+<pre class="highlight"><code class="python">seaborn.distplot(a, bins=<span class="hljs-literal">None</span>, hist=<span class="hljs-literal">True</span>, kde=<span class="hljs-literal">True</span>, rug=<span class="hljs-literal">False</span>, fit=<span class="hljs-literal">None</span>, hist_kws=<span class="hljs-literal">None</span>, kde_kws=<span class="hljs-literal">None</span>, rug_kws=<span class="hljs-literal">None</span>, fit_kws=<span class="hljs-literal">None</span>, color=<span class="hljs-literal">None</span>, vertical=<span class="hljs-literal">False</span>, norm_hist=<span class="hljs-literal">False</span>, axlabel=<span class="hljs-literal">None</span>, label=<span class="hljs-literal">None</span>, ax=<span class="hljs-literal">None</span>)
+</code></pre>
+<p>灵活绘制单变量观测值分布图 ,fit可以配合scipy使用，查看数据是否符合某种数学分布</p>
+<pre class="highlight"><code class="python">seaborn.heatmap(data, vmin=<span class="hljs-literal">None</span>, vmax=<span class="hljs-literal">None</span>, cmap=<span class="hljs-literal">None</span>, center=<span class="hljs-literal">None</span>, robust=<span class="hljs-literal">False</span>, annot=<span class="hljs-literal">None</span>, fmt=<span class="hljs-string">'.2g'</span>, annot_kws=<span class="hljs-literal">None</span>, linewidths=<span class="hljs-number">0</span>, linecolor=<span class="hljs-string">'white'</span>, cbar=<span class="hljs-literal">True</span>, cbar_kws=<span class="hljs-literal">None</span>, cbar_ax=<span class="hljs-literal">None</span>, square=<span class="hljs-literal">False</span>, xticklabels=<span class="hljs-string">'auto'</span>, yticklabels=<span class="hljs-string">'auto'</span>, mask=<span class="hljs-literal">None</span>, ax=<span class="hljs-literal">None</span>, **kwargs)
+</code></pre>
+<p>可以将pandas处理的corr数据放进去，绘制出热力图，选择不同的主题就很舒服</p>
+<p><img src="https://seaborn.apachecn.org/docs/img/e18cb02ed3ad1b91b540951f2912539b.jpg" srcset="/img/loading.gif" alt="cmap" /></p>
+<pre class="highlight"><code class="python">seaborn.pairplot(data, hue=<span class="hljs-literal">None</span>, hue_order=<span class="hljs-literal">None</span>, palette=<span class="hljs-literal">None</span>, vars=<span class="hljs-literal">None</span>, x_vars=<span class="hljs-literal">None</span>, y_vars=<span class="hljs-literal">None</span>, kind=<span class="hljs-string">'scatter'</span>, diag_kind=<span class="hljs-string">'auto'</span>, markers=<span class="hljs-literal">None</span>, height=<span class="hljs-number">2.5</span>, aspect=<span class="hljs-number">1</span>, dropna=<span class="hljs-literal">True</span>, plot_kws=<span class="hljs-literal">None</span>, diag_kws=<span class="hljs-literal">None</span>, grid_kws=<span class="hljs-literal">None</span>, size=<span class="hljs-literal">None</span>)
+</code></pre>
+<p>diag_kind选择对角线图的类型，可选 {‘auto’, ‘hist’, ‘kde’} 三种类型</p>
+<pre class="highlight"><code class="python">seaborn.regplot(x, y, data=<span class="hljs-literal">None</span>, x_estimator=<span class="hljs-literal">None</span>, x_bins=<span class="hljs-literal">None</span>, x_ci=<span class="hljs-string">'ci'</span>, scatter=<span class="hljs-literal">True</span>, fit_reg=<span class="hljs-literal">True</span>, ci=<span class="hljs-number">95</span>, n_boot=<span class="hljs-number">1000</span>, units=<span class="hljs-literal">None</span>, order=<span class="hljs-number">1</span>, logistic=<span class="hljs-literal">False</span>, lowess=<span class="hljs-literal">False</span>, robust=<span class="hljs-literal">False</span>, logx=<span class="hljs-literal">False</span>, x_partial=<span class="hljs-literal">None</span>, y_partial=<span class="hljs-literal">None</span>, truncate=<span class="hljs-literal">False</span>, dropna=<span class="hljs-literal">True</span>, x_jitter=<span class="hljs-literal">None</span>, y_jitter=<span class="hljs-literal">None</span>, label=<span class="hljs-literal">None</span>, color=<span class="hljs-literal">None</span>, marker=<span class="hljs-string">'o'</span>, scatter_kws=<span class="hljs-literal">None</span>, line_kws=<span class="hljs-literal">None</span>, ax=<span class="hljs-literal">None</span>)
+</code></pre>
+<p>注意和之前的不同，由于是两个变量之间的回归，所以x,y值得是变量名，data才是DataFrame数据</p>
+<pre class="highlight"><code class="python">seaborn.boxplot(x=<span class="hljs-literal">None</span>, y=<span class="hljs-literal">None</span>, hue=<span class="hljs-literal">None</span>, data=<span class="hljs-literal">None</span>, order=<span class="hljs-literal">None</span>, hue_order=<span class="hljs-literal">None</span>, orient=<span class="hljs-literal">None</span>, color=<span class="hljs-literal">None</span>, palette=<span class="hljs-literal">None</span>, saturation=<span class="hljs-number">0.75</span>, width=<span class="hljs-number">0.8</span>, dodge=<span class="hljs-literal">True</span>, fliersize=<span class="hljs-number">5</span>, linewidth=<span class="hljs-literal">None</span>, whis=<span class="hljs-number">1.5</span>, notch=<span class="hljs-literal">False</span>, ax=<span class="hljs-literal">None</span>, **kwargs)
+</code></pre>
+<p>同样x、y是字符串，data是数据</p>
+<pre class="highlight"><code class="python">seaborn.violinplot(x=<span class="hljs-literal">None</span>, y=<span class="hljs-literal">None</span>, hue=<span class="hljs-literal">None</span>, data=<span class="hljs-literal">None</span>, order=<span class="hljs-literal">None</span>, hue_order=<span class="hljs-literal">None</span>, bw=<span class="hljs-string">'scott'</span>, cut=<span class="hljs-number">2</span>, scale=<span class="hljs-string">'area'</span>, scale_hue=<span class="hljs-literal">True</span>, gridsize=<span class="hljs-number">100</span>, width=<span class="hljs-number">0.8</span>, inner=<span class="hljs-string">'box'</span>, split=<span class="hljs-literal">False</span>, dodge=<span class="hljs-literal">True</span>, orient=<span class="hljs-literal">None</span>, linewidth=<span class="hljs-literal">None</span>, color=<span class="hljs-literal">None</span>, palette=<span class="hljs-literal">None</span>, saturation=<span class="hljs-number">0.75</span>, ax=<span class="hljs-literal">None</span>, **kwargs)
+</code></pre>
+<p>小提琴图的功能与箱型图类似。 它显示了一个（或多个）分类变量多个属性上的定量数据的分布，从而可以比较这些分布。与箱形图不同，其中所有绘图单元都与实际数据点对应，小提琴图描述了基础数据分布的核密度估计。</p>
+<pre class="highlight"><code class="python">seaborn.FacetGrid(data, row=<span class="hljs-literal">None</span>, col=<span class="hljs-literal">None</span>, hue=<span class="hljs-literal">None</span>, col_wrap=<span class="hljs-literal">None</span>, sharex=<span class="hljs-literal">True</span>, sharey=<span class="hljs-literal">True</span>, height=<span class="hljs-number">3</span>, aspect=<span class="hljs-number">1</span>, palette=<span class="hljs-literal">None</span>, row_order=<span class="hljs-literal">None</span>, col_order=<span class="hljs-literal">None</span>, hue_order=<span class="hljs-literal">None</span>, hue_kws=<span class="hljs-literal">None</span>, dropna=<span class="hljs-literal">True</span>, legend_out=<span class="hljs-literal">True</span>, despine=<span class="hljs-literal">True</span>, margin_titles=<span class="hljs-literal">False</span>, xlim=<span class="hljs-literal">None</span>, ylim=<span class="hljs-literal">None</span>, subplot_kws=<span class="hljs-literal">None</span>, gridspec_kws=<span class="hljs-literal">None</span>, size=<span class="hljs-literal">None</span>)
+</code></pre>
+<p>来了难点了，以前的只要代数据就可以，这个网格稍微复杂点</p>
+<p>col_wrap 指定网络的列数，col指定列维度，row指定行维度，hue指定第三个维度。在指定维度上，会绘制对应类别的数据。</p>
+<p>之后可以调用FacetGrid对象的map方法。像下面的小栗子</p>
+<pre class="highlight"><code class="python">g = sns.FacetGrid(tips, col=<span class="hljs-string">"time"</span>)
+g.map(plt.hist, <span class="hljs-string">"tip"</span>);
+</code></pre>
+<p><img src="https://seaborn.apachecn.org/docs/img/5e335e837566d00501c0389d96625993.jpg" srcset="/img/loading.gif" alt="map" /></p>
+<p>col对应的维度是time，而time有Lunch和Dinner两类数据，就会分别在两列绘制对应的数句。map方法传入要绘制的图类型函数plt.hist,并传递参数名称。</p>
+<pre class="highlight"><code class="python">g = sns.FacetGrid(tips, col=<span class="hljs-string">"sex"</span>, hue=<span class="hljs-string">"smoker"</span>)
+g.map(plt.scatter, <span class="hljs-string">"total_bill"</span>, <span class="hljs-string">"tip"</span>, alpha=<span class="hljs-number">.7</span>)
+g.add_legend();
+</code></pre>
+<p>这是传入第三维度的例子</p>
+<p><img src="https://seaborn.apachecn.org/docs/img/96cf02373c746bde1b58beb44b2f25c8.jpg" srcset="/img/loading.gif" alt="hue" /></p>
+<p>好啦，这次就都这里了，快到deadline了，上传下我的博客。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>
+                  &nbsp;
+                
+                  <a class="hover-with-bg" href="/categories/Regression">Regression</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>
+                
+                  <a class="hover-with-bg" href="/tags/EDA">EDA</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E5%9B%9E%E5%BD%92">回归</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E6%AF%94%E8%B5%9B">比赛</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <script defer src="https://utteranc.es/client.js"
+          repo="mz2sj/utterances"
+          issue-term="pathname"
+  
+          label="utterances"
+    
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "01-二手车价格销售价格预测之EDA&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="/lib/katex/katex.min.css"  >
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>

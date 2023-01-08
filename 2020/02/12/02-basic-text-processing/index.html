@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/0JOFhyF5bT.jpeg">
+  <link rel="icon" type="image/png" href="/img/0JOFhyF5bT.jpeg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="mz2sj">
+  <meta name="keywords" content="">
+  <title>02 basic text processing ~ 微风和暖</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>微风和暖</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期三, 二月 12日 2020, 8:45 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.2k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      4 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>今天学习正则表达式的使用，后面还有一个小作业要做，开始啦！</p>
+<h1 id="正则表达式"><a class="markdownIt-Anchor" href="#正则表达式"></a> 正则表达式</h1>
+<h2 id="disjunctions-析取"><a class="markdownIt-Anchor" href="#disjunctions-析取"></a> Disjunctions 析取</h2>
+<p>我也不知道中文该怎么说，暂定析取吧。disjunction用 <strong>[]</strong> 表示，表示选取括号中表示的一个字符。下面举个例子</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[wW]oodchunk</td>
+<td>Woodchunk,woodchunk</td>
+</tr>
+<tr>
+<td>[123456789]</td>
+<td>any digit(由于匹配是贪心的，所以只要是数字都会匹配)</td>
+</tr>
+</tbody>
+</table>
+<p>像数字每次都要把十个阿拉伯数字都写出来太麻烦了，所以有了range用法</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[A-Z]</td>
+<td>An uppeer case letter</td>
+</tr>
+<tr>
+<td>[a-z]</td>
+<td>A lowwer case letter</td>
+</tr>
+<tr>
+<td>[0-9]</td>
+<td>A single digit</td>
+</tr>
+</tbody>
+</table>
+<h2 id="negation-in-disjunction-析取取反"><a class="markdownIt-Anchor" href="#negation-in-disjunction-析取取反"></a> Negation in Disjunction 析取取反</h2>
+<p>翻译忽略， <strong>^</strong> carat就是取反的意思，在disjunction中经常会用到</p>
+<p><strong>^</strong> 只有在析取 <strong>[]</strong> 中作为第一个字符才表示取反，也就是说**^** 与 <strong>[]</strong> 常常连用</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matcher</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[^A-Z]</td>
+<td>Not an upper case letter</td>
+<td>H<strong>ello</strong> W<strong>orld</strong></td>
+</tr>
+<tr>
+<td>[^Ss]</td>
+<td>Neither <strong>S</strong> nor <strong>s</strong></td>
+<td>S<strong>ay</strong></td>
+</tr>
+<tr>
+<td>[<sup>e</sup>]</td>
+<td>Neither e nor ^</td>
+<td>^e<strong>ergg</strong></td>
+</tr>
+<tr>
+<td>a^b</td>
+<td>The pattern a carat b,as a signal tobe matched</td>
+<td><strong>a^b</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="more-disjunction-取或"><a class="markdownIt-Anchor" href="#more-disjunction-取或"></a> More Disjunction 取或</h2>
+<p>用 **|**来表示，表示取或的意思，或者理解成linux的管道？在前面的基础上继续进行运算。</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hello|world</td>
+<td>匹配hello或者world</td>
+</tr>
+<tr>
+<td>a|b|c</td>
+<td>等同于[abc]</td>
+</tr>
+<tr>
+<td>[Hh]ello|[Ww]orld</td>
+<td>匹配大小写开头的hello或者world</td>
+</tr>
+</tbody>
+</table>
+<p>值得注意的是 <strong>|</strong> 判断的是符号之前或之后的连续字符是否匹配，而不是只看前面若干个字符匹配情况。</p>
+<h2 id=""><a class="markdownIt-Anchor" href="#"></a> ？ * +.</h2>
+<table>
+<thead>
+<tr>
+<th>Patter</th>
+<th>Matches</th>
+<th>Instances</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>colou?r</td>
+<td>optional previous char,?号前面的字符可有可无</td>
+<td>color colour</td>
+</tr>
+<tr>
+<td>oo*h!</td>
+<td>0 or more of previous char,0次或者更多次</td>
+<td>oh!,ooh!,oooh!</td>
+</tr>
+<tr>
+<td>o+h!</td>
+<td>1 or more of previous char,1次或者更多次</td>
+<td>oh!,ooh!</td>
+</tr>
+<tr>
+<td>baa+</td>
+<td></td>
+<td>baa,baaa</td>
+</tr>
+<tr>
+<td>beg.n</td>
+<td>1 char,单个字符，可以是任意字符</td>
+<td>beggn，beg1n，beg2n</td>
+</tr>
+</tbody>
+</table>
+<h2 id="anchors-锚"><a class="markdownIt-Anchor" href="#anchors-锚"></a> Anchors ^$ 锚</h2>
+<p>说白了，就是表明位置。<strong>^</strong> 后的字符表示该字符在序列开始处，<strong>$</strong> 前的字符表示该字符在结尾处。</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>^[A-Z]</td>
+<td><strong>P</strong>alo Alto 只匹配前面的一个大写P</td>
+</tr>
+<tr>
+<td>^[^A-Za-z]</td>
+<td>**1    “**Hello”  实验证明只能匹配一个字符并不能匹配引号，ppt上有误</td>
+</tr>
+<tr>
+<td>\.$</td>
+<td>The end. 以.结尾</td>
+</tr>
+<tr>
+<td>.$</td>
+<td>匹配结尾的任意一个字符 The end**？**  The end**！**</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-2"><a class="markdownIt-Anchor" href="#-2"></a> </h2>
+<h1 id="文本序列化"><a class="markdownIt-Anchor" href="#文本序列化"></a> 文本序列化</h1>
+<h2 id="text-normalization-文本规范化"><a class="markdownIt-Anchor" href="#text-normalization-文本规范化"></a> Text Normalization 文本规范化</h2>
+<p>引出几个概念</p>
+<p><strong>lemma</strong> 词根：cat 和 cats的词根是相同的</p>
+<p><strong>wordform</strong> 词形：cat 和 cats的词形式不同的</p>
+<p>对于词的类型和数目也有讲究，比如一句简单的英语</p>
+<p>they lay back on the San Fancisco grass and looked at the stars and their</p>
+<p>关于词的数目，San Fancisco是算一个词还是两个词呢</p>
+<p>关于词的类型，they和their算不算同一类词呢？</p>
+<p>都是问题</p>
+<p>我们通产用N表示token的数目，用V表示词典词的大小，也就是词类型数目</p>
+<p>不同的语言在token的过程中会遇到不同的问题，这里就不一一例举了。</p>
+<p>课程中还专门介绍了中文分词方法，最大正向匹配法。最大正向匹配法的思想很简单，就是拿词典中最长的词去遍历语句，匹配成功则分词，不成功则换长度更短的词继续匹配，直至匹配结束。</p>
+<p>下面介绍集中常见的文本规范化方法。</p>
+<h2 id="word-normalization"><a class="markdownIt-Anchor" href="#word-normalization"></a> Word Normalization</h2>
+<h3 id="case-folding"><a class="markdownIt-Anchor" href="#case-folding"></a> Case folding</h3>
+<p>大小写转换，文本处理中我们通常会将大写转化为小写，但是这也会带来一些问题。例如机器翻译中，大写US和小写us完全不是一个意思。但是在信息检索中，我们习惯小写，如果出现了大写也会同时检索小写的结果。</p>
+<h3 id="lemmatization"><a class="markdownIt-Anchor" href="#lemmatization"></a> Lemmatization</h3>
+<p>词性还原，根据词典找到词初始的词形式，比如单复数，所有格，时态的还原</p>
+<p>am，are，is --&gt; be</p>
+<h3 id="morphology"><a class="markdownIt-Anchor" href="#morphology"></a> Morphology</h3>
+<p>形态还原，将词分为词干和词缀，在信息检索中就常会用到Stemming。保留词的词干用来检索，</p>
+<p>例如compressed和compression都能通过它们的词干compress检索到。</p>
+<p>英语中会有专门的规则用来获取词的词干，比如下面这条。</p>
+<p>（*v*)ing  去掉ing后的词干，词干中含有元音</p>
+<p>walking  --&gt;walk 	a是元音</p>
+<p>sing  --&gt;sing 	 s不是元音，所以词干不是s</p>
+<p>秀一波正则表达式，.*[aoeiu].*ing$，就是上面我们说的匹配所有类似于walking这样的词</p>
+<h2 id="sentence-segmentation-and-decision-trees"><a class="markdownIt-Anchor" href="#sentence-segmentation-and-decision-trees"></a> Sentence Segmentation and Decision Trees</h2>
+<p>句子的划分有时候也是一个问题。英语中的句号.有时会被当作其他用途，并不是真正表示一句话结束，例如%0.2中的.就不是表示句子结束,所以我们要建立一个分类器来判断哪里是句子的开始哪里句子结束了.</p>
+<p>例如决策树来判断句子是否结束.</p>
+<p><img src="https://s2.ax1x.com/2020/02/12/1bw3v9.png" srcset="/img/loading.gif" alt="1bw3v9.png" /></p>
+<p>我们需要手工选取许多特征输入决策树让决策树判断</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/nlp">nlp</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/nlp">nlp</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <script defer src="https://utteranc.es/client.js"
+          repo="mz2sj/utterances"
+          issue-term="pathname"
+  
+          label="utterances"
+    
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "02 basic text processing&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="/lib/katex/katex.min.css"  >
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>

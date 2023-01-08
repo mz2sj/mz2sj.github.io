@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/0JOFhyF5bT.jpeg">
+  <link rel="icon" type="image/png" href="/img/0JOFhyF5bT.jpeg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="mz2sj">
+  <meta name="keywords" content="">
+  <title>微风和暖</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>微风和暖</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('https://s2.ax1x.com/2020/02/12/1bDC4K.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="fas fa-angle-down scroll-down-arrow"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5 z-depth-3" id="board">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/30/04-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E4%B8%8E%E9%AA%8C%E8%AF%81/">
+        <p class="h4 index-header">04-CV入门之模型训练与验证</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> 数据集划分
+在模型的训练过程中，模型只能利用训练数据来进行训练，模型并不能接触到测试集上的样本。因此模型如果将训练集学的过好，模型就会记住训练样本的细节，导致模型在测试集的泛化效果较差，这种现象称为过拟合（Overfitting）。与过拟合相对应的是欠拟合（Underfitting），即模型在训练集上的拟合效果较差。
+
+如图所示：随着模型复杂度和模型训练轮数的增加，CNN模型在训练集上的误差会降低，但在测试集上的误差会逐渐降低，然后逐渐升高，而我们为了追求的是模型在测试集上的精度越高越好 。 解决上述问题最好的解决方法：构建一个与测试集尽可能分布一致的样本集（可称为验证集），在训练过程中不断验证模型在验证集上的精度，并以此控制模型的训练。
+因为训练集和验证集是分开的，所以模型在验证集上面的精度在一定程度上可以反映模型的泛化能力。在划分验证集的时候，需要注意验证集的分布应该与测试集尽量保持一致，不然模型在验证集上的精度就失去了指导意义。
+ 留出法
+直接将训练集划分成两部分，新的训练集和验证集。这种划分方式的优点是最为直接简单；缺点是只得到了一份验证集，有可能导致模型在验证集上过拟合。留</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-30&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CV">CV</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CV">CV</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/26/03-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA/">
+        <p class="h4 index-header">03-CV入门之模型构建</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> CNN介绍
+​	卷积神经网络（简称CNN）是一类特殊的人工神经网络，是深度学习中重要的一个分支。CNN在很多领域都表现优异，精度和速度比传统计算学习算法高很多。特别是在计算机视觉领域，CNN是解决图像分类、图像检索、物体检测和语义分割的主流模型。
+​	CNN是一种层次模型，输入的是原始的像素数据。CNN通过卷积（convolution）、池化（pooling）、非线性激活函数（non-linear activation function）和全连接层（fully connected layer）构成。 利用pytorch我们可以很方便实现。
+#顺序依次是卷积、激活函数、池化
+cnn=nn.Sequential(
+        nn.Conv2d(3,16,kernel_size=(3,3),stride=(2,2)),
+        nn.ReLU(),
+        nn.MaxPool2d(2),
+        nn.Conv2d(16,32,kernel_size=(3,3),stride=(2,2)),
+        nn.ReLU(),
+        nn.Max</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-26&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CV">CV</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CV">CV</a>&nbsp;
+          
+            <a href="/tags/CNN">CNN</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/23/02-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96%E4%B8%8E%E6%89%A9%E5%A2%9E/">
+        <p class="h4 index-header">02-CV入门之数据读取与扩增</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> Pillow
+Pilow是python中进行图像处理的一个库，话不多说看代码。
+from PIL import Image
+
+im=Image.open('./data/cat.png')
+im
+
+自己截了colab里面的猫猫，很可爱呀
+
+from PIL import Image,ImageFilter
+
+im=Image.open('./data/cat.png')
+
+im2=im.filter(ImageFilter.BLUR)
+im2.save('blur.jpg','jpeg')
+im2
+
+
+可爱的猫猫变糊了
+from PIL import Image
+
+im=Image.open('./data/cat.png')
+im.thumbnail((im.width//2,im.height//2))
+im
+
+
+可爱的猫猫变小了
+对图像处理并不熟悉，我们要做的是清楚需要对图像处理做哪些工作，然后再去查找相关API
+ Opencv 2
+import cv2
+import matplotlib.pyplot as plt
+
+
+img=cv2.imread('./data/cat.p</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-23&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CV">CV</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CV">CV</a>&nbsp;
+          
+            <a href="/tags/pytorch">pytorch</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/05/20/01-CV%E5%85%A5%E9%97%A8%E4%B9%8B%E8%B5%9B%E9%A2%98%E7%90%86%E8%A7%A3/">
+        <p class="h4 index-header">01-CV入门之赛题理解</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> 目标
+识别图像中的字符串
+
+为了简化难度，主办方提供了字符在图片中的字符框位置，我们只需识别字符框中的字符即可。
+
+下面看读取数据的一个例子
+
+import numpy as np
+
+#读取图片的起始结尾位置及标签
+def parse_json(d):
+  arr=np.array([
+    d['top'],d['height'],d['left'],d['width'],d['label']
+  ])
+  arr=arr.astype(int)
+  return arr
+
+import cv2
+
+img=cv2.imread('./data/mchar_train/000008.png')
+arr=parse_json(train_json['000008.png'])
+
+import matplotlib.pyplot as plt
+
+#显示图片
+plt.figure(figsize=(10,10))
+plt.subplot(1,arr.shape[1]+1,1)
+plt.imshow(img)
+
+
+可以看到128三个数字，由于已经给我们分好了每个字符的范围，我们可以单独把每</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-05-20&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/CV">CV</a>&nbsp;
+          
+            <a href="/categories/%E6%AF%94%E8%B5%9B">比赛</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/CV">CV</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/27/04-%E7%88%AC%E8%99%AB/">
+        <p class="h4 index-header">04-爬虫</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> chrome监控ajax请求
+浏览器中输入腾讯新闻的网址，发现不断向下拉滚动条就可以新闻会不断出现，初步判断新出现的新闻是通过ajax加载的。打开chrome的开发者工具，进入network中的js界面，将js脚本按名称排序，继续向下拉动滚动条，可以发现新出现的请求有规律。
+
+rcd?这个请求随着滚动条的拖动不断增加，我们把前几条请求单独拿出来分析。
+https://pacaio.match.qq.com/irs/rcd?cid=137&amp;token=d0f13d594edfc180f5bf6b845456f3ea&amp;id=&amp;ext=top&amp;page=0&amp;expIds=&amp;callback=__jp1
+https://pacaio.match.qq.com/irs/rcd?cid=4&amp;token=9513f1a78a663e1d25b46a826f248c3c&amp;ext=&amp;page=0&amp;expIds=&amp;callback=__jp2
+https://pacaio.match.qq.com/irs/rcd?c</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-27&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E8%85%BE%E8%AE%AF%E6%96%B0%E9%97%BB%E7%88%AC%E8%99%AB">腾讯新闻爬虫</a>&nbsp;
+          
+            <a href="/tags/ajax">ajax</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/25/03-%E7%88%AC%E8%99%AB/">
+        <p class="h4 index-header">03-爬虫</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> proxy ip 代理
+代理主要用来解决ip频繁访问被服务器封号的问题，在requests中使用代理很简单.proxies格式是一个字典：{‘http’: ‘[http://IP:port‘,‘https’:'https://IP:port‘}](http://xn--ip:port%2Chttps:'https-mc9nd6a//IP:port‘}),我们将它传入requests中的get方法就可以使用
+requests.get(url, headers = headers, proxies = proxies, timeout = 10)
+
+我们可以从网上提供的一些代理池中获取有效的代理，具体代码如下：
+from bs4 import BeautifulSoup
+import requests
+import re
+import json
+
+
+def open_proxy_url(url):
+    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, lik</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-25&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/selenium">selenium</a>&nbsp;
+          
+            <a href="/tags/cookie">cookie</a>&nbsp;
+          
+            <a href="/tags/session">session</a>&nbsp;
+          
+            <a href="/tags/%E4%BB%A3%E7%90%86">代理</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/23/02-%E7%88%AC%E8%99%AB/">
+        <p class="h4 index-header">02-爬虫</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> 正则表达式
+ 正则表达式语法
+
+. 表示任何单个字符
+[ ] 字符集，对单个字符给出取值范围 ，如[abc]表示a、b、c，[a‐z]表示a到z单个字符
+[^ ] 非字符集，对单个字符给出排除范围 ，如[^abc]表示非a或b或c的单个字符
+* 前一个字符0次或无限次扩展，如abc* 表示 ab、abc、abcc、abccc等
++ 前一个字符1次或无限次扩展 ，如abc+ 表示 abc、abcc、abccc等
+? 前一个字符0次或1次扩展 ，如abc? 表示 ab、abc
+| 左右表达式任意一个 ，如abc|def 表示 abc、def
+{m} 扩展前一个字符m次 ，如ab{2}c表示abbc
+{m,n} 扩展前一个字符m至n次（含n） ，如ab{1,2}c表示abc、abbc
+^ 匹配字符串开头 ，如^abc表示abc且在一个字符串的开头
+$ 匹配字符串结尾 ，如abc$表示abc且在一个字符串的结尾
+( ) 分组标记，内部只能使用 | 操作符 ，如(abc)表示abc，(abc|def)表示abc、def，使用分组除了整体匹配的符号外，单独的分组也会匹配出来。
+\d 数字，等价于</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-23&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>&nbsp;
+          
+            <a href="/tags/bs4">bs4</a>&nbsp;
+          
+            <a href="/tags/Xpath">Xpath</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/21/01-%E7%88%AC%E8%99%AB/">
+        <p class="h4 index-header">01-爬虫入门</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1"> HTTP请求
+对于http请求，记录一下常用的几种：
+
+GET：向指定的资源发出“显示”请求。GET方法应该只用于读取数据 ，查询字符串（名称/值对）是在 GET 请求的 URL 中发送的 。
+POST：向指定资源提交数据，请求服务器进行处理（例如提交表单或者上传文件）。数据被包含在请求文本中。这个请求可能会创建新的资源或修改现有资源，或二者皆有。  查询字符串（名称/值对）是在 POST 请求的 HTTP 消息主体中发送的
+PUT：向指定资源位置上传输最新内容。
+DELETE：请求服务器删除Request-URL所标识的资源。
+
+ requests.get
+实现基本的requests应用，爬取python之禅
+import requests
+url='https://www.python.org/dev/peps/pep-0020/'
+res=request.get(url)
+text=res.text
+
+此时返回的text是html原生文本，想要获取对应内容就需要进行匹配了。
+with open('zon_of_python.txt','w') as f:
+    f.write</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-21&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E7%88%AC%E8%99%AB">爬虫</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/04/04-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B%E4%B9%8B%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88/">
+        <p class="h4 index-header">04-二手车价格预测之模型融合</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">虽然这是最后一次打卡的内容，但是自己离掌握这些内容还差得很远，还要继续努力呀！温故而知新。
+ ensemble的方法
+ 简单加权融合
+
+
+回归（分类概率）：算术平均融合（Arithmetic mean），几何平均融合（Geometric mean）；
+
+
+分类：投票（Voting)
+
+
+综合：排序融合(Rank averaging)，log融合
+
+
+ stacking/blending
+
+构建多层模型，并利用预测结果再拟合预测
+
+ boosting/bagging
+
+在xgboost，Adaboost，GBDT中使用，多树的提升方法
+
+ Stacking 理论介绍
+
+先训练几个学习器，在这些学习器预测数据的基础上再训练新的学习器。
+将个体学习器结合在一起的时候使用的方法叫做结合策略。对于分类问题，我们可以使用投票法来选择输出最多的类。对于回归问题，我们可以将分类器输出的结果求平均值。
+在stacking方法中，我们把个体学习器叫做初级学习器，用于结合的学习器叫做次级学习器或元学习器（meta-learner），次级学习器用于训练的数据叫做次级训练集。次级训练集是在训练集上用初级学习器得</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-04&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+            <a href="/categories/%E6%AF%94%E8%B5%9B">比赛</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/04/01/03-%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BB%B7%E6%A0%BC%E9%A2%84%E6%B5%8B%E4%B9%8B%E5%BB%BA%E6%A8%A1%E8%B0%83%E5%8F%82/">
+        <p class="h4 index-header">03-二手车价格预测之建模调参</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">今天要总结的是建模调参部分，可谓重中之重，DataWhale官方的参考代码十分详细，够自己消化好一阵子了。
+ 数据处理
+作者向我们分享了一种减少内存空间占用的方法，其思想是对于每个Series将数据类型转化为合适的精度，对于非数值型数据转化为category类型数据。
+def reduce_mem_usage(df):
+    """ iterate through all the columns of a dataframe and modify the data type
+        to reduce memory usage.        
+    """
+    start_mem = df.memory_usage().sum() 
+    print('Memory usage of dataframe is {:.2f} MB'.format(start_mem))
+    
+    for col in df.columns:
+        col_type = df[col].dtype
+        
+        if col_type != obj</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-01&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>&nbsp;
+          
+            <a href="/tags/%E6%AF%94%E8%B5%9B">比赛</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav aria-label="index posts navigation">
+    <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
+      <a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fas fa-angle-double-right"></i></a>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByClassName("page-number")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "死亡如风，常伴吾身&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="/lib/katex/katex.min.css"  >
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>

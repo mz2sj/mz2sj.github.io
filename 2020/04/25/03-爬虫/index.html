@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/0JOFhyF5bT.jpeg">
+  <link rel="icon" type="image/png" href="/img/0JOFhyF5bT.jpeg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="mz2sj">
+  <meta name="keywords" content="">
+  <title>03-爬虫 ~ 微风和暖</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>微风和暖</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 四月 25日 2020, 10:00 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    2.7k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      10 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h3 id="proxy-ip-代理"><a class="markdownIt-Anchor" href="#proxy-ip-代理"></a> proxy ip 代理</h3>
+<p>代理主要用来解决ip频繁访问被服务器封号的问题，在requests中使用代理很简单.proxies格式是一个字典：<code>{‘http’: ‘[http://IP:port‘,‘https’:'https://IP:port‘}](http://xn--ip:port%2Chttps:'https-mc9nd6a//IP:port‘})</code>,我们将它传入requests中的get方法就可以使用</p>
+<pre class="highlight"><code class="python">requests.get(url, headers = headers, proxies = proxies, timeout = <span class="hljs-number">10</span>)
+</code></pre>
+<p>我们可以从网上提供的一些代理池中获取有效的代理，具体代码如下：</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> re
+<span class="hljs-keyword">import</span> json
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">open_proxy_url</span><span class="hljs-params">(url)</span>:</span>
+    user_agent = <span class="hljs-string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36'</span>
+    headers = {<span class="hljs-string">'User-Agent'</span>: user_agent}
+    <span class="hljs-keyword">try</span>:
+        r = requests.get(url, headers = headers, timeout = <span class="hljs-number">10</span>)
+        r.raise_for_status()
+        r.encoding = r.apparent_encoding
+        <span class="hljs-keyword">return</span> r.text
+    <span class="hljs-keyword">except</span>:
+        print(<span class="hljs-string">'无法访问网页'</span> + url)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_proxy_ip</span><span class="hljs-params">(response)</span>:</span>
+    proxy_ip_list = []
+    soup = BeautifulSoup(response, <span class="hljs-string">'html.parser'</span>)
+    proxy_ips = soup.find(id = <span class="hljs-string">'ip_list'</span>).find_all(<span class="hljs-string">'tr'</span>)
+    <span class="hljs-keyword">for</span> proxy_ip <span class="hljs-keyword">in</span> proxy_ips:
+        <span class="hljs-keyword">if</span> len(proxy_ip.select(<span class="hljs-string">'td'</span>)) &gt;=<span class="hljs-number">8</span>:
+            ip = proxy_ip.select(<span class="hljs-string">'td'</span>)[<span class="hljs-number">1</span>].text
+            port = proxy_ip.select(<span class="hljs-string">'td'</span>)[<span class="hljs-number">2</span>].text
+            protocol = proxy_ip.select(<span class="hljs-string">'td'</span>)[<span class="hljs-number">5</span>].text
+            <span class="hljs-keyword">if</span> protocol <span class="hljs-keyword">in</span> (<span class="hljs-string">'HTTP'</span>,<span class="hljs-string">'HTTPS'</span>,<span class="hljs-string">'http'</span>,<span class="hljs-string">'https'</span>):
+                proxy_ip_list.append(<span class="hljs-string">f'<span class="hljs-subst">{protocol}</span>://<span class="hljs-subst">{ip}</span>:<span class="hljs-subst">{port}</span>'</span>)
+    <span class="hljs-keyword">return</span> proxy_ip_list
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">open_url_using_proxy</span><span class="hljs-params">(url, proxy)</span>:</span>
+    user_agent = <span class="hljs-string">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36'</span>
+    headers = {<span class="hljs-string">'User-Agent'</span>: user_agent}
+    proxies = {}
+    <span class="hljs-keyword">if</span> proxy.startswith((<span class="hljs-string">'HTTPS'</span>,<span class="hljs-string">'https'</span>)):
+        proxies[<span class="hljs-string">'https'</span>] = proxy
+    <span class="hljs-keyword">else</span>:
+        proxies[<span class="hljs-string">'http'</span>] = proxy
+
+    <span class="hljs-keyword">try</span>:
+        r = requests.get(url, headers = headers, proxies = proxies, timeout = <span class="hljs-number">10</span>)
+        r.raise_for_status()
+        r.encoding = r.apparent_encoding
+        <span class="hljs-keyword">return</span> (r.text, r.status_code)
+    <span class="hljs-keyword">except</span>:
+        print(<span class="hljs-string">'无法访问网页'</span> + url)
+        print(<span class="hljs-string">'无效代理IP: '</span> + proxy)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_proxy_avaliability</span><span class="hljs-params">(proxy)</span>:</span>
+    url = <span class="hljs-string">'http://www.baidu.com'</span>
+    result = open_url_using_proxy(url, proxy)
+    VALID_PROXY = <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">if</span> result:
+        text, status_code = result
+        <span class="hljs-keyword">if</span> status_code == <span class="hljs-number">200</span>:
+            r_title = re.findall(<span class="hljs-string">'&lt;title&gt;.*&lt;/title&gt;'</span>, text)
+            <span class="hljs-keyword">if</span> r_title:
+                <span class="hljs-keyword">if</span> r_title[<span class="hljs-number">0</span>] == <span class="hljs-string">'&lt;title&gt;百度一下，你就知道&lt;/title&gt;'</span>:
+                    VALID_PROXY = <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">if</span> VALID_PROXY:
+            check_ip_url = <span class="hljs-string">'https://jsonip.com/'</span>
+            <span class="hljs-keyword">try</span>:
+                text, status_code = open_url_using_proxy(check_ip_url, proxy)
+            <span class="hljs-keyword">except</span>:
+                <span class="hljs-keyword">return</span>
+
+            print(<span class="hljs-string">'有效代理IP: '</span> + proxy)
+            <span class="hljs-keyword">with</span> open(<span class="hljs-string">'valid_proxy_ip.txt'</span>,<span class="hljs-string">'a'</span>) <span class="hljs-keyword">as</span> f:
+                f.writelines(proxy)
+            <span class="hljs-keyword">try</span>:
+                source_ip = json.loads(text).get(<span class="hljs-string">'ip'</span>)
+                print(<span class="hljs-string">f'源IP地址为：<span class="hljs-subst">{source_ip}</span>'</span>)
+                print(<span class="hljs-string">'='</span>*<span class="hljs-number">40</span>)
+            <span class="hljs-keyword">except</span>:
+                print(<span class="hljs-string">'返回的非json,无法解析'</span>)
+                print(text)
+    <span class="hljs-keyword">else</span>:
+        print(<span class="hljs-string">'无效代理IP: '</span> + proxy)
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    proxy_url = <span class="hljs-string">'https://www.xicidaili.com/'</span>
+    proxy_ip_filename = <span class="hljs-string">'proxy_ip.txt'</span>
+    text = open(proxy_ip_filename, <span class="hljs-string">'r'</span>).read()
+    proxy_ip_list = get_proxy_ip(text)
+    <span class="hljs-keyword">for</span> proxy <span class="hljs-keyword">in</span> proxy_ip_list:
+        check_proxy_avaliability(proxy)
+</code></pre>
+<h3 id="selenium"><a class="markdownIt-Anchor" href="#selenium"></a> selenium</h3>
+<ul>
+<li>selenium是什么：一个自动化测试工具（大家都是这么说的）</li>
+<li>selenium应用场景：用代码的方式去模拟浏览器操作过程（如：打开浏览器、在输入框里输入文字、回车等），在爬虫方面很有必要</li>
+</ul>
+<p>selenium模拟浏览器进行操作，需要电脑安装相应的浏览器和浏览器驱动</p>
+<p>1、导入模块：</p>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> selenium <span class="hljs-keyword">import</span> webdriver  <span class="hljs-comment"># 启动浏览器需要用到</span>
+<span class="hljs-keyword">from</span> selenium.webdriver.common.keys <span class="hljs-keyword">import</span> Keys  <span class="hljs-comment"># 提供键盘按键支持（最后一个K要大写）</span>
+</code></pre>
+<p>2、创建一个WebDriver实例：</p>
+<pre class="highlight"><code class="python">driver = webdriver.Chrome(<span class="hljs-string">"chromedriver驱动程序路径"</span>)
+</code></pre>
+<p>3、打开一个页面:</p>
+<pre class="highlight"><code class="python">driver.get(<span class="hljs-string">"http://www.python.org"</span>)  <span class="hljs-comment"># 这个时候chromedriver会打开一个Chrome浏览器窗口，显示的是网址所对应的页面</span>
+</code></pre>
+<p>4、关闭页面</p>
+<pre class="highlight"><code class="python">driver.close()  <span class="hljs-comment"># 关闭浏览器一个Tab</span>
+<span class="hljs-comment"># or</span>
+driver.quit()  <span class="hljs-comment"># 关闭浏览器窗口</span>
+</code></pre>
+<h4 id="高级-查找元素"><a class="markdownIt-Anchor" href="#高级-查找元素"></a> 高级 查找元素</h4>
+<p>在打开页面和关闭页面中间，就是各种操作！而查找元素这一点，和爬虫常见的HTML页面解析，定位到具体的某个元素基本一样，只不过，调用者是driver</p>
+<pre class="highlight"><code class="python">element = driver.find_element_by_name(<span class="hljs-string">"q"</span>)
+</code></pre>
+<h4 id="高级-页面交互"><a class="markdownIt-Anchor" href="#高级-页面交互"></a> 高级 页面交互</h4>
+<p>找到元素后，就是进行“交互”，如键盘输入（需提前导入模块）</p>
+<pre class="highlight"><code class="python">element.send_keys(“some text”）  <span class="hljs-comment"># 往一个可以输入对象中输入“some text”</span>
+<span class="hljs-comment">#甚至</span>
+
+element.send_keys(Keys.RETURN）  <span class="hljs-comment"># 模拟键盘回车</span>
+<span class="hljs-comment">#一般来说，这种方式输入后会一直存在，而要清空某个文本框中的文字，就需要：</span>
+
+element.clear()  <span class="hljs-comment"># 清空element对象中的文字</span>
+</code></pre>
+<h3 id="session和cookie"><a class="markdownIt-Anchor" href="#session和cookie"></a> session和cookie</h3>
+<p>Session 是会话的意思，会话是产生在服务端的，用来保存当前用户的会话信息，而 Cookies 是保存在客户端（浏览器），有了 Cookie 以后，客户端（浏览器）再次访问服务端的时候，会将这个 Cookie 带上，这时，服务端可以通过 Cookie 来识别本次请求到底是谁在访问。</p>
+<p>可以简单理解为 Cookies 中保存了登录凭证，我们只要持有这个凭证，就可以在服务端保持一个登录状态。</p>
+<p>在爬虫中，有时候遇到需要登录才能访问的网页，只需要在登录后获取了 Cookies ，在下次访问的时候将登录后获取到的 Cookies 放在请求头中，这时，服务端就会认为我们的爬虫是一个正常登录用户。</p>
+<h4 id="session"><a class="markdownIt-Anchor" href="#session"></a> session</h4>
+<ul>
+<li>
+<p>那么，Cookies 是如何保持会话状态的呢？</p>
+<p>在客户端（浏览器）第一次请求服务端的时候，服务端会返回一个请求头中带有 <code>Set-Cookie</code> 字段的响应给客户端（浏览器），用来标记是哪一个用户，客户端（浏览器）会把这个 Cookies 给保存起来。</p>
+<p>我们来使用工具 PostMan 来访问下某东的登录页，看下返回的响应头：</p>
+<p><img src="https://camo.githubusercontent.com/13e08343d36c9f3cce3d86318c6d096cb7fa55cb/68747470733a2f2f63646e2e6765656b64696767696e672e636f6d2f707974686f6e2d7370696465722f6a645f6c6f67696e2d687474702d726573706f6e73652e706e67" srcset="/img/loading.gif" alt="img" /></p>
+</li>
+<li>
+<p>当我们输入好用户名和密码时，客户端会将这个 Cookies 放在请求头一起发送给服务端，这时，服务端就知道是谁在进行登录操作，并且可以判断这个人输入的用户名和密码对不对，如果输入正确，则在服务端的 Session 记录一下这个人已经登录成功了，下次再请求的时候这个人就是登录状态了。</p>
+<p>如果客户端传给服务端的 Cookies 是无效的，或者这个 Cookies 根本不是由这个服务端下发的，或者这个 Cookies 已经过期了，那么接下里的请求将不再能访问需要登录后才能访问的页面。</p>
+<p>所以， Session 和 Cookies 之间是需要相互配合的，一个在服务端，一个在客户端。</p>
+</li>
+</ul>
+<h4 id="cookie"><a class="markdownIt-Anchor" href="#cookie"></a> cookie</h4>
+<p>我们登陆一个网站，Chrome 中按 F12 打开开发者工具，选择 Application 标签，点开 Cookies 这一栏。</p>
+<p><a href="https://imgchr.com/i/J6iXA1" target="_blank" rel="noopener"><img src="https://s1.ax1x.com/2020/04/25/J6iXA1.png" srcset="/img/loading.gif" alt="J6iXA1.png" /></a></p>
+<ul>
+<li>Name：这个是 Cookie 的名字。一旦创建，该名称便不可更改。</li>
+<li>Value：这个是 Cookie 的值。</li>
+<li>Domain：这个是可以访问该 Cookie 的域名。例如，如果设置为 .jd.com ，则所有以 <a href="http://jd.com" target="_blank" rel="noopener">jd.com</a> ，结尾的域名都可以访问该Cookie。</li>
+<li>Max Age：Cookie 失效的时间，单位为秒，也常和 Expires 一起使用。 Max Age 如果为正数，则在 Max Age 秒之后失效，如果为负数，则关闭浏览器时 Cookie 即失效，浏览器也不会保存该 Cookie 。</li>
+<li>Path：Cookie 的使用路径。如果设置为 /path/ ，则只有路径为 /path/ 的页面可以访问该 Cookie 。如果设置为 / ，则本域名下的所有页面都可以访问该 Cookie 。</li>
+<li>Size：Cookie 的大小。</li>
+<li>HTTPOnly：如果此项打勾，那么通过 JS 脚本将无法读取到 Cookie 信息，这样能有效的防止 XSS 攻击，窃取 Cookie 内容，可以增加 Cookie 的安全性。</li>
+<li>Secure：如果此项打勾，那么这个 Cookie 只能用 HTTPS 协议发送给服务器，用 HTTP 协议是不发送的。</li>
+</ul>
+<p>那么有的网站为什么这次关闭了，下次打开的时候还是登录状态呢？</p>
+<p>这就要说到 Cookie 的持久化了，其实也不能说是持久化，就是 Cookie 失效的时间设置的长一点，比如直接设置到 2099 年失效，这样，在浏览器关闭后，这个 Cookie 是会保存在我们的硬盘中的，下次打开浏览器，会再从我们的硬盘中将这个 Cookie 读取出来，用来维持用户的会话状态。</p>
+<p>第二个问题产生了，服务端的会话也会无限的维持下去么，当然不会，这就要在 Cookie 和 Session 上做文章了， Cookie 中可以使用加密的方式将用户名记录下来，在下次将 Cookies 读取出来由请求发送到服务端后，服务端悄悄的自己创建一个用户已经登录的会话，这样我们在客户端看起来就好像这个登录会话是一直保持的。</p>
+<h4 id="重要概念"><a class="markdownIt-Anchor" href="#重要概念"></a> 重要概念</h4>
+<p>当我们关闭浏览器的时候会自动销毁服务端的会话，这个是错误的，因为在关闭浏览器的时候，浏览器并不会额外的通知服务端说，我要关闭了，你把和我的会话销毁掉吧。</p>
+<p>因为服务端的会话是保存在内存中的，虽然一个会话不会很大，但是架不住会话多啊，硬件毕竟是会有限制的，不能无限扩充下去的，所以在服务端设置会话的过期时间就非常有必要。</p>
+<p>当然，有没有方式能让浏览器在关闭的时候同步的关闭服务端的会话，当然是可以的，我们可以通过脚本语言 JS 来监听浏览器关闭的动作，当浏览器触发关闭动作的时候，由 JS 像服务端发起一个请求来通知服务端销毁会话。</p>
+<p>由于不同的浏览器对 JS 事件的实现机制不一致，不一定保证 JS 能监听到浏览器关闭的动作，所以现在常用的方式还是在服务端自己设置会话的过期时间</p>
+<h4 id="模拟登陆163"><a class="markdownIt-Anchor" href="#模拟登陆163"></a> 模拟登陆163</h4>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> time
+
+<span class="hljs-keyword">from</span> selenium <span class="hljs-keyword">import</span> webdriver
+<span class="hljs-keyword">from</span> selenium.webdriver.common.by <span class="hljs-keyword">import</span> By
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-string">"""
+使用selenium进行模拟登陆
+1.初始化ChromDriver
+2.打开163登陆页面
+3.找到用户名的输入框，输入用户名
+4.找到密码框，输入密码
+5.提交用户信息
+"""</span>
+name = <span class="hljs-string">'*'</span>
+passwd = <span class="hljs-string">'*'</span>
+driver = webdriver.Chrome(<span class="hljs-string">'./chromedriver'</span>)
+driver.get(<span class="hljs-string">'https://mail.163.com/'</span>)
+<span class="hljs-comment"># 将窗口调整最大</span>
+driver.maximize_window()
+<span class="hljs-comment"># 休息5s</span>
+time.sleep(<span class="hljs-number">5</span>)
+current_window_1 = driver.current_window_handle
+print(current_window_1)
+</code></pre>
+<pre class="highlight"><code class="python">button = driver.find_element_by_id(<span class="hljs-string">'lbNormal'</span>)
+button.click()
+
+driver.switch_to.frame(driver.find_element_by_xpath(<span class="hljs-string">"//iframe[starts-with(@id, 'x-URS-iframe')]"</span>))
+</code></pre>
+<pre class="highlight"><code class="python">email = driver.find_element_by_name(<span class="hljs-string">'email'</span>)
+<span class="hljs-comment">#email = driver.find_element_by_xpath('//input[@name="email"]')</span>
+email.send_keys(name)
+password = driver.find_element_by_name(<span class="hljs-string">'password'</span>)
+<span class="hljs-comment">#password = driver.find_element_by_xpath("//input[@name='password']")</span>
+password.send_keys(passwd)
+submit = driver.find_element_by_id(<span class="hljs-string">"dologin"</span>)
+time.sleep(<span class="hljs-number">15</span>)
+submit.click()
+time.sleep(<span class="hljs-number">10</span>)
+print(driver.page_source)
+driver.quit()
+</code></pre>
+<p>这次的内容有点多，很多都是点了一下，并没有深入介绍，想要熟练掌握，还要多加练习，多啃文档。</p>
+<h3 id="丁香园自动化登陆"><a class="markdownIt-Anchor" href="#丁香园自动化登陆"></a> 丁香园自动化登陆</h3>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup
+<span class="hljs-keyword">from</span> selenium <span class="hljs-keyword">import</span> webdriver
+<span class="hljs-keyword">from</span> selenium.webdriver.common.by <span class="hljs-keyword">import</span> By
+<span class="hljs-keyword">from</span> lxml <span class="hljs-keyword">import</span> etree
+<span class="hljs-keyword">import</span> time
+</code></pre>
+<pre class="highlight"><code class="python">name=<span class="hljs-string">'1876180****'</span>
+passwd=<span class="hljs-string">'dxy123456'</span>
+
+driver=webdriver.Chrome(<span class="hljs-string">r'C:\Users\MZ\Downloads\chromedriver_win32\chromedriver.exe'</span>)
+driver.get(<span class="hljs-string">'http://www.dxy.cn/bbs/thread/626626#626626'</span>)
+driver.maximize_window()
+time.sleep(<span class="hljs-number">5</span>)
+current_window_1=driver.current_window_handle
+print(current_window_1)
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-comment">#点击登陆按钮</span>
+button=driver.find_element_by_xpath(<span class="hljs-string">'//*[@id="J-eventBanner"]/div/div/a[2]'</span>)
+button.click()
+
+<span class="hljs-comment">#点击账号密码登陆</span>
+button=driver.find_element_by_xpath(<span class="hljs-string">'/html/body/div[2]/div[2]/div[1]/a[2]'</span>)
+button.click()
+</code></pre>
+<pre class="highlight"><code class="python">email=driver.find_element_by_id(<span class="hljs-string">'username'</span>)
+email.send_keys(name)
+password=driver.find_element_by_name(<span class="hljs-string">'password'</span>)
+password.send_keys(passwd)
+submit=driver.find_element_by_xpath(<span class="hljs-string">'//*[@id="user"]/div[1]/div[3]/button'</span>)
+time.sleep(<span class="hljs-number">3</span>)
+submit.click()
+time.sleep(<span class="hljs-number">10</span>)
+print(driver.page_source)
+</code></pre>
+<p>至此即可获得登陆后的界面信息，抽取评论应该和上次所用方法一样，有时间再做补充。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/selenium">selenium</a>
+                
+                  <a class="hover-with-bg" href="/tags/cookie">cookie</a>
+                
+                  <a class="hover-with-bg" href="/tags/session">session</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E4%BB%A3%E7%90%86">代理</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <script defer src="https://utteranc.es/client.js"
+          repo="mz2sj/utterances"
+          issue-term="pathname"
+  
+          label="utterances"
+    
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "03-爬虫&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="/lib/katex/katex.min.css"  >
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>

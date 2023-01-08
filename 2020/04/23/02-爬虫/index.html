@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/0JOFhyF5bT.jpeg">
+  <link rel="icon" type="image/png" href="/img/0JOFhyF5bT.jpeg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="mz2sj">
+  <meta name="keywords" content="">
+  <title>02-爬虫 ~ 微风和暖</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>微风和暖</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期四, 四月 23日 2020, 7:49 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    3.4k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      14 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h3 id="正则表达式"><a class="markdownIt-Anchor" href="#正则表达式"></a> 正则表达式</h3>
+<h4 id="正则表达式语法"><a class="markdownIt-Anchor" href="#正则表达式语法"></a> 正则表达式语法</h4>
+<ul>
+<li><code>.</code> 表示任何单个字符</li>
+<li><code>[ ]</code> 字符集，对单个字符给出取值范围 ，如<code>[abc]</code>表示a、b、c，<code>[a‐z]</code>表示a到z单个字符</li>
+<li><code>[^ ]</code> 非字符集，对单个字符给出排除范围 ，如<code>[^abc]</code>表示非a或b或c的单个字符</li>
+<li><code>*</code> 前一个字符0次或无限次扩展，如abc* 表示 ab、abc、abcc、abccc等</li>
+<li><code>+</code> 前一个字符1次或无限次扩展 ，如abc+ 表示 abc、abcc、abccc等</li>
+<li><code>?</code> 前一个字符0次或1次扩展 ，如abc? 表示 ab、abc</li>
+<li><code>|</code> 左右表达式任意一个 ，如abc|def 表示 abc、def</li>
+<li><code>{m}</code> 扩展前一个字符m次 ，如ab{2}c表示abbc</li>
+<li><code>{m,n}</code> 扩展前一个字符m至n次（含n） ，如ab{1,2}c表示abc、abbc</li>
+<li><code>^</code> 匹配字符串开头 ，如^abc表示abc且在一个字符串的开头</li>
+<li><code>$</code> 匹配字符串结尾 ，如abc$表示abc且在一个字符串的结尾</li>
+<li><code>( )</code> 分组标记，内部只能使用 | 操作符 ，如(abc)表示abc，(abc|def)表示abc、def，使用分组除了整体匹配的符号外，单独的分组也会匹配出来。</li>
+<li><code>\d</code> 数字，等价于<code>[0‐9]</code></li>
+<li><code>\w</code> 单词字符，等价于<code>[A‐Za‐z0‐9_]</code></li>
+</ul>
+<h4 id="re库"><a class="markdownIt-Anchor" href="#re库"></a> re库</h4>
+<ul>
+<li>re.search() 在一个字符串中搜索匹配正则表达式的第一个位置，返回match对象
+<ul>
+<li>re.search(pattern, string, flags=0)</li>
+</ul>
+</li>
+<li>re.match() 从一个字符串的开始位置起匹配正则表达式，返回match对象
+<ul>
+<li>re.match(pattern, string, flags=0)</li>
+</ul>
+</li>
+<li>re.findall() 搜索字符串，以列表类型返回全部能匹配的子串
+<ul>
+<li>re.findall(pattern, string, flags=0)</li>
+</ul>
+</li>
+<li>re.split() 将一个字符串按照正则表达式匹配结果进行分割，返回列表类型
+<ul>
+<li>re.split(pattern, string, maxsplit=0, flags=0)</li>
+</ul>
+</li>
+<li>re.finditer() 搜索字符串，返回一个匹配结果的迭代类型，每个迭代元素是match对象
+<ul>
+<li>re.finditer(pattern, string, flags=0)</li>
+</ul>
+</li>
+<li>re.sub() 在一个字符串中替换所有匹配正则表达式的子串，返回替换后的字符串
+<ul>
+<li>re.sub(pattern, repl, string, count=0, flags=0)</li>
+<li>flags : 正则表达式使用时的控制标记：
+<ul>
+<li>re.I --&gt; re.IGNORECASE : 忽略正则表达式的大小写，<code>[A‐Z]</code>能够匹配小写字符</li>
+<li>re.M --&gt; re.MULTILINE : 正则表达式中的^操作符能够将给定字符串的每行当作匹配开始</li>
+<li>re.S --&gt; re.DOTALL : 正则表达式中的.操作符能够匹配所有字符，默认匹配除换行外的所有字符</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="淘宝商品爬虫"><a class="markdownIt-Anchor" href="#淘宝商品爬虫"></a> 淘宝商品爬虫</h4>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> re
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getHTMLText</span><span class="hljs-params">(url)</span>:</span>
+    <span class="hljs-keyword">try</span>:
+        kv={<span class="hljs-string">'cookie'</span>:<span class="hljs-string">'thw=cn; cna=+xjxFvvjZFUCAbegU4BJw+f0; hng=CN%7Czh-CN%7CCNY%7C156; _samesite_flag_=true; cookie2=18ea7aba395e98b25e202aca290dfc51; t=063bd64499346909d85799069ecdfb0a; _tb_token_=e7b0d70737676; sgcookie=EQbeuix2KIOgXG2FFLZOJ; unb=2657451481; uc3=vt3=F8dBxGR2VD%2BIzyEg%2Beo%3D&amp;lg2=UtASsssmOIJ0bQ%3D%3D&amp;id2=UU6kVNSBaZ7V0Q%3D%3D&amp;nk2=oHW%2BtqmuGFM%3D; csg=4349f769; lgc=%5Cu5B5F%5Cu95471023; cookie17=UU6kVNSBaZ7V0Q%3D%3D; dnk=%5Cu5B5F%5Cu95471023; skt=490ef5758fe425d4; existShop=MTU4NzU0MjE2Mg%3D%3D; uc4=nk4=0%40oicDEdY%2Fq4hj7fRzY6bY5rGJXw%3D%3D&amp;id4=0%40U2xpViK2NwPK%2B6Z6pycbkB5Z8GcI; tracknick=%5Cu5B5F%5Cu95471023; _cc_=VFC%2FuZ9ajQ%3D%3D; _l_g_=Ug%3D%3D; sg=313; _nk_=%5Cu5B5F%5Cu95471023; cookie1=WqUIbiciTOhdw8TeNfR1ltACceU5jKLQIv2L5E78Zzo%3D; enc=5kK7r49vDFT6xXh5WeuK224BSMneKyQf4H%2F7R%2FSyjHeMJIz8BwUqOX967CJBECgM1E03U6Y1ORAfflhD%2FmV1Mg%3D%3D; JSESSIONID=F55DD890B8CDAD1F8644BE9DABD3A503; tfstk=cEb1BFvrHAD1s1bZ8tNebz9sepTVa6yBtl9O1MBYuf-uj7C6psAjzL_IQiDnJ3dC.; uc1=cookie16=VT5L2FSpNgq6fDudInPRgavC%2BQ%3D%3D&amp;cookie21=Vq8l%2BKCLjhS4UhJVbhgU&amp;cookie15=V32FPkk%2Fw0dUvg%3D%3D&amp;existShop=false&amp;pas=0&amp;cookie14=UoTUPcllKBuWuA%3D%3D; mt=ci=75_1; v=0; isg=BPDwL_0CWmxemQaV6E8w83tQwb5COdSDUALMBOpBvMsepZBPkkmkE0aX-a3FLoxb; l=eBxryhwuQJlCKyvkBOfaFurza77OSIRYYuPzaNbMiT5POS5B5QzGWZX3qAT6C3GVh6ByR3JMwUXJBeYBqQAonxv92j-la_kmn'</span>,
+            <span class="hljs-string">'user-agent'</span>:<span class="hljs-string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36'</span>}
+        r=requests.get(url,timeout=<span class="hljs-number">30</span>,headers=kv)
+        r.raise_for_status()
+        r.encoding=r.apparent_encoding
+        <span class="hljs-keyword">return</span> r.text
+    <span class="hljs-keyword">except</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'爬取失败'</span>
+    
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parsePage</span><span class="hljs-params">(glist,html)</span>:</span>
+    <span class="hljs-keyword">try</span>:
+        price_list=re.findall(<span class="hljs-string">'\"view_price\":\"\d+\.\d+\"'</span>,html)
+        name_list=re.findall(<span class="hljs-string">r'\"raw_title\":\"[a-zA-Z0-9_\w\s\\\u3010\u3011\-*]+\"'</span>,html)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(price_list)):
+            price=eval(price_list[i].split(<span class="hljs-string">":"</span>)[<span class="hljs-number">1</span>])
+            name=eval(name_list[i].split(<span class="hljs-string">":"</span>)[<span class="hljs-number">1</span>])
+<span class="hljs-comment">#             print(price,name)</span>
+            glist.append([price,name])
+    <span class="hljs-keyword">except</span>:
+        print(<span class="hljs-string">'解析失败'</span>)
+        
+        
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">printGoodList</span><span class="hljs-params">(glist)</span>:</span>
+    tplt=<span class="hljs-string">"{0:^4}\t{1:6}\t{2:^10}"</span>
+    print(tplt.format(<span class="hljs-string">'序号'</span>,<span class="hljs-string">"商品价格"</span>,<span class="hljs-string">'商品名称'</span>))
+    count=<span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> g <span class="hljs-keyword">in</span> glist:
+        count+=<span class="hljs-number">1</span>
+        print(tplt.format(count,g[<span class="hljs-number">0</span>],g[<span class="hljs-number">1</span>]))
+        
+goods_name=<span class="hljs-string">'书包'</span>
+start_url=<span class="hljs-string">'https://s.taobao.com/search?q='</span>+goods_name
+info_list=[]
+page=<span class="hljs-number">3</span>
+
+
+count=<span class="hljs-number">0</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(page):
+    count+=<span class="hljs-number">1</span>
+    <span class="hljs-keyword">try</span>:
+        url=start_url+<span class="hljs-string">"&amp;s"</span>+str(<span class="hljs-number">44</span>*i)
+        html=getHTMLText(url)
+        parsePage(info_list,html)
+        print(<span class="hljs-string">"\r爬取页面当前进度:{:.2f}%"</span>.format(count*<span class="hljs-number">100</span>/page),end=<span class="hljs-string">""</span>)
+    <span class="hljs-keyword">except</span>:
+        <span class="hljs-keyword">continue</span>
+</code></pre>
+<p>正则表达式的问题主要出现在匹配商品名称上面，自己的表达式为<code>\&quot;raw_title\&quot;:\&quot;[a-zA-Z0-9_\w\s\\\u3010\u3011\-*]+\&quot;</code>,主要出现的问题是商品名称会出现许多特殊符号，比如【-，等等，自己想用<code>.*</code>来匹配，但是<code>.</code>会匹配所有字符，产生越界问题。参考答案给的解决方案是<code>\&quot;raw_title\&quot;\:\&quot;.*?\&quot;</code>,在<code>.*</code>后面加上问号就可以解决越界问题。</p>
+<h3 id="beautifulsoup"><a class="markdownIt-Anchor" href="#beautifulsoup"></a> BeautifulSoup</h3>
+<h4 id="beautifulsoup的基本元素"><a class="markdownIt-Anchor" href="#beautifulsoup的基本元素"></a> BeautifulSoup的基本元素</h4>
+<ol>
+<li>Beautiful Soup库的理解： Beautiful Soup库是解析、遍历、维护“标签树”的功能库，对应一个HTML/XML文档的全部内容</li>
+<li>BeautifulSoup类的基本元素:
+<ul>
+<li><code>Tag 标签，最基本的信息组织单元，分别用&lt;&gt;和标明开头和结尾；</code></li>
+<li><code>Name 标签的名字，…的名字是'p'，格式：.name;</code></li>
+<li><code>Attributes 标签的属性，字典形式组织，格式：.attrs;</code></li>
+<li><code>NavigableString 标签内非属性字符串，&lt;&gt;…中字符串，格式：.string;</code></li>
+<li><code>Comment 标签内字符串的注释部分，一种特殊的Comment类型;</code></li>
+</ul>
+</li>
+</ol>
+<pre class="highlight"><code class="python"><span class="hljs-comment"># 导入bs4库</span>
+<span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup
+<span class="hljs-keyword">import</span> requests <span class="hljs-comment"># 抓取页面</span>
+
+r = requests.get(<span class="hljs-string">'https://python123.io/ws/demo.html'</span>) <span class="hljs-comment"># Demo网址</span>
+demo = r.text  <span class="hljs-comment"># 抓取的数据</span>
+demo
+
+<span class="hljs-comment"># 解析HTML页面</span>
+soup = BeautifulSoup(demo, <span class="hljs-string">'html.parser'</span>)  <span class="hljs-comment"># 抓取的页面数据；bs4的解析器</span>
+<span class="hljs-comment"># 有层次感的输出解析后的HTML页面</span>
+print(soup.prettify())
+</code></pre>
+<h5 id="标签"><a class="markdownIt-Anchor" href="#标签"></a> 标签</h5>
+<p>直接使用tag名获得</p>
+<pre class="highlight"><code class="python">soup.a 
+soup.title
+</code></pre>
+<p>返回的string对象可以继续调用BeautifulSoup的层级标签功能</p>
+<h5 id="标签的名字"><a class="markdownIt-Anchor" href="#标签的名字"></a> 标签的名字</h5>
+<pre class="highlight"><code class="python">soup.a.name
+soup.a.parent.name
+soup.p.parent.name
+</code></pre>
+<p>可以用来查看层级标签的名字，当层级标签比较复杂时可以使用。</p>
+<h5 id="标签的属性"><a class="markdownIt-Anchor" href="#标签的属性"></a> 标签的属性</h5>
+<pre class="highlight"><code class="python">tag = soup.a
+print(tag.attrs)
+print(tag.attrs[<span class="hljs-string">'class'</span>])
+print(type(tag.attrs))
+</code></pre>
+<p>注意，返回的是关于标签的一个列表</p>
+<h5 id="string"><a class="markdownIt-Anchor" href="#string"></a> string</h5>
+<pre class="highlight"><code class="python">print(soup.a.string)
+print(type(soup.a.string))
+</code></pre>
+<p>返回标签内的非属性字符串。</p>
+<h5 id="prettify"><a class="markdownIt-Anchor" href="#prettify"></a> prettify()</h5>
+<pre class="highlight"><code class="python">print(soup.prettify())
+</code></pre>
+<p>返回层次化的标签结构</p>
+<h4 id="基于bs4库的html内容遍历方法"><a class="markdownIt-Anchor" href="#基于bs4库的html内容遍历方法"></a> 基于bs4库的HTML内容遍历方法</h4>
+<p>HTML基本格式:<code>&lt;&gt;…</code>构成了所属关系，形成了标签的树形结构</p>
+<ul>
+<li>标签树的下行遍历
+<ul>
+<li>.contents 子节点的列表，将``所有儿子节点存入列表</li>
+<li>.children 子节点的迭代类型，与.contents类似，用于循环遍历儿子节点</li>
+<li>.descendants 子孙节点的迭代类型，包含所有子孙节点，用于循环遍历</li>
+</ul>
+</li>
+<li>标签树的上行遍
+<ul>
+<li>.parent 节点的父亲标签</li>
+<li>.parents 节点先辈标签的迭代类型，用于循环遍历先辈节点</li>
+</ul>
+</li>
+<li>标签树的平行遍历
+<ul>
+<li>.next_sibling 返回按照HTML文本顺序的下一个平行节点标签</li>
+<li>.previous_sibling 返回按照HTML文本顺序的上一个平行节点标签</li>
+<li>.next_siblings 迭代类型，返回按照HTML文本顺序的后续所有平行节点标签</li>
+<li>.previous_siblings 迭代类型，返回按照HTML文本顺序的前续所有平行节点标签</li>
+</ul>
+</li>
+</ul>
+<h5 id="标签树的下行遍历"><a class="markdownIt-Anchor" href="#标签树的下行遍历"></a> 标签树的下行遍历</h5>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup
+
+r=requests.get(<span class="hljs-string">'http://python123.io/ws/demo.html'</span>)
+demo=r.text
+soup=BeautifulSoup(demo,<span class="hljs-string">'html.parser'</span>)
+
+print(soup.contents)<span class="hljs-comment"># 获取整个标签树的儿子节点</span>
+
+print(soup.body.contents)<span class="hljs-comment">#返回标签树的body标签下的节点</span>
+
+print(soup.head)<span class="hljs-comment">#返回head标签</span>
+
+<span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> soup.body.children:<span class="hljs-comment">#遍历儿子节点，不会遍历儿子节点下的节点</span>
+    print(child)
+    
+<span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> soup.body.descendants:<span class="hljs-comment">#遍历子孙节点，遍历父节点下面所有节点</span>
+    print(child)
+</code></pre>
+<h5 id="标签树的上行遍历"><a class="markdownIt-Anchor" href="#标签树的上行遍历"></a> 标签树的上行遍历</h5>
+<pre class="highlight"><code class="python">soup.title.parent
+soup.title.parent
+
+<span class="hljs-keyword">for</span> parent <span class="hljs-keyword">in</span> soup.a.parents: <span class="hljs-comment"># 遍历先辈的信息</span>
+    <span class="hljs-keyword">if</span> parent <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        print(parent)
+    <span class="hljs-keyword">else</span>:
+        print(parent.name)
+</code></pre>
+<h5 id="标签树的平行遍历"><a class="markdownIt-Anchor" href="#标签树的平行遍历"></a> 标签树的平行遍历</h5>
+<p>注意：</p>
+<ul>
+<li>标签树的平行遍历是有条件的</li>
+<li>平行遍历发生在同一个父亲节点的各节点之间</li>
+<li>标签中的内容也构成了节点,连续的字符串也是节点</li>
+</ul>
+<pre class="highlight"><code class="python">print(soup.a.next_sibling)<span class="hljs-comment">#a标签的下一个标签</span>
+print(soup.a.next_sibling.next_sibling)<span class="hljs-comment">#a标签的下一个标签的下一个标签</span>
+print(soup.a.previous_sibling)<span class="hljs-comment">#a标签的前一个标签</span>
+print(soup.a.previous_sibling.previous_sibling)<span class="hljs-comment">#a标签的前一个标签的前一个标签</span>
+<span class="hljs-keyword">for</span> sibling <span class="hljs-keyword">in</span> soup.a.next_siblings:<span class="hljs-comment">#遍历后续节点</span>
+    print(sibling)
+<span class="hljs-keyword">for</span> sibling <span class="hljs-keyword">in</span> soup.a.previous_siblings:<span class="hljs-comment">#遍历之前的节点</span>
+    print(sibling)
+</code></pre>
+<h4 id="基于bs4库的html查找方法"><a class="markdownIt-Anchor" href="#基于bs4库的html查找方法"></a> 基于bs4库的html查找方法</h4>
+<ul>
+<li>&lt;&gt;.find_all(name, attrs, recursive, string, **kwargs)
+<ul>
+<li>参数：</li>
+<li>∙ name : 对标签名称的检索字符串</li>
+<li>∙ attrs: 对标签属性值的检索字符串，可标注属性检索</li>
+<li>∙ recursive: 是否对子孙全部检索，默认True</li>
+<li>∙ string: &lt;&gt;…&lt;/&gt;中字符串区域的检索字符串
+<ul>
+<li>简写：</li>
+<li><code>(..) 等价于</code>.find_all(…)</li>
+<li>soup(…) 等价于 soup.find_all(…)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>扩展方法：
+<ul>
+<li>&lt;&gt;.find() 搜索且只返回一个结果，同.find_all()参数</li>
+<li>&lt;&gt;.find_parents() 在先辈节点中搜索，返回列表类型，同.find_all()参数</li>
+<li>&lt;&gt;.find_parent() 在先辈节点中返回一个结果，同.find()参数</li>
+<li>&lt;&gt;.find_next_siblings() 在后续平行节点中搜索，返回列表类型，同.find_all()参数</li>
+<li>&lt;&gt;.find_next_sibling() 在后续平行节点中返回一个结果，同.find()参数</li>
+<li>&lt;&gt;.find_previous_siblings() 在前序平行节点中搜索，返回列表类型，同.find_all()参数</li>
+<li>&lt;&gt;.find_previous_sibling() 在前序平行节点中返回一个结果，同.find()参数</li>
+</ul>
+</li>
+</ul>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup
+
+r = requests.get(<span class="hljs-string">'http://python123.io/ws/demo.html'</span>)
+demo = r.text
+soup = BeautifulSoup(demo,<span class="hljs-string">'html.parser'</span>)
+soup
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-comment"># name : 对标签名称的检索字符串</span>
+soup.find_all(<span class="hljs-string">'a'</span>)
+soup.find_all([<span class="hljs-string">'a'</span>, <span class="hljs-string">'p'</span>])
+<span class="hljs-comment"># attrs: 对标签属性值的检索字符串，可标注属性检索</span>
+soup.find_all(<span class="hljs-string">"p"</span>,<span class="hljs-string">"course"</span>)
+</code></pre>
+<pre class="highlight"><code class="python">soup.find_all(id=<span class="hljs-string">"link"</span>) <span class="hljs-comment"># 完全匹配才能匹配到</span>
+<span class="hljs-comment">#  recursive: 是否对子孙全部检索，默认True</span>
+soup.find_all(<span class="hljs-string">'p'</span>,recursive=<span class="hljs-literal">False</span>)
+<span class="hljs-comment"># string: &lt;&gt;…&lt;/&gt;中字符串区域的检索字符串</span>
+soup.find_all(string = <span class="hljs-string">"Basic Python"</span>) <span class="hljs-comment"># 完全匹配才能匹配到</span>
+</code></pre>
+<h4 id="好大学排名爬虫给你"><a class="markdownIt-Anchor" href="#好大学排名爬虫给你"></a> 好大学排名爬虫给你</h4>
+<ul>
+<li>爬取url：<a href="http://www.zuihaodaxue.cn/zuihaodaxuepaiming2019.html" target="_blank" rel="noopener">http://www.zuihaodaxue.cn/zuihaodaxuepaiming2019.html</a></li>
+<li>爬取思路：
+<ol>
+<li>从网络上获取大学排名网页内容</li>
+<li>提取网页内容中信息到合适的数据结构（二维数组）-排名，学校名称，总分</li>
+<li>利用数据结构展示并输出结果</li>
+</ol>
+</li>
+</ul>
+<pre class="highlight"><code class="python"><span class="hljs-comment"># 导入库</span>
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup
+<span class="hljs-keyword">import</span> bs4
+</code></pre>
+<p>自己和官方代码比起来就比较简陋了</p>
+<pre class="highlight"><code class="python">r=requests.get(<span class="hljs-string">'http://www.zuihaodaxue.cn/zuihaodaxuepaiming2019.html'</span>)
+r.raise_for_status()
+r.encoding=r.apparent_encoding  <span class="hljs-comment">#自动获取编码，可以省好多事</span>
+demo=r.text
+demo
+</code></pre>
+<pre class="highlight"><code class="python">soup=BeautifulSoup(demo,<span class="hljs-string">'html.parser'</span>)
+
+print(<span class="hljs-string">'{0:^8}\t{1:^18}\t{2:^18}'</span>.format(<span class="hljs-string">"排名"</span>,<span class="hljs-string">"学校名称"</span>,<span class="hljs-string">"总分"</span>))
+<span class="hljs-keyword">for</span> tr <span class="hljs-keyword">in</span> trs:
+    rank=tr.find_all(<span class="hljs-string">'td'</span>)[<span class="hljs-number">0</span>].string 
+    school_name=tr.find_all(<span class="hljs-string">'td'</span>)[<span class="hljs-number">1</span>].string
+    score=tr.find_all(<span class="hljs-string">'td'</span>)[<span class="hljs-number">4</span>].string
+    print(<span class="hljs-string">'{0:^8}\t{1:^18}\t{2:^18}'</span>.format(rank,school_name,score))
+</code></pre>
+<h3 id="xpath"><a class="markdownIt-Anchor" href="#xpath"></a> Xpath</h3>
+<h4 id="xpath-语法"><a class="markdownIt-Anchor" href="#xpath-语法"></a> Xpath 语法</h4>
+<ul>
+<li>XPath即为XML路径语言（XML Path Language），它是一种用来确定XML文档中某部分位置的语言。</li>
+<li>在XPath中，有七种类型的节点：元素、属性、文本、命名空间、处理指令、注释以及文档（根）节点。</li>
+<li>XML文档是被作为节点树来对待的。</li>
+</ul>
+<p>XPath使用路径表达式在XML文档中选取节点。节点是通过沿着路径选取的。下面列出了最常用的路径表达式：</p>
+<ul>
+<li>nodename 选取此节点的所有子节点。</li>
+<li>/ 从根节点选取。</li>
+<li>// 从匹配选择的当前节点选择文档中的节点，而不考虑它们的位置。</li>
+<li>. 选取当前节点。</li>
+<li>… 选取当前节点的父节点。</li>
+<li>@ 选取属性。</li>
+<li>/text() 提取标签下面的文本内容
+<ul>
+<li>如：</li>
+<li>/标签名 逐层提取</li>
+<li>/标签名 提取所有名为&lt;&gt;的标签</li>
+<li>//标签名[@属性=“属性值”] 提取包含属性为属性值的标签</li>
+<li>@属性名 代表取某个属性名的属性值</li>
+</ul>
+</li>
+<li>详细学习：<a href="https://www.cnblogs.com/gaojun/archive/2012/08/11/2633908.html" target="_blank" rel="noopener">https://www.cnblogs.com/gaojun/archive/2012/08/11/2633908.html</a></li>
+</ul>
+<h4 id="使用lxml解析"><a class="markdownIt-Anchor" href="#使用lxml解析"></a> 使用lxml解析</h4>
+<ul>
+<li>导入库：from lxml import etree</li>
+<li>lxml将html文本转成xml对象
+<ul>
+<li>tree = etree.HTML(html)</li>
+</ul>
+</li>
+<li>用户名称：tree.xpath(’//div[@class=“auth”]/a/text()’)</li>
+<li>回复内容：tree.xpath(’//td[@class=“postbody”]’) 因为回复内容中有换行等标签，所以需要用string()来获取数据。
+<ul>
+<li>string()的详细见链接：<a href="https://www.cnblogs.com/CYHISTW/p/12312570.html" target="_blank" rel="noopener">https://www.cnblogs.com/CYHISTW/p/12312570.html</a></li>
+</ul>
+</li>
+<li>Xpath中text()，string()，data()的区别如下：
+<ul>
+<li>text()仅仅返回所指元素的文本内容。</li>
+<li>string()函数会得到所指元素的所有节点文本内容，这些文本讲会被拼接成一个字符串。</li>
+<li>data()大多数时候，data()函数和string()函数通用，而且不建议经常使用data()函数，有数据表明，该函数会影响XPath的性能。</li>
+</ul>
+</li>
+</ul>
+<h4 id="丁香园评论爬虫"><a class="markdownIt-Anchor" href="#丁香园评论爬虫"></a> 丁香园评论爬虫</h4>
+<p>chrome的开发工具里面是有copy Xpath这个选项的</p>
+<pre class="highlight"><code class="python"><span class="hljs-comment"># 导入库</span>
+<span class="hljs-keyword">from</span> lxml <span class="hljs-keyword">import</span> etree
+<span class="hljs-keyword">import</span> requests
+
+url = <span class="hljs-string">"http://www.dxy.cn/bbs/thread/626626#626626"</span>
+</code></pre>
+<pre class="highlight"><code class="python">req = requests.get(url)
+html = req.text
+</code></pre>
+<pre class="highlight"><code class="python">tree = etree.HTML(html) 
+tree
+</code></pre>
+<pre class="highlight"><code class="python">user = tree.xpath(<span class="hljs-string">'//div[@class="auth"]/a/text()'</span>)
+<span class="hljs-comment"># print(user)</span>
+content = tree.xpath(<span class="hljs-string">'//td[@class="postbody"]'</span>)
+</code></pre>
+<pre class="highlight"><code class="python">results = []
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, len(user)):
+    <span class="hljs-comment"># print(user[i].strip()+":"+content[i].xpath('string(.)').strip())</span>
+    <span class="hljs-comment"># print("*"*80)</span>
+    <span class="hljs-comment"># 因为回复内容中有换行等标签，所以需要用string()来获取数据</span>
+    results.append(user[i].strip() + <span class="hljs-string">":  "</span> + content[i].xpath(<span class="hljs-string">'string(.)'</span>).strip())
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-comment"># 打印爬取的结果</span>
+<span class="hljs-keyword">for</span> i,result <span class="hljs-keyword">in</span> zip(range(<span class="hljs-number">0</span>, len(user)),results):
+    print(<span class="hljs-string">"user"</span>+ str(i+<span class="hljs-number">1</span>) + <span class="hljs-string">"-"</span> + result)
+    print(<span class="hljs-string">"*"</span>*<span class="hljs-number">100</span>)
+</code></pre>
+<p>比较让自己困惑的是text()和string(.)的用法，博客上介绍说text()返回的是匹配到的所有元素包含文字的列表，而string(.)返回的是合并后的结果。而且string(.)的用法要在获取上级元素后，单独对每个元素调用.xpath(‘string(.)’)。后来我才发现，如果文字中内嵌有其他标签，比如br等，就会将文字分割成单独的各个列表元素，和上一层及的元素并列产生问题。因此我们可以对同一层级的元素使用string(.),这样不管同级元素是否有下级元素，都会统一成一个元素。</p>
+<p>收工~~~</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E7%88%AC%E8%99%AB">爬虫</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>
+                
+                  <a class="hover-with-bg" href="/tags/bs4">bs4</a>
+                
+                  <a class="hover-with-bg" href="/tags/Xpath">Xpath</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <script defer src="https://utteranc.es/client.js"
+          repo="mz2sj/utterances"
+          issue-term="pathname"
+  
+          label="utterances"
+    
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "02-爬虫&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="/lib/katex/katex.min.css"  >
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>

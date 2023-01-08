@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/0JOFhyF5bT.jpeg">
+  <link rel="icon" type="image/png" href="/img/0JOFhyF5bT.jpeg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="mz2sj">
+  <meta name="keywords" content="">
+  <title>04-二手车价格预测之模型融合 ~ 微风和暖</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>微风和暖</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 四月 4日 2020, 7:39 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    4k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      19 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>虽然这是最后一次打卡的内容，但是自己离掌握这些内容还差得很远，还要继续努力呀！温故而知新。</p>
+<h3 id="ensemble的方法"><a class="markdownIt-Anchor" href="#ensemble的方法"></a> ensemble的方法</h3>
+<h4 id="简单加权融合"><a class="markdownIt-Anchor" href="#简单加权融合"></a> 简单加权融合</h4>
+<ul>
+<li>
+<p>回归（分类概率）：算术平均融合（Arithmetic mean），几何平均融合（Geometric mean）；</p>
+</li>
+<li>
+<p>分类：投票（Voting)</p>
+</li>
+<li>
+<p>综合：排序融合(Rank averaging)，log融合</p>
+</li>
+</ul>
+<h4 id="stackingblending"><a class="markdownIt-Anchor" href="#stackingblending"></a> stacking/blending</h4>
+<ul>
+<li>构建多层模型，并利用预测结果再拟合预测</li>
+</ul>
+<h4 id="boostingbagging"><a class="markdownIt-Anchor" href="#boostingbagging"></a> boosting/bagging</h4>
+<ul>
+<li>在xgboost，Adaboost，GBDT中使用，多树的提升方法</li>
+</ul>
+<h3 id="stacking-理论介绍"><a class="markdownIt-Anchor" href="#stacking-理论介绍"></a> Stacking 理论介绍</h3>
+<p><img src="https://camo.githubusercontent.com/7c71414331606f6169511b07898f44ffa7852734/687474703a2f2f6a75707465722d6f73732e6f73732d636e2d68616e677a686f752e616c6979756e63732e636f6d2f7075626c69632f66696c65732f696d6167652f323332363534313034322f313538343434383739333233315f365479676a58776a4e622e6a7067" srcset="/img/loading.gif" alt="img" /></p>
+<p>先训练几个学习器，在这些学习器预测数据的基础上再训练新的学习器。</p>
+<p>将个体学习器结合在一起的时候使用的方法叫做结合策略。对于分类问题，我们可以使用投票法来选择输出最多的类。对于回归问题，我们可以将分类器输出的结果求平均值。</p>
+<p>在stacking方法中，我们把个体学习器叫做初级学习器，用于结合的学习器叫做次级学习器或元学习器（meta-learner），次级学习器用于训练的数据叫做次级训练集。次级训练集是在训练集上用初级学习器得到的。</p>
+<p>对于训练集和测试集分布不那么一致的情况，用初始模型训练的标签再利用真实标签进行再训练，毫无疑问会导致一定的模型过拟合训练集，这里我们一般有两种方法：次级模型尽量选择简单的线性模型</p>
+<p>利用K折交叉验证。</p>
+<h3 id="代码示例"><a class="markdownIt-Anchor" href="#代码示例"></a> 代码示例</h3>
+<h4 id="简单加权平均"><a class="markdownIt-Anchor" href="#简单加权平均"></a> 简单加权平均</h4>
+<pre class="highlight"><code class="python"><span class="hljs-comment">## 生成一些简单的样本数据，test_prei 代表第i个模型的预测值</span>
+test_pre1 = [<span class="hljs-number">1.2</span>, <span class="hljs-number">3.2</span>, <span class="hljs-number">2.1</span>, <span class="hljs-number">6.2</span>]
+test_pre2 = [<span class="hljs-number">0.9</span>, <span class="hljs-number">3.1</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">5.9</span>]
+test_pre3 = [<span class="hljs-number">1.1</span>, <span class="hljs-number">2.9</span>, <span class="hljs-number">2.2</span>, <span class="hljs-number">6.0</span>]
+
+<span class="hljs-comment"># y_test_true 代表第模型的真实值</span>
+y_test_true = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>] 
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+
+<span class="hljs-comment">## 定义结果的加权平均函数</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">Weighted_method</span><span class="hljs-params">(test_pre1,test_pre2,test_pre3,w=[<span class="hljs-number">1</span>/<span class="hljs-number">3</span>,<span class="hljs-number">1</span>/<span class="hljs-number">3</span>,<span class="hljs-number">1</span>/<span class="hljs-number">3</span>])</span>:</span>
+    Weighted_result = w[<span class="hljs-number">0</span>]*pd.Series(test_pre1)+w[<span class="hljs-number">1</span>]*pd.Series(test_pre2)+w[<span class="hljs-number">2</span>]*pd.Series(test_pre3)
+    <span class="hljs-keyword">return</span> Weighted_result
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> sklearn <span class="hljs-keyword">import</span> metrics
+<span class="hljs-comment"># 各模型的预测结果计算MAE</span>
+print(<span class="hljs-string">'Pred1 MAE:'</span>,metrics.mean_absolute_error(y_test_true, test_pre1))
+print(<span class="hljs-string">'Pred2 MAE:'</span>,metrics.mean_absolute_error(y_test_true, test_pre2))
+print(<span class="hljs-string">'Pred3 MAE:'</span>,metrics.mean_absolute_error(y_test_true, test_pre3))
+</code></pre>
+<pre class="highlight"><code class="python">w = [<span class="hljs-number">0.3</span>,<span class="hljs-number">0.4</span>,<span class="hljs-number">0.3</span>] <span class="hljs-comment"># 定义比重权值</span>
+Weighted_pre = Weighted_method(test_pre1,test_pre2,test_pre3,w)
+print(<span class="hljs-string">'Weighted_pre MAE:'</span>,metrics.mean_absolute_error(y_test_true, Weighted_pre))
+</code></pre>
+<p>即使是这样对多个预测结果的简单加权，也可以给实验结果带来提升</p>
+<pre class="highlight"><code class="python"><span class="hljs-comment">## 定义结果的加权平均函数</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">Mean_method</span><span class="hljs-params">(test_pre1,test_pre2,test_pre3)</span>:</span>
+    Mean_result = pd.concat([pd.Series(test_pre1),pd.Series(test_pre2),pd.Series(test_pre3)],axis=<span class="hljs-number">1</span>).mean(axis=<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> Mean_result
+</code></pre>
+<pre class="highlight"><code class="python">Mean_pre = Mean_method(test_pre1,test_pre2,test_pre3)
+print(<span class="hljs-string">'Mean_pre MAE:'</span>,metrics.mean_absolute_error(y_test_true, Mean_pre))
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-comment">## 定义结果的加权平均函数</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">Median_method</span><span class="hljs-params">(test_pre1,test_pre2,test_pre3)</span>:</span>
+    Median_result = pd.concat([pd.Series(test_pre1),pd.Series(test_pre2),pd.Series(test_pre3)],axis=<span class="hljs-number">1</span>).median(axis=<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">return</span> Median_result
+</code></pre>
+<pre class="highlight"><code class="python">Median_pre = Median_method(test_pre1,test_pre2,test_pre3)
+print(<span class="hljs-string">'Median_pre MAE:'</span>,metrics.mean_absolute_error(y_test_true, Median_pre))
+</code></pre>
+<h4 id="stacking融合回归"><a class="markdownIt-Anchor" href="#stacking融合回归"></a> stacking融合（回归）</h4>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> sklearn <span class="hljs-keyword">import</span> linear_model
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">Stacking_method</span><span class="hljs-params">(train_reg1,train_reg2,train_reg3,y_train_true,test_pre1,test_pre2,test_pre3,model_L2= linear_model.LinearRegression<span class="hljs-params">()</span>)</span>:</span>
+    model_L2.fit(pd.concat([pd.Series(train_reg1),pd.Series(train_reg2),pd.Series(train_reg3)],axis=<span class="hljs-number">1</span>).values,y_train_true)
+    Stacking_result = model_L2.predict(pd.concat([pd.Series(test_pre1),pd.Series(test_pre2),pd.Series(test_pre3)],axis=<span class="hljs-number">1</span>).values)
+    <span class="hljs-keyword">return</span> Stacking_result
+</code></pre>
+<pre class="highlight"><code class="py"><span class="hljs-comment">## 生成一些简单的样本数据，test_prei 代表第i个模型的预测值</span>
+train_reg1 = [<span class="hljs-number">3.2</span>, <span class="hljs-number">8.2</span>, <span class="hljs-number">9.1</span>, <span class="hljs-number">5.2</span>]
+train_reg2 = [<span class="hljs-number">2.9</span>, <span class="hljs-number">8.1</span>, <span class="hljs-number">9.0</span>, <span class="hljs-number">4.9</span>]
+train_reg3 = [<span class="hljs-number">3.1</span>, <span class="hljs-number">7.9</span>, <span class="hljs-number">9.2</span>, <span class="hljs-number">5.0</span>]
+<span class="hljs-comment"># y_test_true 代表第模型的真实值</span>
+y_train_true = [<span class="hljs-number">3</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">5</span>] 
+
+test_pre1 = [<span class="hljs-number">1.2</span>, <span class="hljs-number">3.2</span>, <span class="hljs-number">2.1</span>, <span class="hljs-number">6.2</span>]
+test_pre2 = [<span class="hljs-number">0.9</span>, <span class="hljs-number">3.1</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">5.9</span>]
+test_pre3 = [<span class="hljs-number">1.1</span>, <span class="hljs-number">2.9</span>, <span class="hljs-number">2.2</span>, <span class="hljs-number">6.0</span>]
+
+<span class="hljs-comment"># y_test_true 代表第模型的真实值</span>
+y_test_true = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>] 
+</code></pre>
+<pre class="highlight"><code class="python">model_L2= linear_model.LinearRegression()
+Stacking_pre = Stacking_method(train_reg1,train_reg2,train_reg3,y_train_true,
+                               test_pre1,test_pre2,test_pre3,model_L2)
+print(<span class="hljs-string">'Stacking_pre MAE:'</span>,metrics.mean_absolute_error(y_test_true, Stacking_pre))
+</code></pre>
+<p>我们需要注意的一点是，对于第二层Stacking的模型不宜选取的过于复杂</p>
+<h4 id="分类模型融合"><a class="markdownIt-Anchor" href="#分类模型融合"></a> 分类模型融合</h4>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> sklearn.datasets <span class="hljs-keyword">import</span> make_blobs
+<span class="hljs-keyword">from</span> sklearn <span class="hljs-keyword">import</span> datasets
+<span class="hljs-keyword">from</span> sklearn.tree <span class="hljs-keyword">import</span> DecisionTreeClassifier
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">from</span> sklearn.ensemble <span class="hljs-keyword">import</span> RandomForestClassifier
+<span class="hljs-keyword">from</span> sklearn.ensemble <span class="hljs-keyword">import</span> VotingClassifier
+<span class="hljs-keyword">from</span> xgboost <span class="hljs-keyword">import</span> XGBClassifier
+<span class="hljs-keyword">from</span> sklearn.linear_model <span class="hljs-keyword">import</span> LogisticRegression
+<span class="hljs-keyword">from</span> sklearn.svm <span class="hljs-keyword">import</span> SVC
+<span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> train_test_split
+<span class="hljs-keyword">from</span> sklearn.datasets <span class="hljs-keyword">import</span> make_moons
+<span class="hljs-keyword">from</span> sklearn.metrics <span class="hljs-keyword">import</span> accuracy_score,roc_auc_score
+<span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> cross_val_score
+<span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> StratifiedKFold
+</code></pre>
+<h5 id="voting-投票机制"><a class="markdownIt-Anchor" href="#voting-投票机制"></a> Voting 投票机制</h5>
+<p>分为软投票和硬投票两种</p>
+<pre class="highlight"><code class="python"><span class="hljs-string">'''
+硬投票：对多个模型直接进行投票，不区分模型结果的相对重要度，最终投票数最多的类为最终被预测的类。
+'''</span>
+iris = datasets.load_iris()
+
+x=iris.data
+y=iris.target
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=<span class="hljs-number">0.3</span>)
+
+clf1 = XGBClassifier(learning_rate=<span class="hljs-number">0.1</span>, n_estimators=<span class="hljs-number">150</span>, max_depth=<span class="hljs-number">3</span>, min_child_weight=<span class="hljs-number">2</span>, subsample=<span class="hljs-number">0.7</span>,
+                     colsample_bytree=<span class="hljs-number">0.6</span>, objective=<span class="hljs-string">'binary:logistic'</span>)
+clf2 = RandomForestClassifier(n_estimators=<span class="hljs-number">50</span>, max_depth=<span class="hljs-number">1</span>, min_samples_split=<span class="hljs-number">4</span>,
+                              min_samples_leaf=<span class="hljs-number">63</span>,oob_score=<span class="hljs-literal">True</span>)
+clf3 = SVC(C=<span class="hljs-number">0.1</span>)
+
+<span class="hljs-comment"># 硬投票</span>
+eclf = VotingClassifier(estimators=[(<span class="hljs-string">'xgb'</span>, clf1), (<span class="hljs-string">'rf'</span>, clf2), (<span class="hljs-string">'svc'</span>, clf3)], voting=<span class="hljs-string">'hard'</span>)
+<span class="hljs-keyword">for</span> clf, label <span class="hljs-keyword">in</span> zip([clf1, clf2, clf3, eclf], [<span class="hljs-string">'XGBBoosting'</span>, <span class="hljs-string">'Random Forest'</span>, <span class="hljs-string">'SVM'</span>, <span class="hljs-string">'Ensemble'</span>]):
+    scores = cross_val_score(clf, x, y, cv=<span class="hljs-number">5</span>, scoring=<span class="hljs-string">'accuracy'</span>)
+    print(<span class="hljs-string">"Accuracy: %0.2f (+/- %0.2f) [%s]"</span> % (scores.mean(), scores.std(), label))
+Accuracy: <span class="hljs-number">0.97</span> (+/- <span class="hljs-number">0.02</span>) [XGBBoosting]
+Accuracy: <span class="hljs-number">0.33</span> (+/- <span class="hljs-number">0.00</span>) [Random Forest]
+Accuracy: <span class="hljs-number">0.95</span> (+/- <span class="hljs-number">0.03</span>) [SVM]
+Accuracy: <span class="hljs-number">0.94</span> (+/- <span class="hljs-number">0.04</span>) [Ensemble]
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-string">'''
+软投票：和硬投票原理相同，增加了设置权重的功能，可以为不同模型设置不同权重，进而区别模型不同的重要度。
+'''</span>
+x=iris.data
+y=iris.target
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=<span class="hljs-number">0.3</span>)
+
+clf1 = XGBClassifier(learning_rate=<span class="hljs-number">0.1</span>, n_estimators=<span class="hljs-number">150</span>, max_depth=<span class="hljs-number">3</span>, min_child_weight=<span class="hljs-number">2</span>, subsample=<span class="hljs-number">0.8</span>,
+                     colsample_bytree=<span class="hljs-number">0.8</span>, objective=<span class="hljs-string">'binary:logistic'</span>)
+clf2 = RandomForestClassifier(n_estimators=<span class="hljs-number">50</span>, max_depth=<span class="hljs-number">1</span>, min_samples_split=<span class="hljs-number">4</span>,
+                              min_samples_leaf=<span class="hljs-number">63</span>,oob_score=<span class="hljs-literal">True</span>)
+clf3 = SVC(C=<span class="hljs-number">0.1</span>, probability=<span class="hljs-literal">True</span>)
+
+<span class="hljs-comment"># 软投票</span>
+eclf = VotingClassifier(estimators=[(<span class="hljs-string">'xgb'</span>, clf1), (<span class="hljs-string">'rf'</span>, clf2), (<span class="hljs-string">'svc'</span>, clf3)], voting=<span class="hljs-string">'soft'</span>, weights=[<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>])
+clf1.fit(x_train, y_train)
+
+<span class="hljs-keyword">for</span> clf, label <span class="hljs-keyword">in</span> zip([clf1, clf2, clf3, eclf], [<span class="hljs-string">'XGBBoosting'</span>, <span class="hljs-string">'Random Forest'</span>, <span class="hljs-string">'SVM'</span>, <span class="hljs-string">'Ensemble'</span>]):
+    scores = cross_val_score(clf, x, y, cv=<span class="hljs-number">5</span>, scoring=<span class="hljs-string">'accuracy'</span>)
+    print(<span class="hljs-string">"Accuracy: %0.2f (+/- %0.2f) [%s]"</span> % (scores.mean(), scores.std(), label))
+</code></pre>
+<h5 id="分类的stacking-blending融合"><a class="markdownIt-Anchor" href="#分类的stacking-blending融合"></a> 分类的Stacking、Blending融合</h5>
+<pre class="highlight"><code class="python"><span class="hljs-string">'''
+5-Fold Stacking
+'''</span>
+<span class="hljs-keyword">from</span> sklearn.ensemble <span class="hljs-keyword">import</span> RandomForestClassifier
+<span class="hljs-keyword">from</span> sklearn.ensemble <span class="hljs-keyword">import</span> ExtraTreesClassifier,GradientBoostingClassifier
+<span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-comment">#创建训练的数据集</span>
+data_0 = iris.data
+data = data_0[:<span class="hljs-number">100</span>,:]
+
+target_0 = iris.target
+target = target_0[:<span class="hljs-number">100</span>]
+
+<span class="hljs-comment">#模型融合中使用到的各个单模型</span>
+clfs = [LogisticRegression(solver=<span class="hljs-string">'lbfgs'</span>),
+        RandomForestClassifier(n_estimators=<span class="hljs-number">5</span>, n_jobs=<span class="hljs-number">-1</span>, criterion=<span class="hljs-string">'gini'</span>),
+        ExtraTreesClassifier(n_estimators=<span class="hljs-number">5</span>, n_jobs=<span class="hljs-number">-1</span>, criterion=<span class="hljs-string">'gini'</span>),
+        ExtraTreesClassifier(n_estimators=<span class="hljs-number">5</span>, n_jobs=<span class="hljs-number">-1</span>, criterion=<span class="hljs-string">'entropy'</span>),
+        GradientBoostingClassifier(learning_rate=<span class="hljs-number">0.05</span>, subsample=<span class="hljs-number">0.5</span>, max_depth=<span class="hljs-number">6</span>, n_estimators=<span class="hljs-number">5</span>)]
+ 
+<span class="hljs-comment">#切分一部分数据作为测试集</span>
+X, X_predict, y, y_predict = train_test_split(data, target, test_size=<span class="hljs-number">0.3</span>, random_state=<span class="hljs-number">2020</span>)
+
+dataset_blend_train = np.zeros((X.shape[<span class="hljs-number">0</span>], len(clfs)))
+dataset_blend_test = np.zeros((X_predict.shape[<span class="hljs-number">0</span>], len(clfs)))
+
+<span class="hljs-comment">#5折stacking</span>
+n_splits = <span class="hljs-number">5</span>
+skf = StratifiedKFold(n_splits)
+skf = skf.split(X, y)
+
+<span class="hljs-keyword">for</span> j, clf <span class="hljs-keyword">in</span> enumerate(clfs):
+    <span class="hljs-comment">#依次训练各个单模型</span>
+    dataset_blend_test_j = np.zeros((X_predict.shape[<span class="hljs-number">0</span>], <span class="hljs-number">5</span>))
+    <span class="hljs-keyword">for</span> i, (train, test) <span class="hljs-keyword">in</span> enumerate(skf):
+        <span class="hljs-comment">#5-Fold交叉训练，使用第i个部分作为预测，剩余的部分来训练模型，获得其预测的输出作为第i部分的新特征。</span>
+        X_train, y_train, X_test, y_test = X[train], y[train], X[test], y[test]
+        clf.fit(X_train, y_train)
+        y_submission = clf.predict_proba(X_test)[:, <span class="hljs-number">1</span>]
+        dataset_blend_train[test, j] = y_submission
+        dataset_blend_test_j[:, i] = clf.predict_proba(X_predict)[:, <span class="hljs-number">1</span>]
+    <span class="hljs-comment">#对于测试集，直接用这k个模型的预测值均值作为新的特征。</span>
+    dataset_blend_test[:, j] = dataset_blend_test_j.mean(<span class="hljs-number">1</span>)
+    print(<span class="hljs-string">"val auc Score: %f"</span> % roc_auc_score(y_predict, dataset_blend_test[:, j]))
+
+clf = LogisticRegression(solver=<span class="hljs-string">'lbfgs'</span>)
+clf.fit(dataset_blend_train, y)
+y_submission = clf.predict_proba(dataset_blend_test)[:, <span class="hljs-number">1</span>]
+
+print(<span class="hljs-string">"Val auc Score of Stacking: %f"</span> % (roc_auc_score(y_predict, y_submission)))
+</code></pre>
+<p>Blending，其实和Stacking是一种类似的多层模型融合的形式</p>
+<p>其主要思路是把原始的训练集先分成两部分，比如70%的数据作为新的训练集，剩下30%的数据作为测试集。</p>
+<p>在第一层，我们在这70%的数据上训练多个模型，然后去预测那30%数据的label，同时也预测test集的label。</p>
+<p>在第二层，我们就直接用这30%数据在第一层预测的结果做为新特征继续训练，然后用test集第一层预测的label做特征，用第二层训练的模型做进一步预测</p>
+<p>其优点在于：</p>
+<ul>
+<li>1.比stacking简单（因为不用进行k次的交叉验证来获得stacker feature）</li>
+<li>2.避开了一个信息泄露问题：generlizers和stacker使用了不一样的数据集</li>
+</ul>
+<p>缺点在于：</p>
+<ul>
+<li>
+<p>1.使用了很少的数据（第二阶段的blender只使用training set10%的量）</p>
+</li>
+<li>
+<p>2.blender可能会过拟合</p>
+</li>
+<li>
+<p>3.stacking使用多次的交叉验证会比较稳健</p>
+</li>
+</ul>
+<pre class="highlight"><code class="python"><span class="hljs-string">'''
+Blending
+'''</span>
+ 
+<span class="hljs-comment">#创建训练的数据集</span>
+<span class="hljs-comment">#创建训练的数据集</span>
+data_0 = iris.data
+data = data_0[:<span class="hljs-number">100</span>,:]
+
+target_0 = iris.target
+target = target_0[:<span class="hljs-number">100</span>]
+ 
+<span class="hljs-comment">#模型融合中使用到的各个单模型</span>
+clfs = [LogisticRegression(solver=<span class="hljs-string">'lbfgs'</span>),
+        RandomForestClassifier(n_estimators=<span class="hljs-number">5</span>, n_jobs=<span class="hljs-number">-1</span>, criterion=<span class="hljs-string">'gini'</span>),
+        RandomForestClassifier(n_estimators=<span class="hljs-number">5</span>, n_jobs=<span class="hljs-number">-1</span>, criterion=<span class="hljs-string">'entropy'</span>),
+        ExtraTreesClassifier(n_estimators=<span class="hljs-number">5</span>, n_jobs=<span class="hljs-number">-1</span>, criterion=<span class="hljs-string">'gini'</span>),
+        <span class="hljs-comment">#ExtraTreesClassifier(n_estimators=5, n_jobs=-1, criterion='entropy'),</span>
+        GradientBoostingClassifier(learning_rate=<span class="hljs-number">0.05</span>, subsample=<span class="hljs-number">0.5</span>, max_depth=<span class="hljs-number">6</span>, n_estimators=<span class="hljs-number">5</span>)]
+ 
+<span class="hljs-comment">#切分一部分数据作为测试集</span>
+X, X_predict, y, y_predict = train_test_split(data, target, test_size=<span class="hljs-number">0.3</span>, random_state=<span class="hljs-number">2020</span>)
+
+<span class="hljs-comment">#切分训练数据集为d1,d2两部分</span>
+X_d1, X_d2, y_d1, y_d2 = train_test_split(X, y, test_size=<span class="hljs-number">0.5</span>, random_state=<span class="hljs-number">2020</span>)
+dataset_d1 = np.zeros((X_d2.shape[<span class="hljs-number">0</span>], len(clfs)))
+dataset_d2 = np.zeros((X_predict.shape[<span class="hljs-number">0</span>], len(clfs)))
+ 
+<span class="hljs-keyword">for</span> j, clf <span class="hljs-keyword">in</span> enumerate(clfs):
+    <span class="hljs-comment">#依次训练各个单模型</span>
+    clf.fit(X_d1, y_d1)
+    y_submission = clf.predict_proba(X_d2)[:, <span class="hljs-number">1</span>]
+    dataset_d1[:, j] = y_submission
+    <span class="hljs-comment">#对于测试集，直接用这k个模型的预测值作为新的特征。</span>
+    dataset_d2[:, j] = clf.predict_proba(X_predict)[:, <span class="hljs-number">1</span>]
+    print(<span class="hljs-string">"val auc Score: %f"</span> % roc_auc_score(y_predict, dataset_d2[:, j]))
+
+<span class="hljs-comment">#融合使用的模型</span>
+clf = GradientBoostingClassifier(learning_rate=<span class="hljs-number">0.02</span>, subsample=<span class="hljs-number">0.5</span>, max_depth=<span class="hljs-number">6</span>, n_estimators=<span class="hljs-number">30</span>)
+clf.fit(dataset_d1, y_d2)
+y_submission = clf.predict_proba(dataset_d2)[:, <span class="hljs-number">1</span>]
+print(<span class="hljs-string">"Val auc Score of Blending: %f"</span> % (roc_auc_score(y_predict, y_submission)))
+</code></pre>
+<h5 id="分类的stacking融合利用mlxtend"><a class="markdownIt-Anchor" href="#分类的stacking融合利用mlxtend"></a> 分类的Stacking融合(利用mlxtend)</h5>
+<pre class="highlight"><code class="python">!pip install mlxtend
+
+<span class="hljs-keyword">import</span> warnings
+warnings.filterwarnings(<span class="hljs-string">'ignore'</span>)
+<span class="hljs-keyword">import</span> itertools
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> seaborn <span class="hljs-keyword">as</span> sns
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">import</span> matplotlib.gridspec <span class="hljs-keyword">as</span> gridspec
+
+<span class="hljs-keyword">from</span> sklearn <span class="hljs-keyword">import</span> datasets
+<span class="hljs-keyword">from</span> sklearn.linear_model <span class="hljs-keyword">import</span> LogisticRegression
+<span class="hljs-keyword">from</span> sklearn.neighbors <span class="hljs-keyword">import</span> KNeighborsClassifier
+<span class="hljs-keyword">from</span> sklearn.naive_bayes <span class="hljs-keyword">import</span> GaussianNB 
+<span class="hljs-keyword">from</span> sklearn.ensemble <span class="hljs-keyword">import</span> RandomForestClassifier
+<span class="hljs-keyword">from</span> mlxtend.classifier <span class="hljs-keyword">import</span> StackingClassifier
+
+<span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> cross_val_score
+<span class="hljs-keyword">from</span> mlxtend.plotting <span class="hljs-keyword">import</span> plot_learning_curves
+<span class="hljs-keyword">from</span> mlxtend.plotting <span class="hljs-keyword">import</span> plot_decision_regions
+
+<span class="hljs-comment"># 以python自带的鸢尾花数据集为例</span>
+iris = datasets.load_iris()
+X, y = iris.data[:, <span class="hljs-number">1</span>:<span class="hljs-number">3</span>], iris.target
+
+clf1 = KNeighborsClassifier(n_neighbors=<span class="hljs-number">1</span>)
+clf2 = RandomForestClassifier(random_state=<span class="hljs-number">1</span>)
+clf3 = GaussianNB()
+lr = LogisticRegression()
+sclf = StackingClassifier(classifiers=[clf1, clf2, clf3], 
+                          meta_classifier=lr)
+
+label = [<span class="hljs-string">'KNN'</span>, <span class="hljs-string">'Random Forest'</span>, <span class="hljs-string">'Naive Bayes'</span>, <span class="hljs-string">'Stacking Classifier'</span>]
+clf_list = [clf1, clf2, clf3, sclf]
+
+fig = plt.figure(figsize=(<span class="hljs-number">10</span>,<span class="hljs-number">8</span>))
+gs = gridspec.GridSpec(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)
+grid = itertools.product([<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],repeat=<span class="hljs-number">2</span>)
+
+clf_cv_mean = []
+clf_cv_std = []
+<span class="hljs-keyword">for</span> clf, label, grd <span class="hljs-keyword">in</span> zip(clf_list, label, grid):
+        
+    scores = cross_val_score(clf, X, y, cv=<span class="hljs-number">3</span>, scoring=<span class="hljs-string">'accuracy'</span>)
+    print(<span class="hljs-string">"Accuracy: %.2f (+/- %.2f) [%s]"</span> %(scores.mean(), scores.std(), label))
+    clf_cv_mean.append(scores.mean())
+    clf_cv_std.append(scores.std())
+        
+    clf.fit(X, y)
+    ax = plt.subplot(gs[grd[<span class="hljs-number">0</span>], grd[<span class="hljs-number">1</span>]])
+    fig = plot_decision_regions(X=X, y=y, clf=clf)
+    plt.title(label)
+
+plt.show()
+</code></pre>
+<h4 id="其他方法"><a class="markdownIt-Anchor" href="#其他方法"></a> 其他方法</h4>
+<p>将特征放进模型中预测，并将预测结果变换并作为新的特征加入原有特征中再经过模型预测结果 （Stacking变化）</p>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">Ensemble_add_feature</span><span class="hljs-params">(train,test,target,clfs)</span>:</span>
+    
+    <span class="hljs-comment"># n_flods = 5</span>
+    <span class="hljs-comment"># skf = list(StratifiedKFold(y, n_folds=n_flods))</span>
+
+    train_ = np.zeros((train.shape[<span class="hljs-number">0</span>],len(clfs*<span class="hljs-number">2</span>)))
+    test_ = np.zeros((test.shape[<span class="hljs-number">0</span>],len(clfs*<span class="hljs-number">2</span>)))
+
+    <span class="hljs-keyword">for</span> j,clf <span class="hljs-keyword">in</span> enumerate(clfs):
+        <span class="hljs-string">'''依次训练各个单模型'''</span>
+        <span class="hljs-comment"># print(j, clf)</span>
+        <span class="hljs-string">'''使用第1个部分作为预测，第2部分来训练模型，获得其预测的输出作为第2部分的新特征。'''</span>
+        <span class="hljs-comment"># X_train, y_train, X_test, y_test = X[train], y[train], X[test], y[test]</span>
+
+        clf.fit(train,target)
+        y_train = clf.predict(train)
+        y_test = clf.predict(test)
+
+        <span class="hljs-comment">## 新特征生成</span>
+        train_[:,j*<span class="hljs-number">2</span>] = y_train**<span class="hljs-number">2</span>
+        test_[:,j*<span class="hljs-number">2</span>] = y_test**<span class="hljs-number">2</span>
+        train_[:, j+<span class="hljs-number">1</span>] = np.exp(y_train)
+        test_[:, j+<span class="hljs-number">1</span>] = np.exp(y_test)
+        <span class="hljs-comment"># print("val auc Score: %f" % r2_score(y_predict, dataset_d2[:, j]))</span>
+        print(<span class="hljs-string">'Method '</span>,j)
+    
+    train_ = pd.DataFrame(train_)
+    test_ = pd.DataFrame(test_)
+    <span class="hljs-keyword">return</span> train_,test_
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> cross_val_score, train_test_split
+<span class="hljs-keyword">from</span> sklearn.linear_model <span class="hljs-keyword">import</span> LogisticRegression
+clf = LogisticRegression()
+
+data_0 = iris.data
+data = data_0[:<span class="hljs-number">100</span>,:]
+
+target_0 = iris.target
+target = target_0[:<span class="hljs-number">100</span>]
+
+x_train,x_test,y_train,y_test=train_test_split(data,target,test_size=<span class="hljs-number">0.3</span>)
+x_train = pd.DataFrame(x_train) ; x_test = pd.DataFrame(x_test)
+
+<span class="hljs-comment">#模型融合中使用到的各个单模型</span>
+clfs = [LogisticRegression(),
+        RandomForestClassifier(n_estimators=<span class="hljs-number">5</span>, n_jobs=<span class="hljs-number">-1</span>, criterion=<span class="hljs-string">'gini'</span>),
+        ExtraTreesClassifier(n_estimators=<span class="hljs-number">5</span>, n_jobs=<span class="hljs-number">-1</span>, criterion=<span class="hljs-string">'gini'</span>),
+        ExtraTreesClassifier(n_estimators=<span class="hljs-number">5</span>, n_jobs=<span class="hljs-number">-1</span>, criterion=<span class="hljs-string">'entropy'</span>),
+        GradientBoostingClassifier(learning_rate=<span class="hljs-number">0.05</span>, subsample=<span class="hljs-number">0.5</span>, max_depth=<span class="hljs-number">6</span>, n_estimators=<span class="hljs-number">5</span>)]
+
+New_train,New_test = Ensemble_add_feature(x_train,x_test,y_train,clfs)
+
+clf = LogisticRegression()
+<span class="hljs-comment"># clf = GradientBoostingClassifier(learning_rate=0.02, subsample=0.5, max_depth=6, n_estimators=30)</span>
+clf.fit(New_train, y_train)
+y_emb = clf.predict_proba(New_test)[:, <span class="hljs-number">1</span>]
+
+print(<span class="hljs-string">"Val auc Score of stacking: %f"</span> % (roc_auc_score(y_test, y_emb)))
+</code></pre>
+<h3 id="本次赛题"><a class="markdownIt-Anchor" href="#本次赛题"></a> 本次赛题</h3>
+<pre class="highlight"><code class="python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> warnings
+<span class="hljs-keyword">import</span> matplotlib
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">import</span> seaborn <span class="hljs-keyword">as</span> sns
+
+warnings.filterwarnings(<span class="hljs-string">'ignore'</span>)
+%matplotlib inline
+
+<span class="hljs-keyword">import</span> itertools
+<span class="hljs-keyword">import</span> matplotlib.gridspec <span class="hljs-keyword">as</span> gridspec
+<span class="hljs-keyword">from</span> sklearn <span class="hljs-keyword">import</span> datasets
+<span class="hljs-keyword">from</span> sklearn.linear_model <span class="hljs-keyword">import</span> LogisticRegression
+<span class="hljs-keyword">from</span> sklearn.neighbors <span class="hljs-keyword">import</span> KNeighborsClassifier
+<span class="hljs-keyword">from</span> sklearn.naive_bayes <span class="hljs-keyword">import</span> GaussianNB 
+<span class="hljs-keyword">from</span> sklearn.ensemble <span class="hljs-keyword">import</span> RandomForestClassifier
+<span class="hljs-comment"># from mlxtend.classifier import StackingClassifier</span>
+<span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> cross_val_score, train_test_split
+<span class="hljs-comment"># from mlxtend.plotting import plot_learning_curves</span>
+<span class="hljs-comment"># from mlxtend.plotting import plot_decision_regions</span>
+
+<span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> StratifiedKFold
+<span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> train_test_split
+
+<span class="hljs-keyword">from</span> sklearn <span class="hljs-keyword">import</span> linear_model
+<span class="hljs-keyword">from</span> sklearn <span class="hljs-keyword">import</span> preprocessing
+<span class="hljs-keyword">from</span> sklearn.svm <span class="hljs-keyword">import</span> SVR
+<span class="hljs-keyword">from</span> sklearn.decomposition <span class="hljs-keyword">import</span> PCA,FastICA,FactorAnalysis,SparsePCA
+
+<span class="hljs-keyword">import</span> lightgbm <span class="hljs-keyword">as</span> lgb
+<span class="hljs-keyword">import</span> xgboost <span class="hljs-keyword">as</span> xgb
+<span class="hljs-keyword">from</span> sklearn.model_selection <span class="hljs-keyword">import</span> GridSearchCV,cross_val_score
+<span class="hljs-keyword">from</span> sklearn.ensemble <span class="hljs-keyword">import</span> RandomForestRegressor,GradientBoostingRegressor
+
+<span class="hljs-keyword">from</span> sklearn.metrics <span class="hljs-keyword">import</span> mean_squared_error, mean_absolute_error
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-comment">## 数据读取</span>
+Train_data = pd.read_csv(<span class="hljs-string">'data/used_car_train_20200313.csv'</span>, sep=<span class="hljs-string">' '</span>)
+TestA_data = pd.read_csv(<span class="hljs-string">'data/used_car_testA_20200313.csv'</span>, sep=<span class="hljs-string">' '</span>)
+
+print(Train_data.shape)
+print(TestA_data.shape)
+</code></pre>
+<pre class="highlight"><code class="python">numerical_cols = Train_data.select_dtypes(exclude = <span class="hljs-string">'object'</span>).columns
+print(numerical_cols)
+</code></pre>
+<pre class="highlight"><code class="python">feature_cols = [col <span class="hljs-keyword">for</span> col <span class="hljs-keyword">in</span> numerical_cols <span class="hljs-keyword">if</span> col <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> [<span class="hljs-string">'SaleID'</span>,<span class="hljs-string">'name'</span>,<span class="hljs-string">'regDate'</span>,<span class="hljs-string">'price'</span>]]
+</code></pre>
+<pre class="highlight"><code class="python">X_data = Train_data[feature_cols]
+Y_data = Train_data[<span class="hljs-string">'price'</span>]
+
+X_test  = TestA_data[feature_cols]
+
+print(<span class="hljs-string">'X train shape:'</span>,X_data.shape)
+print(<span class="hljs-string">'X test shape:'</span>,X_test.shape)
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">Sta_inf</span><span class="hljs-params">(data)</span>:</span>
+    print(<span class="hljs-string">'_min'</span>,np.min(data))
+    print(<span class="hljs-string">'_max:'</span>,np.max(data))
+    print(<span class="hljs-string">'_mean'</span>,np.mean(data))
+    print(<span class="hljs-string">'_ptp'</span>,np.ptp(data))
+    print(<span class="hljs-string">'_std'</span>,np.std(data))
+    print(<span class="hljs-string">'_var'</span>,np.var(data))
+</code></pre>
+<pre class="highlight"><code class="python">print(<span class="hljs-string">'Sta of label:'</span>)
+Sta_inf(Y_data)
+</code></pre>
+<pre class="highlight"><code class="python">X_data = X_data.fillna(<span class="hljs-number">-1</span>)
+X_test = X_test.fillna(<span class="hljs-number">-1</span>)
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_model_lr</span><span class="hljs-params">(x_train,y_train)</span>:</span>
+    reg_model = linear_model.LinearRegression()
+    reg_model.fit(x_train,y_train)
+    <span class="hljs-keyword">return</span> reg_model
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_model_ridge</span><span class="hljs-params">(x_train,y_train)</span>:</span>
+    reg_model = linear_model.Ridge(alpha=<span class="hljs-number">0.8</span>)<span class="hljs-comment">#alphas=range(1,100,5)</span>
+    reg_model.fit(x_train,y_train)
+    <span class="hljs-keyword">return</span> reg_model
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_model_lasso</span><span class="hljs-params">(x_train,y_train)</span>:</span>
+    reg_model = linear_model.LassoCV()
+    reg_model.fit(x_train,y_train)
+    <span class="hljs-keyword">return</span> reg_model
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_model_gbdt</span><span class="hljs-params">(x_train,y_train)</span>:</span>
+    estimator =GradientBoostingRegressor(loss=<span class="hljs-string">'ls'</span>,subsample= <span class="hljs-number">0.85</span>,max_depth= <span class="hljs-number">5</span>,n_estimators = <span class="hljs-number">100</span>)
+    param_grid = { 
+            <span class="hljs-string">'learning_rate'</span>: [<span class="hljs-number">0.05</span>,<span class="hljs-number">0.08</span>,<span class="hljs-number">0.1</span>,<span class="hljs-number">0.2</span>],
+            }
+    gbdt = GridSearchCV(estimator, param_grid,cv=<span class="hljs-number">3</span>)
+    gbdt.fit(x_train,y_train)
+    print(gbdt.best_params_)
+    <span class="hljs-comment"># print(gbdt.best_estimator_ )</span>
+    <span class="hljs-keyword">return</span> gbdt
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_model_xgb</span><span class="hljs-params">(x_train,y_train)</span>:</span>
+    model = xgb.XGBRegressor(n_estimators=<span class="hljs-number">120</span>, learning_rate=<span class="hljs-number">0.08</span>, gamma=<span class="hljs-number">0</span>, subsample=<span class="hljs-number">0.8</span>,\
+        colsample_bytree=<span class="hljs-number">0.9</span>, max_depth=<span class="hljs-number">5</span>) <span class="hljs-comment">#, objective ='reg:squarederror'</span>
+    model.fit(x_train, y_train)
+    <span class="hljs-keyword">return</span> model
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_model_lgb</span><span class="hljs-params">(x_train,y_train)</span>:</span>
+    estimator = lgb.LGBMRegressor(num_leaves=<span class="hljs-number">63</span>,n_estimators = <span class="hljs-number">100</span>)
+    param_grid = {
+        <span class="hljs-string">'learning_rate'</span>: [<span class="hljs-number">0.01</span>, <span class="hljs-number">0.05</span>, <span class="hljs-number">0.1</span>],
+    }
+    gbm = GridSearchCV(estimator, param_grid)
+    gbm.fit(x_train, y_train)
+    <span class="hljs-keyword">return</span> gbm
+</code></pre>
+<h4 id="xgboost五折交叉回归验证"><a class="markdownIt-Anchor" href="#xgboost五折交叉回归验证"></a> XGBoost五折交叉回归验证</h4>
+<pre class="highlight"><code class="python"><span class="hljs-comment">## xgb</span>
+xgr = xgb.XGBRegressor(n_estimators=<span class="hljs-number">120</span>, learning_rate=<span class="hljs-number">0.1</span>, subsample=<span class="hljs-number">0.8</span>,\
+        colsample_bytree=<span class="hljs-number">0.9</span>, max_depth=<span class="hljs-number">7</span>) <span class="hljs-comment"># ,objective ='reg:squarederror'</span>
+
+scores_train = []
+scores = []
+
+<span class="hljs-comment">## 5折交叉验证方式</span>
+sk=StratifiedKFold(n_splits=<span class="hljs-number">5</span>,shuffle=<span class="hljs-literal">True</span>,random_state=<span class="hljs-number">0</span>)
+<span class="hljs-keyword">for</span> train_ind,val_ind <span class="hljs-keyword">in</span> sk.split(X_data,Y_data):
+    
+    train_x=X_data.iloc[train_ind].values
+    train_y=Y_data.iloc[train_ind]
+    val_x=X_data.iloc[val_ind].values
+    val_y=Y_data.iloc[val_ind]
+    
+    xgr.fit(train_x,train_y)
+    pred_train_xgb=xgr.predict(train_x)
+    pred_xgb=xgr.predict(val_x)
+    
+    score_train = mean_absolute_error(train_y,pred_train_xgb)
+    scores_train.append(score_train)
+    score = mean_absolute_error(val_y,pred_xgb)
+    scores.append(score)
+
+print(<span class="hljs-string">'Train mae:'</span>,np.mean(score_train))
+print(<span class="hljs-string">'Val mae'</span>,np.mean(scores))
+</code></pre>
+<h4 id="划分数据集并用多种方法训练和预测"><a class="markdownIt-Anchor" href="#划分数据集并用多种方法训练和预测"></a> 划分数据集，并用多种方法训练和预测</h4>
+<pre class="highlight"><code class="python"><span class="hljs-comment">## Split data with val</span>
+x_train,x_val,y_train,y_val = train_test_split(X_data,Y_data,test_size=<span class="hljs-number">0.3</span>)
+
+<span class="hljs-comment">## Train and Predict</span>
+print(<span class="hljs-string">'Predict LR...'</span>)
+model_lr = build_model_lr(x_train,y_train)
+val_lr = model_lr.predict(x_val)
+subA_lr = model_lr.predict(X_test)
+
+print(<span class="hljs-string">'Predict Ridge...'</span>)
+model_ridge = build_model_ridge(x_train,y_train)
+val_ridge = model_ridge.predict(x_val)
+subA_ridge = model_ridge.predict(X_test)
+
+print(<span class="hljs-string">'Predict Lasso...'</span>)
+model_lasso = build_model_lasso(x_train,y_train)
+val_lasso = model_lasso.predict(x_val)
+subA_lasso = model_lasso.predict(X_test)
+
+print(<span class="hljs-string">'Predict GBDT...'</span>)
+model_gbdt = build_model_gbdt(x_train,y_train)
+val_gbdt = model_gbdt.predict(x_val)
+subA_gbdt = model_gbdt.predict(X_test)
+</code></pre>
+<h3 id="一般比赛中效果最为显著的方法"><a class="markdownIt-Anchor" href="#一般比赛中效果最为显著的方法"></a> 一般比赛中效果最为显著的方法</h3>
+<pre class="highlight"><code class="python">print(<span class="hljs-string">'predict XGB...'</span>)
+model_xgb = build_model_xgb(x_train,y_train)
+val_xgb = model_xgb.predict(x_val)
+subA_xgb = model_xgb.predict(X_test)
+
+print(<span class="hljs-string">'predict lgb...'</span>)
+model_lgb = build_model_lgb(x_train,y_train)
+val_lgb = model_lgb.predict(x_val)
+subA_lgb = model_lgb.predict(X_test)
+</code></pre>
+<pre class="highlight"><code class="python">print(<span class="hljs-string">'Sta inf of lgb:'</span>)
+Sta_inf(subA_lgb)
+</code></pre>
+<h4 id="加权融合"><a class="markdownIt-Anchor" href="#加权融合"></a> 加权融合</h4>
+<pre class="highlight"><code class="python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">Weighted_method</span><span class="hljs-params">(test_pre1,test_pre2,test_pre3,w=[<span class="hljs-number">1</span>/<span class="hljs-number">3</span>,<span class="hljs-number">1</span>/<span class="hljs-number">3</span>,<span class="hljs-number">1</span>/<span class="hljs-number">3</span>])</span>:</span>
+    Weighted_result = w[<span class="hljs-number">0</span>]*pd.Series(test_pre1)+w[<span class="hljs-number">1</span>]*pd.Series(test_pre2)+w[<span class="hljs-number">2</span>]*pd.Series(test_pre3)
+    <span class="hljs-keyword">return</span> Weighted_result
+
+<span class="hljs-comment">## Init the Weight</span>
+w = [<span class="hljs-number">0.3</span>,<span class="hljs-number">0.4</span>,<span class="hljs-number">0.3</span>]
+
+<span class="hljs-comment">## 测试验证集准确度</span>
+val_pre = Weighted_method(val_lgb,val_xgb,val_gbdt,w)
+MAE_Weighted = mean_absolute_error(y_val,val_pre)
+print(<span class="hljs-string">'MAE of Weighted of val:'</span>,MAE_Weighted)
+
+<span class="hljs-comment">## 预测数据部分</span>
+subA = Weighted_method(subA_lgb,subA_xgb,subA_gbdt,w)
+print(<span class="hljs-string">'Sta inf:'</span>)
+Sta_inf(subA)
+<span class="hljs-comment">## 生成提交文件</span>
+sub = pd.DataFrame()
+sub[<span class="hljs-string">'SaleID'</span>] = X_test.index
+sub[<span class="hljs-string">'price'</span>] = subA
+sub.to_csv(<span class="hljs-string">'./sub_Weighted.csv'</span>,index=<span class="hljs-literal">False</span>)
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-comment">## 与简单的LR（线性回归）进行对比</span>
+val_lr_pred = model_lr.predict(x_val)
+MAE_lr = mean_absolute_error(y_val,val_lr_pred)
+print(<span class="hljs-string">'MAE of lr:'</span>,MAE_lr)
+</code></pre>
+<h4 id="stacking融合"><a class="markdownIt-Anchor" href="#stacking融合"></a> Stacking融合</h4>
+<pre class="highlight"><code class="python"><span class="hljs-comment">## 第一层</span>
+train_lgb_pred = model_lgb.predict(x_train)
+train_xgb_pred = model_xgb.predict(x_train)
+train_gbdt_pred = model_gbdt.predict(x_train)
+
+Strak_X_train = pd.DataFrame()
+Strak_X_train[<span class="hljs-string">'Method_1'</span>] = train_lgb_pred
+Strak_X_train[<span class="hljs-string">'Method_2'</span>] = train_xgb_pred
+Strak_X_train[<span class="hljs-string">'Method_3'</span>] = train_gbdt_pred
+
+Strak_X_val = pd.DataFrame()
+Strak_X_val[<span class="hljs-string">'Method_1'</span>] = val_lgb
+Strak_X_val[<span class="hljs-string">'Method_2'</span>] = val_xgb
+Strak_X_val[<span class="hljs-string">'Method_3'</span>] = val_gbdt
+
+Strak_X_test = pd.DataFrame()
+Strak_X_test[<span class="hljs-string">'Method_1'</span>] = subA_lgb
+Strak_X_test[<span class="hljs-string">'Method_2'</span>] = subA_xgb
+Strak_X_test[<span class="hljs-string">'Method_3'</span>] = subA_gbdt
+</code></pre>
+<pre class="highlight"><code class="python"><span class="hljs-comment">## level2-method </span>
+model_lr_Stacking = build_model_lr(Strak_X_train,y_train)
+<span class="hljs-comment">## 训练集</span>
+train_pre_Stacking = model_lr_Stacking.predict(Strak_X_train)
+print(<span class="hljs-string">'MAE of Stacking-LR:'</span>,mean_absolute_error(y_train,train_pre_Stacking))
+
+<span class="hljs-comment">## 验证集</span>
+val_pre_Stacking = model_lr_Stacking.predict(Strak_X_val)
+print(<span class="hljs-string">'MAE of Stacking-LR:'</span>,mean_absolute_error(y_val,val_pre_Stacking))
+
+<span class="hljs-comment">## 预测集</span>
+print(<span class="hljs-string">'Predict Stacking-LR...'</span>)
+subA_Stacking = model_lr_Stacking.predict(Strak_X_test)
+</code></pre>
+<pre class="highlight"><code class="python">subA_Stacking[subA_Stacking&lt;<span class="hljs-number">10</span>]=<span class="hljs-number">10</span>  <span class="hljs-comment">## 去除过小的预测值</span>
+
+sub = pd.DataFrame()
+sub[<span class="hljs-string">'SaleID'</span>] = X_test.index
+sub[<span class="hljs-string">'price'</span>] = subA_Stacking
+sub.to_csv(<span class="hljs-string">'./sub_Stacking.csv'</span>,index=<span class="hljs-literal">False</span>)
+</code></pre>
+<pre class="highlight"><code class="python">print(<span class="hljs-string">'Sta inf:'</span>)
+Sta_inf(subA_Stacking)
+</code></pre>
+<h3 id="经验总结"><a class="markdownIt-Anchor" href="#经验总结"></a> 经验总结</h3>
+<ul>
+<li><strong>结果层面的融合</strong>，这种是最常见的融合方法，其可行的融合方法也有很多，比如根据结果的得分进行加权融合，还可以做Log，exp处理等。在做结果融合的时候，有一个很重要的条件是模型结果的得分要比较近似，然后结果的差异要比较大，这样的结果融合往往有比较好的效果提升。</li>
+<li><strong>特征层面的融合</strong>，这个层面其实感觉不叫融合，准确说可以叫分割，很多时候如果我们用同种模型训练，可以把特征进行切分给不同的模型，然后在后面进行模型或者结果融合有时也能产生比较好的效果。</li>
+<li><strong>模型层面的融合</strong>，模型层面的融合可能就涉及模型的堆叠和设计，比如加Staking层，部分模型的结果作为特征输入等，这些就需要多实验和思考了，基于模型层面的融合最好不同模型类型要有一定的差异，用同种模型不同的参数的收益一般是比较小的。</li>
+</ul>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>
+                  &nbsp;
+                
+                  <a class="hover-with-bg" href="/categories/%E6%AF%94%E8%B5%9B">比赛</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <script defer src="https://utteranc.es/client.js"
+          repo="mz2sj/utterances"
+          issue-term="pathname"
+  
+          label="utterances"
+    
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "04-二手车价格预测之模型融合&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="/lib/katex/katex.min.css"  >
+  
+
+
+
+
+
+
+
+
+
+</body>
+</html>
